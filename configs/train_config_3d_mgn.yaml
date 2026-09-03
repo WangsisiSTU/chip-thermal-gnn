@@ -1,0 +1,26 @@
+# Deliberately compact MeshGraphNet trial for the 3D tetrahedral graph.
+seed: 2024
+
+model:
+  hidden_dim: 64
+  n_message_passing_steps: 2
+  dropout: 0.03
+
+baseline_model:
+  type: sage
+  hidden_dim: 64
+  n_layers: 3
+  dropout: 0.03
+
+train:
+  batch_size: 8
+  cpu_num_threads: 4
+  epochs: 12
+  lr: 1.0e-3
+  weight_decay: 1.0e-5
+  patience: 6
+  peak_loss_weight: 0.1
+  loss_type: per_sample_rel
+  lr_scheduler_factor: 0.5
+  lr_scheduler_patience: 6
+  grad_clip_norm: 1.0

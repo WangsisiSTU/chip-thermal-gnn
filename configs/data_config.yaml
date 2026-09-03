@@ -1,0 +1,43 @@
+# 数据生成配置：几何结构、网格分辨率、材料/工况采样范围、数据集划分
+seed: 2024
+
+geometry:
+  # 二维芯片封装截面，单位：米（m）。层级自下而上：基板 -> 铜散热层 -> TIM -> Die
+  width: 0.020          # 截面宽度 W
+  substrate_thickness: 0.006   # 基板厚度
+  cu_thickness: 0.003          # 铜散热层厚度
+  tim_thickness: 0.001         # TIM 厚度
+  die_thickness: 0.002         # Die（硅）厚度
+  # 规则三角形网格分辨率（沿 x / y 方向的节点数），所有样本共用同一网格
+  nx: 61
+  ny: 37
+
+materials:
+  # 各材料导热系数采样范围 [W/(m*K)]，训练/验证与测试的"分布内"样本共用同一范围
+  k_die:  {low: 130.0, high: 155.0}   # 硅
+  k_tim:  {low: 1.0,   high: 8.0}     # 导热界面材料（差异很大，代表膏体/垫片等）
+  k_cu:   {low: 360.0, high: 400.0}   # 铜
+  k_sub:  {low: 15.0,  high: 60.0}    # 基板（有机/陶瓷等）
+
+heat_source:
+  # Die 层内的热源：背景功率密度 + 局部热点（矩形区域，位置/宽度可变）
+  q_base:  {low: 1.0e+5,  high: 5.0e+5}   # 背景体热源密度 [W/m^3]
+  q_hot:   {low: 5.0e+6,  high: 3.0e+7}   # 热点体热源密度 [W/m^3]
+  hotspot_width_frac: {low: 0.15, high: 0.45}   # 热点宽度占芯片宽度比例
+  hotspot_center_frac: {low: 0.2, high: 0.8}    # 热点中心位置占芯片宽度比例（用于表示可选的局部热源位置随机化）
+
+boundary:
+  t_ambient: {low: 20.0, high: 45.0}    # 环境温度 [摄氏度]，仅影响绝对温度，不影响 dT（见 README 物理说明）
+  h_top:     {low: 500.0, high: 15000.0}  # 顶部对流换热系数 [W/(m^2*K)]
+
+# 分布外（OOD）工况范围，仅用于测试集的一部分样本，用来验证模型对未见工况组合的泛化能力
+ood:
+  n_ood_test_samples: 10
+  q_hot:  {low: 3.5e+7, high: 6.0e+7}     # 更高热源功率（超出训练集范围）
+  k_tim:  {low: 0.2,   high: 0.9}       # 更差的 TIM 导热系数（低于训练集范围）
+  h_top:  {low: 100.0, high: 400.0}     # 更差的顶部散热条件（低于训练集范围）
+
+split:
+  n_train: 300
+  n_val: 30
+  n_test: 30

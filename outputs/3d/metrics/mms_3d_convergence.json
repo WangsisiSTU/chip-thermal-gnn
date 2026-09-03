@@ -1,0 +1,33 @@
+{
+  "exact_solution": "sin(pi*x) sin(pi*y) sin(pi*z)",
+  "rows": [
+    {
+      "n_per_axis": 5,
+      "h": 0.25,
+      "n_nodes": 125,
+      "n_tets": 384,
+      "nodal_rmse": 0.024351427819193475,
+      "nodal_max_abs_error": 0.09507178291093832
+    },
+    {
+      "n_per_axis": 9,
+      "h": 0.125,
+      "n_nodes": 729,
+      "n_tets": 3072,
+      "nodal_rmse": 0.007617796614808945,
+      "nodal_max_abs_error": 0.025201375969960638
+    },
+    {
+      "n_per_axis": 13,
+      "h": 0.08333333333333333,
+      "n_nodes": 2197,
+      "n_tets": 10368,
+      "nodal_rmse": 0.0036276118905418505,
+      "nodal_max_abs_error": 0.011323603104773317
+    }
+  ],
+  "observed_orders": [
+    1.6765606901647339,
+    1.8297816618548417
+  ]
+}

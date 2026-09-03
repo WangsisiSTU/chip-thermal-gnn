@@ -1,0 +1,26 @@
+# CPU-friendly, reproducible 3D baseline configuration.
+seed: 2024
+
+model:
+  hidden_dim: 64
+  n_message_passing_steps: 3
+  dropout: 0.03
+
+baseline_model:
+  type: sage
+  hidden_dim: 64
+  n_layers: 3
+  dropout: 0.03
+
+train:
+  batch_size: 4
+  cpu_num_threads: 4
+  epochs: 120
+  lr: 1.0e-3
+  weight_decay: 1.0e-5
+  patience: 25
+  peak_loss_weight: 0.1
+  loss_type: per_sample_rel
+  lr_scheduler_factor: 0.5
+  lr_scheduler_patience: 10
+  grad_clip_norm: 1.0

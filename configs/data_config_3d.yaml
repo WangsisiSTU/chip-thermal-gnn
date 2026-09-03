@@ -1,0 +1,46 @@
+# Independent starter configuration for the 3D tetrahedral workflow.
+# y is the package stack direction; x and z span the die surface.
+seed: 2024
+
+geometry:
+  width: 0.020
+  depth: 0.016
+  substrate_thickness: 0.006
+  cu_thickness: 0.003
+  tim_thickness: 0.001
+  die_thickness: 0.002
+  # y interfaces lie on 1 mm grid planes for this 12 mm-high package.
+  nx: 13
+  ny: 13
+  nz: 11
+
+materials:
+  k_die: {low: 130.0, high: 155.0}
+  k_tim: {low: 1.0, high: 8.0}
+  k_cu: {low: 360.0, high: 400.0}
+  k_sub: {low: 15.0, high: 60.0}
+
+heat_source:
+  q_base: {low: 1.0e+5, high: 5.0e+5}
+  q_hot: {low: 5.0e+6, high: 3.0e+7}
+  # Rectangular die hot spot in the x-z plane, extended across die thickness.
+  hotspot_center_x_frac: {low: 0.25, high: 0.75}
+  hotspot_center_z_frac: {low: 0.25, high: 0.75}
+  hotspot_width_x_frac: {low: 0.15, high: 0.40}
+  hotspot_width_z_frac: {low: 0.15, high: 0.40}
+
+boundary:
+  t_ambient: {low: 20.0, high: 45.0}
+  h_top: {low: 500.0, high: 15000.0}
+
+ood:
+  n_ood_test_samples: 3
+  q_hot: {low: 3.5e+7, high: 6.0e+7}
+  k_tim: {low: 0.2, high: 0.9}
+  h_top: {low: 100.0, high: 400.0}
+
+# Intentionally modest so the 3D path can be validated before a production sweep.
+split:
+  n_train: 24
+  n_val: 4
+  n_test: 6

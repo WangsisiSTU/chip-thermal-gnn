@@ -1,0 +1,13 @@
+{
+  "model": "meshgraphnet",
+  "loss_type": "per_sample_rel",
+  "n_params": 73153,
+  "best_epoch": 11,
+  "best_val_loss": 0.23889395967125893,
+  "total_epochs_run": 12,
+  "total_train_time_s": 343.7987172000576,
+  "seed": 2024,
+  "runtime_device": "cpu",
+  "process_rss_MiB": 887.56640625,
+  "cuda_peak_memory_MiB": null
+}

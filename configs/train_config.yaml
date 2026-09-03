@@ -1,0 +1,29 @@
+# 训练配置：模型结构超参数与训练超参数
+seed: 2024
+
+model:
+  hidden_dim: 128
+  n_message_passing_steps: 8
+  dropout: 0.03
+
+baseline_model:
+  type: sage          # sage 或 gcn
+  hidden_dim: 128
+  n_layers: 4
+  dropout: 0.03
+
+train:
+  batch_size: 8
+  epochs: 500
+  lr: 1.0e-3
+  weight_decay: 1.0e-5
+  patience: 40           # 早停耐心值（验证集 loss 不下降的 epoch 数）
+  peak_loss_weight: 0.1  # 峰值温度误差项的权重
+  # 损失类型：
+  #   per_sample_rel —— 在全局标准化温升的基础上，对每个样本再按其自身信号能量归一，
+  #                     等价于优化逐样本相对 L2 误差，避免损失被高功率大温升样本主导；
+  #   zscore_mse     —— 仅使用全局标准化温升的 MSE。
+  loss_type: per_sample_rel
+  lr_scheduler_factor: 0.5
+  lr_scheduler_patience: 15
+  grad_clip_norm: 1.0

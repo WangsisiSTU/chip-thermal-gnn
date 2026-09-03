@@ -1,0 +1,13 @@
+{
+  "model": "baseline",
+  "loss_type": "per_sample_rel",
+  "n_params": 19713,
+  "best_epoch": 69,
+  "best_val_loss": 0.05421837046742439,
+  "total_epochs_run": 94,
+  "total_train_time_s": 439.2874678999651,
+  "seed": 2024,
+  "runtime_device": "cpu",
+  "process_rss_MiB": 597.640625,
+  "cuda_peak_memory_MiB": null
+}

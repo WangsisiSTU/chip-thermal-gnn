@@ -1,0 +1,10 @@
+{
+  "model": "meshgraphnet",
+  "loss_type": "per_sample_rel",
+  "n_params": 979329,
+  "best_epoch": 296,
+  "best_val_loss": 0.01404087571427226,
+  "total_epochs_run": 336,
+  "total_train_time_s": 3394.1592413000762,
+  "seed": 2024
+}

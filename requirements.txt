@@ -1,0 +1,17 @@
+# Core scientific computing and finite elements
+numpy>=1.26
+scipy>=1.13
+scikit-fem>=12.0
+pandas>=2.0
+matplotlib>=3.8
+
+# Deep learning and graph neural networks
+torch>=2.5
+torch_geometric>=2.6
+
+# Configuration and utilities
+PyYAML>=6.0
+tqdm>=4.66
+
+# Tests
+pytest>=7.0

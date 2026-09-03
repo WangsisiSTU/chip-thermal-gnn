@@ -1,0 +1,10 @@
+{
+  "model": "baseline",
+  "loss_type": "per_sample_rel",
+  "n_params": 104321,
+  "best_epoch": 265,
+  "best_val_loss": 0.008374351193197072,
+  "total_epochs_run": 305,
+  "total_train_time_s": 231.56650810036808,
+  "seed": 2024
+}

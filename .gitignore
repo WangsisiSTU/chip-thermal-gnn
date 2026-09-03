@@ -1,0 +1,26 @@
+# Python environments and caches
+.venv/
+.venv-*/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Reproducible-but-large generated datasets (regenerate with the documented commands)
+data/
+
+# Third-party repositories and downloaded reference artifacts are cited in the report,
+# rather than duplicated inside this project repository.
+external/
+
+# Model checkpoints and repeated benchmark outputs
+outputs/checkpoints/
+outputs/3d/checkpoints/
+outputs/3d/benchmark*/
+outputs/*_train_log.txt
+outputs/3d/*_train*.log
+
+# XeLaTeX build intermediates; source and rendered PDF are versioned.
+docs/*.aux
+docs/*.log
+docs/*.out
+docs/*.toc
