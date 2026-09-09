@@ -15,8 +15,8 @@ import numpy as np
 import torch
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from evaluate import load_model_from_ckpt
-from utils import get_device, load_processed_metadata, load_split
+from evaluate import checkpoint_normalization, load_model_from_ckpt
+from utils import get_device, load_processed_metadata, load_split, validate_data_contract
 
 
 PLANE_SPECS = {
@@ -114,13 +114,13 @@ def main():
 
     device = get_device()
     metadata = load_processed_metadata(args.data_dir)
-    dT_mean = torch.tensor(metadata["dT_train_mean"], dtype=torch.float32, device=device)
-    dT_std = torch.tensor(metadata["dT_train_std"], dtype=torch.float32, device=device)
     test_set = load_split(args.data_dir, "test")
     test_info = load_test_info(args.data_dir)
     with open(os.path.join(args.raw_dir, "metadata.json"), "r", encoding="utf-8") as f:
         geometry = json.load(f)["geometry"]
-    model, _ = load_model_from_ckpt(os.path.join(args.ckpt_dir, f"{args.model}_best.pt"), device)
+    model, checkpoint = load_model_from_ckpt(os.path.join(args.ckpt_dir, f"{args.model}_best.pt"), device)
+    validate_data_contract(checkpoint, metadata)
+    dT_mean, dT_std = checkpoint_normalization(checkpoint, device)
     indices = args.samples if args.samples is not None else select_showcases(test_set, test_info)
     os.makedirs(args.fig_dir, exist_ok=True)
     for index in indices:

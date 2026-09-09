@@ -26,7 +26,18 @@ from torch_geometric.data import Batch
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from models import build_model
-from utils import get_device, load_json, load_processed_metadata, load_split
+from utils import get_device, load_json, load_processed_metadata, load_split, validate_data_contract
+
+
+def checkpoint_normalization(ckpt, device):
+    """Decode predictions using the training checkpoint's normalization."""
+    mean = torch.tensor(ckpt["dT_mean"], dtype=torch.float32, device=device)
+    std = torch.tensor(ckpt["dT_std"], dtype=torch.float32, device=device)
+    if mean.numel() != 1 or std.numel() != 1:
+        raise ValueError("Checkpoint normalization must be scalar")
+    if not torch.isfinite(mean).all() or not torch.isfinite(std).all() or std.item() <= 0:
+        raise ValueError("Checkpoint normalization must have a finite mean and positive finite std")
+    return mean, std
 
 
 def load_model_from_ckpt(ckpt_path: str, device: torch.device):
@@ -38,33 +49,52 @@ def load_model_from_ckpt(ckpt_path: str, device: torch.device):
     return model, ckpt
 
 
+def _synchronize(device: torch.device) -> None:
+    if device.type == "cuda":        torch.cuda.synchronize()
+
+
 @torch.no_grad()
-def evaluate_model(model, test_set, test_info, dT_mean, dT_std, device):
-    """逐样本推理，返回每个样本的预测/真值数组及各项指标。"""
+def evaluate_model(
+    model,
+    test_set,
+    test_info,
+    dT_mean,
+    dT_std,
+    device,
+    timing_repeats: int = 5,
+    benchmark_batch_size: int = 4,
+):
+    """Evaluate fields and measure warmed single-sample and mini-batch inference."""
+    if not test_set:
+        raise ValueError("Cannot evaluate an empty test set")
+    if timing_repeats < 1 or benchmark_batch_size < 1:
+        raise ValueError("timing_repeats and benchmark_batch_size must be positive")
+
     per_sample = []
     all_true, all_pred = [], []
     process = psutil.Process()
     if device.type == "cuda":
         torch.cuda.reset_peak_memory_stats(device)
 
+    # Exclude one-off dispatch and lazy-kernel costs from all reported timings.
+    model(test_set[0].to(device))
+    _synchronize(device)
+
     for i, data in enumerate(test_set):
         data = data.to(device)
-        if device.type == "cuda":
-            torch.cuda.synchronize()
+        _synchronize(device)
         t0 = time.perf_counter()
-        pred_norm = model(data)
-        if device.type == "cuda":
-            torch.cuda.synchronize()
-        infer_time = time.perf_counter() - t0
+        for _ in range(timing_repeats):
+            pred_norm = model(data)
+        _synchronize(device)
+        infer_time = (time.perf_counter() - t0) / timing_repeats
 
         pred_dT = (pred_norm * dT_std + dT_mean).cpu().numpy()
         true_dT = data.y.cpu().numpy()
-
         mae = float(np.mean(np.abs(pred_dT - true_dT)))
         rel_l2 = float(np.linalg.norm(pred_dT - true_dT) / (np.linalg.norm(true_dT) + 1e-12))
         peak_true = float(true_dT.max())
         peak_pred = float(pred_dT.max())
-        peak_abs_err = abs(peak_pred - peak_true)
 
         info = test_info[i]
         per_sample.append(
@@ -76,7 +106,7 @@ def evaluate_model(model, test_set, test_info, dT_mean, dT_std, device):
                 "rel_l2": rel_l2,
                 "peak_true_K": peak_true,
                 "peak_pred_K": peak_pred,
-                "peak_abs_err_K": peak_abs_err,
+                "peak_abs_err_K": abs(peak_pred - peak_true),
                 "inference_time_s": infer_time,
                 "fem_solve_time_s": float(data.solve_time_s.item()),
             }
@@ -90,32 +120,33 @@ def evaluate_model(model, test_set, test_info, dT_mean, dT_std, device):
     overall_rel_l2 = float(np.linalg.norm(all_pred_cat - all_true_cat) / (np.linalg.norm(all_true_cat) + 1e-12))
     ss_res = float(np.sum((all_pred_cat - all_true_cat) ** 2))
     ss_tot = float(np.sum((all_true_cat - all_true_cat.mean()) ** 2))
-    r2 = 1.0 - ss_res / (ss_tot + 1e-12)
-    peak_errs = [s["peak_abs_err_K"] for s in per_sample]
+    peak_errs = [sample["peak_abs_err_K"] for sample in per_sample]
 
     summary = {
         "overall_mae_K": overall_mae,
         "overall_rel_l2": overall_rel_l2,
-        "overall_r2": r2,
+        "overall_r2": 1.0 - ss_res / (ss_tot + 1e-12),
         "peak_abs_err_mean_K": float(np.mean(peak_errs)),
         "peak_abs_err_std_K": float(np.std(peak_errs)),
-        "mean_inference_time_ms": float(np.mean([s["inference_time_s"] for s in per_sample]) * 1000),
-        "mean_fem_solve_time_ms": float(np.mean([s["fem_solve_time_s"] for s in per_sample]) * 1000),
+        "mean_inference_time_ms": float(np.mean([sample["inference_time_s"] for sample in per_sample]) * 1000),
+        "mean_fem_solve_time_ms": float(np.mean([sample["fem_solve_time_s"] for sample in per_sample]) * 1000),
+        "timing_repeats": timing_repeats,
+        "benchmark_batch_size": benchmark_batch_size,
     }
     summary["speedup_vs_fem"] = summary["mean_fem_solve_time_ms"] / max(summary["mean_inference_time_ms"], 1e-9)
 
-    # 批量推理吞吐：一次前向处理整个测试集，摊销 GPU kernel 启动开销（多工况扫描场景）
-    big_batch = Batch.from_data_list(list(test_set)).to(device)
-    model(big_batch)  # 预热
-    if device.type == "cuda":
-        torch.cuda.synchronize()
+    batches = [
+        Batch.from_data_list(list(test_set[start:start + benchmark_batch_size])).to(device)
+        for start in range(0, len(test_set), benchmark_batch_size)
+    ]
+    for batch in batches:
+        model(batch)
+    _synchronize(device)
     t0 = time.perf_counter()
-    n_rep = 5
-    for _ in range(n_rep):
-        model(big_batch)
-    if device.type == "cuda":
-        torch.cuda.synchronize()
-    batched_total = (time.perf_counter() - t0) / n_rep
+    for batch in batches:
+        model(batch)
+    _synchronize(device)
+    batched_total = time.perf_counter() - t0
     summary["batched_inference_time_per_sample_ms"] = float(batched_total / len(test_set) * 1000)
     summary["speedup_vs_fem_batched"] = summary["mean_fem_solve_time_ms"] / max(
         summary["batched_inference_time_per_sample_ms"], 1e-9
@@ -125,7 +156,6 @@ def evaluate_model(model, test_set, test_info, dT_mean, dT_std, device):
     summary["cuda_peak_memory_MiB"] = (
         torch.cuda.max_memory_allocated(device) / 2 ** 20 if device.type == "cuda" else None
     )
-
     return per_sample, summary
 
 
@@ -153,6 +183,8 @@ def main():
     parser.add_argument("--ckpt_dir", type=str, default="outputs/checkpoints")
     parser.add_argument("--out_dir", type=str, default="outputs")
     parser.add_argument("--cpu_threads", type=int, default=None, help="limit CPU worker threads during timing")
+    parser.add_argument("--timing_repeats", type=int, default=5, help="warmed forward passes per single-sample timing")
+    parser.add_argument("--benchmark_batch_size", type=int, default=4, help="graphs per warmed throughput batch")
     parser.add_argument(
         "--models", nargs="+", choices=["meshgraphnet", "baseline"], default=["meshgraphnet", "baseline"],
         help="models to evaluate; use one name for a focused timing run",
@@ -171,12 +203,9 @@ def main():
         print(f"CPU threads: {torch.get_num_threads()}")
     print(f"使用设备: {device}")
 
-    proc_meta = load_processed_metadata(args.data_dir)
-    dT_mean = torch.tensor(proc_meta["dT_train_mean"], dtype=torch.float32, device=device)
-    dT_std = torch.tensor(proc_meta["dT_train_std"], dtype=torch.float32, device=device)
-
     test_set = load_split(args.data_dir, "test")
     test_info = load_json(os.path.join(args.data_dir, "test_info.json"))
+    processed_metadata = load_processed_metadata(args.data_dir)
 
     metrics_dir = os.path.join(args.out_dir, "metrics")
     os.makedirs(metrics_dir, exist_ok=True)
@@ -191,7 +220,12 @@ def main():
             print(f"警告: 未找到权重 {ckpt_path}，跳过 {model_name}")
             continue
         model, ckpt = load_model_from_ckpt(ckpt_path, device)
-        per_sample, summary = evaluate_model(model, test_set, test_info, dT_mean, dT_std, device)
+        validate_data_contract(ckpt, processed_metadata)
+        dT_mean, dT_std = checkpoint_normalization(ckpt, device)
+        per_sample, summary = evaluate_model(
+            model, test_set, test_info, dT_mean, dT_std, device,
+            timing_repeats=args.timing_repeats, benchmark_batch_size=args.benchmark_batch_size,
+        )
         breakdown = regime_breakdown(per_sample)
 
         per_sample_path = os.path.join(metrics_dir, f"{model_name}_per_sample_metrics.csv")

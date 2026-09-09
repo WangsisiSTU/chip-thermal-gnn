@@ -24,7 +24,7 @@ from torch_geometric.loader import DataLoader
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from models import build_model
-from utils import get_device, load_processed_metadata, load_split, load_yaml, set_seed
+from utils import build_data_contract, get_device, load_processed_metadata, load_split, load_yaml, set_seed
 
 
 def _reshape_per_graph(pred_norm: torch.Tensor, true_norm: torch.Tensor, num_graphs: int):
@@ -34,13 +34,29 @@ def _reshape_per_graph(pred_norm: torch.Tensor, true_norm: torch.Tensor, num_gra
     return pred_norm.view(num_graphs, n_per_graph), true_norm.view(num_graphs, n_per_graph)
 
 
-def peak_loss_fn(pred_norm: torch.Tensor, true_norm: torch.Tensor, num_graphs: int) -> torch.Tensor:
-    """按图取真实温升最大的节点，比较该节点处预测值与真实值（标准化空间）。"""
+def peak_loss_fn(
+    pred_norm: torch.Tensor,
+    true_norm: torch.Tensor,
+    num_graphs: int,
+    peak_loss_type: str = "true_peak_node",
+) -> torch.Tensor:
+    """Compare per-graph peak temperatures in normalized space.
+
+    ``true_peak_node`` retains the historical loss at the true hottest node.
+    ``global_max`` also penalizes spurious predicted hot spots and matches the
+    peak metric reported by evaluation.
+    """
     pred_r, true_r = _reshape_per_graph(pred_norm, true_norm, num_graphs)
-    peak_idx = true_r.argmax(dim=1)
-    ar = torch.arange(num_graphs, device=pred_norm.device)
-    pred_peak = pred_r[ar, peak_idx]
-    true_peak = true_r[ar, peak_idx]
+    if peak_loss_type == "true_peak_node":
+        peak_idx = true_r.argmax(dim=1)
+        rows = torch.arange(num_graphs, device=pred_norm.device)
+        pred_peak = pred_r[rows, peak_idx]
+        true_peak = true_r[rows, peak_idx]
+    elif peak_loss_type == "global_max":
+        pred_peak = pred_r.max(dim=1).values
+        true_peak = true_r.max(dim=1).values
+    else:
+        raise ValueError(f"Unknown peak loss type: {peak_loss_type}")
     return torch.mean((pred_peak - true_peak) ** 2)
 
 
@@ -62,17 +78,18 @@ def field_loss_fn(pred_norm: torch.Tensor, true_norm: torch.Tensor, num_graphs: 
         raise ValueError(f"未知损失类型: {loss_type}")
 
 
-def run_epoch(model, loader, device, dT_mean, dT_std, peak_weight, loss_type, optimizer=None, grad_clip=None):
+def run_epoch(model, loader, device, dT_mean, dT_std, peak_weight, loss_type, peak_loss_type="true_peak_node", optimizer=None, grad_clip=None):
     is_train = optimizer is not None
     model.train(is_train)
-    total_loss, total_field, total_peak, n_batches = 0.0, 0.0, 0.0, 0
+    totals = torch.zeros(3, dtype=torch.float64, device=device)
+    n_graphs = 0
     for batch in loader:
         batch = batch.to(device)
         y_norm = (batch.y - dT_mean) / dT_std
         with torch.set_grad_enabled(is_train):
             pred_norm = model(batch)
             field = field_loss_fn(pred_norm, y_norm, batch.num_graphs, loss_type)
-            pk = peak_loss_fn(pred_norm, y_norm, batch.num_graphs)
+            pk = peak_loss_fn(pred_norm, y_norm, batch.num_graphs, peak_loss_type)
             loss = field + peak_weight * pk
             if is_train:
                 optimizer.zero_grad()
@@ -80,11 +97,11 @@ def run_epoch(model, loader, device, dT_mean, dT_std, peak_weight, loss_type, op
                 if grad_clip is not None:
                     torch.nn.utils.clip_grad_norm_(model.parameters(), grad_clip)
                 optimizer.step()
-        total_loss += loss.item()
-        total_field += field.item()
-        total_peak += pk.item()
-        n_batches += 1
-    return total_loss / n_batches, total_field / n_batches, total_peak / n_batches
+        totals += torch.stack((loss.detach(), field.detach(), pk.detach())).to(torch.float64) * batch.num_graphs
+        n_graphs += batch.num_graphs
+    if n_graphs == 0:
+        raise ValueError("Cannot run an epoch on an empty dataset")
+    return tuple((totals / n_graphs).cpu().tolist())
 
 
 def main():
@@ -159,13 +176,14 @@ def main():
 
     t0 = time.perf_counter()
     loss_type = tcfg.get("loss_type", "per_sample_rel")
+    peak_loss_type = tcfg.get("peak_loss_type", "true_peak_node")
     for epoch in range(1, tcfg["epochs"] + 1):
         train_loss, train_field, train_peak = run_epoch(
-            model, train_loader, device, dT_mean, dT_std, tcfg["peak_loss_weight"], loss_type,
+            model, train_loader, device, dT_mean, dT_std, tcfg["peak_loss_weight"], loss_type, peak_loss_type,
             optimizer=optimizer, grad_clip=tcfg["grad_clip_norm"],
         )
         val_loss, val_field, val_peak = run_epoch(
-            model, val_loader, device, dT_mean, dT_std, tcfg["peak_loss_weight"], loss_type, optimizer=None,
+            model, val_loader, device, dT_mean, dT_std, tcfg["peak_loss_weight"], loss_type, peak_loss_type, optimizer=None,
         )
         scheduler.step(val_loss)
         peak_process_rss = max(peak_process_rss, process.memory_info().rss)
@@ -191,6 +209,7 @@ def main():
                     "config": cfg,
                     "dT_mean": proc_meta["dT_train_mean"],
                     "dT_std": proc_meta["dT_train_std"],
+                    "data_contract": build_data_contract(proc_meta),
                     "epoch": epoch,
                     "val_loss": val_loss,
                 },
@@ -222,6 +241,7 @@ def main():
     summary = {
         "model": args.model,
         "loss_type": loss_type,
+        "peak_loss_type": peak_loss_type,
         "n_params": n_params,
         "best_epoch": best_epoch,
         "best_val_loss": best_val_loss,

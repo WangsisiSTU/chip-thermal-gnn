@@ -35,13 +35,20 @@ def load_mesh_3d(raw_dir: str) -> tuple[np.ndarray, np.ndarray]:
 
 def build_edge_index_from_tets(tets: np.ndarray) -> np.ndarray:
     """Build directed, de-duplicated graph edges from tetrahedron faces/edges."""
-    undirected_edges = set()
-    for tet in tets.T:
-        for i, j in ((0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)):
-            a, b = int(tet[i]), int(tet[j])
-            undirected_edges.add((min(a, b), max(a, b)))
-    directed_edges = [(a, b) for a, b in undirected_edges] + [(b, a) for a, b in undirected_edges]
-    return np.asarray(sorted(directed_edges), dtype=np.int64).T
+    tets = np.asarray(tets)
+    if tets.ndim != 2 or tets.shape[0] != 4:
+        raise ValueError("tets must have shape (4, n_tets)")
+    if not np.issubdtype(tets.dtype, np.integer) or np.any(tets < 0):
+        raise ValueError("tets must contain non-negative integer node indices")
+    pairs = np.array(((0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)))
+    edges = tets[pairs].transpose(0, 2, 1).reshape(-1, 2)
+    directed = np.ascontiguousarray(np.concatenate((edges, edges[:, ::-1])), dtype=np.int64)
+    # Sort columns directly, then remove adjacent duplicates without Python objects.
+    directed = directed[np.lexsort((directed[:, 1], directed[:, 0]))]
+    keep = np.ones(len(directed), dtype=bool)
+    keep[1:] = np.any(directed[1:] != directed[:-1], axis=1)
+    return directed[keep].T
+
 
 
 def k_by_material(material_id: np.ndarray, case: dict) -> np.ndarray:
@@ -59,11 +66,25 @@ class NormConsts3D:
         self.k_ref = max(mat["k_cu"]["high"], 400.0)
         self.inv_k_ref = 1.0 / min(mat["k_tim"]["low"], ood["k_tim"]["low"])
         self.inv_h_ref = 1.0 / min(bc["h_top"]["low"], ood["h_top"]["low"])
+        coverage_h = raw_meta.get("coverage", {}).get("poor_cooling", {}).get("h_top")
+        h_lows = [bc["h_top"]["low"], ood["h_top"]["low"]]
+        h_highs = [bc["h_top"]["high"], ood["h_top"]["high"]]
+        if coverage_h is not None:
+            h_lows.append(coverage_h["low"])
+            h_highs.append(coverage_h["high"])
+        self.log_h_low = float(np.log(min(h_lows)))
+        self.log_h_span = float(np.log(max(h_highs)) - self.log_h_low)
+        if self.log_h_span <= 0:
+            raise ValueError("h_top sampling range must be positive and non-degenerate")
         geom = raw_meta["geometry"]
         self.width = geom["width"]
         self.depth = geom["depth"]
         self.height = sum(geom[key] for key in ("substrate_thickness", "cu_thickness", "tim_thickness", "die_thickness"))
         self.diag = float(np.sqrt(self.width ** 2 + self.height ** 2 + self.depth ** 2))
+        self.substrate_thickness = geom["substrate_thickness"]
+        self.cu_thickness = geom["cu_thickness"]
+        self.tim_thickness = geom["tim_thickness"]
+        self.die_thickness = geom["die_thickness"]
 
     def to_dict(self) -> dict:
         return {
@@ -73,12 +94,25 @@ class NormConsts3D:
             "k_ref": self.k_ref,
             "inv_k_ref": self.inv_k_ref,
             "inv_h_ref": self.inv_h_ref,
+            "log_h_low": self.log_h_low,
+            "log_h_span": self.log_h_span,
             "width": self.width,
             "height": self.height,
             "depth": self.depth,
             "diag": self.diag,
         }
 
+
+def cooling_path_resistance_fraction_3d(case: dict, nc: NormConsts3D) -> float:
+    """Approximate how much of the die-centre thermal path is top-side resistance."""
+    top_resistance = nc.die_thickness / (2.0 * case["k_die"]) + 1.0 / case["h_top"]
+    bottom_resistance = (
+        nc.die_thickness / (2.0 * case["k_die"])
+        + nc.tim_thickness / case["k_tim"]
+        + nc.cu_thickness / case["k_cu"]
+        + nc.substrate_thickness / case["k_sub"]
+    )
+    return float(top_resistance / (top_resistance + bottom_resistance))
 
 def build_node_features_3d(
     points: np.ndarray,
@@ -90,7 +124,7 @@ def build_node_features_3d(
     case: dict,
     nc: NormConsts3D,
 ) -> np.ndarray:
-    """Return 24 node features: 3D coordinates, local fields and global case data."""
+    """Return 26 node features: coordinates, local fields, and global physics."""
     n_nodes = points.shape[1]
     one_hot = np.zeros((n_nodes, 4), dtype=np.float64)
     one_hot[np.arange(n_nodes), material_id] = 1.0
@@ -108,6 +142,8 @@ def build_node_features_3d(
             case["k_tim"] / nc.k_ref,
             (1.0 / case["k_tim"]) / nc.inv_k_ref,
             (1.0 / case["h_top"]) / nc.inv_h_ref,
+            (np.log(case["h_top"]) - nc.log_h_low) / nc.log_h_span,
+            cooling_path_resistance_fraction_3d(case, nc),
         ],
         dtype=np.float64,
     )
@@ -160,6 +196,7 @@ NODE_FEATURE_NAMES_3D = [
     "g_hotspot_width_x_frac", "g_hotspot_width_z_frac",
     "g_k_die_norm", "g_k_cu_norm", "g_k_sub_norm", "g_k_tim_norm",
     "g_inv_k_tim_norm", "g_inv_h_top_norm",
+    "g_log_h_top_norm", "g_top_path_resistance_fraction",
 ]
 EDGE_FEATURE_NAMES_3D = ["dx_norm", "dy_norm", "dz_norm", "edge_len_norm", "k_eq_norm"]
 

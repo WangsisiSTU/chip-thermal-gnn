@@ -18,6 +18,11 @@ from tqdm import tqdm
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from fem_solver_3d import CaseParams3D, GeometryConfig3D, build_mesh_3d, solve_case_3d
 
+SAMPLING_STREAMS_3D = (
+    "train_id", "val_id", "test_id",
+    "covered_poor_cooling_train", "covered_poor_cooling_val", "covered_poor_cooling_test",
+    "ood_high_power", "ood_poor_tim", "ood_poor_cooling",
+)
 
 def load_config(path: str) -> dict:
     with open(path, "r", encoding="utf-8") as f:
@@ -62,34 +67,103 @@ def sample_ood_case_3d(rng: np.random.Generator, cfg: dict, kind: str) -> CasePa
     return case
 
 
-def build_case_list_3d(cfg: dict, rng: np.random.Generator):
+def _sampling_rngs_3d(seed: int) -> dict[str, np.random.Generator]:
+    """Use one stable random stream per split/regime.
+
+    Changing a training-split count must never change validation or test cases.
+    """
+    return {
+        name: np.random.default_rng(np.random.SeedSequence(seed, spawn_key=(index,)))
+        for index, name in enumerate(SAMPLING_STREAMS_3D)
+    }
+
+
+def _coverage_counts_3d(cfg: dict) -> dict[str, int]:
+    coverage = cfg.get("coverage", {}).get("poor_cooling", {})
+    return {split: int(coverage.get(split, 0)) for split in ("train", "val", "test")}
+
+
+def _ood_counts_3d(cfg: dict) -> dict[str, int]:
+    ood = cfg["ood"]
+    kinds = ("high_power", "poor_tim", "poor_cooling")
+    explicit = ood.get("test_counts")
+    if explicit is not None:
+        unknown = set(explicit) - set(kinds)
+        if unknown:
+            raise ValueError(f"Unknown OOD test-count regimes: {sorted(unknown)}")
+        counts = {kind: int(explicit.get(kind, 0)) for kind in kinds}
+        if any(count < 0 for count in counts.values()):
+            raise ValueError("OOD test counts must be non-negative")
+        return counts
+    n_ood = int(ood["n_ood_test_samples"])
+    if n_ood < 0:
+        raise ValueError("n_ood_test_samples must be non-negative")
+    return {kind: n_ood // len(kinds) + (index < n_ood % len(kinds)) for index, kind in enumerate(kinds)}
+
+
+def sample_covered_poor_cooling_case_3d(rng: np.random.Generator, cfg: dict) -> CaseParams3D:
+    """Sample a low-convection case intentionally included in model coverage."""
+    coverage = cfg.get("coverage", {}).get("poor_cooling", {})
+    if "h_top" not in coverage:
+        raise ValueError("coverage.poor_cooling.h_top is required when its count is positive")
+    case = sample_id_case_3d(rng, cfg)
+    case.h_top = _uniform(rng, coverage["h_top"])
+    case.regime = "covered_poor_cooling"
+    return case
+
+
+def _sampling_rngs_3d(seed: int) -> dict[str, np.random.Generator]:
+    """Use one stable random stream per split/regime.
+
+    Changing a training-split count must never change validation or test cases.
+    """
+    return {
+        name: np.random.default_rng(np.random.SeedSequence(seed, spawn_key=(index,)))
+        for index, name in enumerate(SAMPLING_STREAMS_3D)
+    }
+
+
+def build_case_list_3d(cfg: dict):
     split = cfg["split"]
-    n_ood = cfg["ood"]["n_ood_test_samples"]
-    n_test_id = split["n_test"] - n_ood
-    if n_test_id < 0:
-        raise ValueError("n_ood_test_samples cannot exceed split.n_test")
+    coverage_counts = _coverage_counts_3d(cfg)
+    ood_counts = _ood_counts_3d(cfg)
+    n_id = {
+        "train": int(split["n_train"]) - coverage_counts["train"],
+        "val": int(split["n_val"]) - coverage_counts["val"],
+        "test": int(split["n_test"]) - coverage_counts["test"] - sum(ood_counts.values()),
+    }
+    if any(count < 0 for count in n_id.values()):
+        raise ValueError("Coverage and OOD counts cannot exceed their split sizes")
 
+    rngs = _sampling_rngs_3d(cfg["seed"])
     cases = []
-    for split_name, count in (("train", split["n_train"]), ("val", split["n_val"]), ("test", n_test_id)):
-        cases.extend((split_name, sample_id_case_3d(rng, cfg)) for _ in range(count))
+    for split_name in ("train", "val", "test"):
+        rng = rngs[f"{split_name}_id"]
+        cases.extend((split_name, sample_id_case_3d(rng, cfg)) for _ in range(n_id[split_name]))
 
-    ood_kinds = ["high_power", "poor_tim", "poor_cooling"]
-    counts = [n_ood // 3 + (i < n_ood % 3) for i in range(len(ood_kinds))]
-    for kind, count in zip(ood_kinds, counts):
+        coverage_count = coverage_counts[split_name]
+        if coverage_count:
+            coverage_rng = rngs[f"covered_poor_cooling_{split_name}"]
+            cases.extend(
+                (split_name, sample_covered_poor_cooling_case_3d(coverage_rng, cfg))
+                for _ in range(coverage_count)
+            )
+
+    for kind, count in ood_counts.items():
+        rng = rngs[f"ood_{kind}"]
         cases.extend(("test", sample_ood_case_3d(rng, cfg, kind)) for _ in range(count))
     return cases
 
 
 def generate_dataset_3d(cfg: dict, out_dir: str) -> dict:
     """Generate raw 3D FEM samples and return their metadata."""
-    rng = np.random.default_rng(cfg["seed"])
     geom = GeometryConfig3D.from_dict(cfg["geometry"])
     mesh, basis = build_mesh_3d(geom)
     os.makedirs(out_dir, exist_ok=True)
     np.savez(os.path.join(out_dir, "mesh.npz"), points=mesh.p, tets=mesh.t)
 
     records, solve_times, dT_maxes = [], [], []
-    cases = build_case_list_3d(cfg, rng)
+    cases = build_case_list_3d(cfg)
     started = time.perf_counter()
     for index, (split_name, case) in enumerate(tqdm(cases, desc="3D tetrahedral FEM")):
         result = solve_case_3d(mesh, basis, geom, case)
@@ -123,6 +197,7 @@ def generate_dataset_3d(cfg: dict, out_dir: str) -> dict:
         "dimension": 3,
         "element_type": "tetrahedron_p1",
         "seed": cfg["seed"],
+        "sampling_streams": {"strategy": "independent_seedsequence", "names": list(SAMPLING_STREAMS_3D)},
         "n_nodes": int(mesh.p.shape[1]),
         "n_tets": int(mesh.t.shape[1]),
         "geometry": cfg["geometry"],
@@ -130,6 +205,7 @@ def generate_dataset_3d(cfg: dict, out_dir: str) -> dict:
         "heat_source": cfg["heat_source"],
         "boundary": cfg["boundary"],
         "ood": cfg["ood"],
+        "coverage": cfg.get("coverage", {}),
         "split_counts": {name: sum(r["split"] == name for r in records) for name in ("train", "val", "test")},
         "total_generation_time_s": time.perf_counter() - started,
         "solve_time_stats_s": {

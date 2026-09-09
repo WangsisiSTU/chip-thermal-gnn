@@ -1,4 +1,4 @@
-# CPU-friendly, reproducible 3D baseline configuration.
+# GraphSAGE baseline for the cooling-coverage study.
 seed: 2024
 
 model:
@@ -15,10 +15,10 @@ baseline_model:
 train:
   batch_size: 4
   cpu_num_threads: 4
-  epochs: 120
+  epochs: 150
   lr: 1.0e-3
   weight_decay: 1.0e-5
-  patience: 25
+  patience: 30
   peak_loss_weight: 0.1
   peak_loss_type: global_max
   loss_type: per_sample_rel

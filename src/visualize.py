@@ -30,8 +30,8 @@ import pandas as pd
 import torch
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from evaluate import load_model_from_ckpt
-from utils import get_device, load_json, load_processed_metadata, load_split, load_yaml
+from evaluate import checkpoint_normalization, load_model_from_ckpt
+from utils import get_device, load_json, load_processed_metadata, load_split, load_yaml, validate_data_contract
 
 MODEL_LABELS = {"meshgraphnet": "MeshGraphNet", "baseline": "GraphSAGE基线"}
 
@@ -69,8 +69,6 @@ def pick_showcase_samples(test_set, test_info):
 def fig_field_triptych(fig_dir, data_dir, ckpt_dir, sample_indices=None):
     device = get_device()
     proc_meta = load_processed_metadata(data_dir)
-    dT_mean = torch.tensor(proc_meta["dT_train_mean"], dtype=torch.float32, device=device)
-    dT_std = torch.tensor(proc_meta["dT_train_std"], dtype=torch.float32, device=device)
     test_set = load_split(data_dir, "test")
     test_info = load_json(os.path.join(data_dir, "test_info.json"))
 
@@ -82,7 +80,9 @@ def fig_field_triptych(fig_dir, data_dir, ckpt_dir, sample_indices=None):
         if not os.path.exists(ckpt_path):
             print(f"[跳过] 未找到 {ckpt_path}")
             continue
-        model, _ = load_model_from_ckpt(ckpt_path, device)
+        model, checkpoint = load_model_from_ckpt(ckpt_path, device)
+        validate_data_contract(checkpoint, proc_meta)
+        dT_mean, dT_std = checkpoint_normalization(checkpoint, device)
 
         for idx in sample_indices:
             data = test_set[idx]
@@ -131,8 +131,6 @@ def fig_field_triptych(fig_dir, data_dir, ckpt_dir, sample_indices=None):
 def fig_peak_scatter(fig_dir, data_dir, ckpt_dir):
     device = get_device()
     proc_meta = load_processed_metadata(data_dir)
-    dT_mean = torch.tensor(proc_meta["dT_train_mean"], dtype=torch.float32, device=device)
-    dT_std = torch.tensor(proc_meta["dT_train_std"], dtype=torch.float32, device=device)
     test_set = load_split(data_dir, "test")
     test_info = load_json(os.path.join(data_dir, "test_info.json"))
 
@@ -142,7 +140,9 @@ def fig_peak_scatter(fig_dir, data_dir, ckpt_dir):
         if not os.path.exists(ckpt_path):
             print(f"[跳过] 未找到 {ckpt_path}")
             continue
-        model, _ = load_model_from_ckpt(ckpt_path, device)
+        model, checkpoint = load_model_from_ckpt(ckpt_path, device)
+        validate_data_contract(checkpoint, proc_meta)
+        dT_mean, dT_std = checkpoint_normalization(checkpoint, device)
 
         peaks_true, peaks_pred, regimes = [], [], []
         for i, data in enumerate(test_set):

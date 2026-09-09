@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 import os
 import random
+import warnings
 
 import numpy as np
 import torch
@@ -42,3 +43,40 @@ def load_split(data_dir: str, split: str):
 
 def load_processed_metadata(data_dir: str) -> dict:
     return load_json(os.path.join(data_dir, "metadata.json"))
+
+
+def build_data_contract(metadata: dict) -> dict:
+    """Return the feature and normalization contract required by a checkpoint."""
+    required = (
+        "node_feature_dim",
+        "edge_feature_dim",
+        "node_feature_names",
+        "edge_feature_names",
+        "norm_consts",
+        "dT_train_mean",
+        "dT_train_std",
+    )
+    missing = [key for key in required if key not in metadata]
+    if missing:
+        raise ValueError(f"Processed metadata is missing contract fields: {missing}")
+    return {key: metadata[key] for key in required} | {"dimension": metadata.get("dimension")}
+
+
+def validate_data_contract(checkpoint: dict, metadata: dict) -> None:
+    """Reject evaluation data whose feature semantics differ from training data."""
+    trained = checkpoint.get("data_contract")
+    if trained is None:
+        warnings.warn(
+            "Checkpoint has no data contract; only input dimensions can be verified.",
+            RuntimeWarning,
+            stacklevel=2,
+        )
+        expected = (checkpoint["node_in_dim"], checkpoint["edge_in_dim"])
+        actual = (metadata["node_feature_dim"], metadata["edge_feature_dim"])
+        if actual != expected:
+            raise ValueError(f"Checkpoint expects node/edge dimensions {expected}, dataset has {actual}")
+        return
+    actual = build_data_contract(metadata)
+    mismatches = [key for key in trained if trained[key] != actual.get(key)]
+    if mismatches:
+        raise ValueError(f"Dataset is incompatible with checkpoint; mismatched contract fields: {mismatches}")

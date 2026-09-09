@@ -6,6 +6,7 @@ from graph_dataset_3d import (
     build_edge_features_3d,
     build_edge_index_from_tets,
     build_node_features_3d,
+    cooling_path_resistance_fraction_3d,
 )
 
 
@@ -53,13 +54,48 @@ def test_3d_node_and_edge_feature_shapes():
     is_top = np.array([False, False, False, True])
     is_bottom = np.array([True, False, False, False])
     x = build_node_features_3d(points, material_id, q_node, h_node, is_top, is_bottom, fake_case_3d(), nc)
-    assert x.shape == (4, 24)
+    assert x.shape == (4, 26)
     assert x.dtype == np.float32
     assert np.allclose(x[:, 3:7].sum(axis=1), 1.0)
     assert np.allclose(x[:, 12:], x[0, 12:])
+    assert np.all((x[:, 24] >= 0.0) & (x[:, 24] <= 1.0))
+    assert np.all((x[:, 25] > 0.0) & (x[:, 25] < 1.0))
 
     edge_index = build_edge_index_from_tets(np.array([[0], [1], [2], [3]]))
     edge_attr = build_edge_features_3d(points, edge_index, material_id, fake_case_3d(), nc)
     assert edge_attr.shape == (12, 5)
     assert np.all(edge_attr[:, 3] > 0)
     assert np.all(edge_attr[:, 4] > 0)
+
+
+def test_shared_tetrahedron_edges_match_reference():
+    rng = np.random.default_rng(42)
+    tets = np.column_stack([rng.choice(40, 4, replace=False) for _ in range(100)])
+    expected = sorted({(int(a), int(b)) for tet in tets.T for a in tet for b in tet if a != b})
+    actual = build_edge_index_from_tets(tets)
+    np.testing.assert_array_equal(actual, np.asarray(expected).T)
+    np.testing.assert_array_equal(actual, build_edge_index_from_tets(tets[::-1, ::-1]))
+    assert actual.dtype == np.int64
+
+
+def test_empty_tetrahedron_edges():
+    edges = build_edge_index_from_tets(np.empty((4, 0), dtype=np.int64))
+    assert edges.shape == (2, 0)
+    assert edges.dtype == np.int64
+
+
+def test_invalid_tetrahedron_indices():
+    import pytest
+    for tets in (np.zeros((3, 1), dtype=int), np.zeros((4, 1)), -np.ones((4, 1), dtype=int)):
+        with pytest.raises(ValueError):
+            build_edge_index_from_tets(tets)
+
+
+def test_cooling_path_feature_increases_when_top_convection_worsens():
+    nc = NormConsts3D(fake_raw_meta_3d())
+    well_cooled = fake_case_3d()
+    poorly_cooled = fake_case_3d()
+    well_cooled["h_top"] = 12000.0
+    poorly_cooled["h_top"] = 150.0
+
+    assert cooling_path_resistance_fraction_3d(poorly_cooled, nc) > cooling_path_resistance_fraction_3d(well_cooled, nc)
