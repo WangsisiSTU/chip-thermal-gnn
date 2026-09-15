@@ -1,7 +1,8 @@
 """
 模型定义：
     1. MeshGraphNet 风格的 Encode-Process-Decode 消息传递网络（主模型）。
-    2. 简洁基线模型：4 层 GCNConv 或 GraphSAGE。
+    2. MeshGraphNet + lightweight physics-state attention hybrid.
+    3. 简洁基线模型：4 层 GCNConv 或 GraphSAGE。
 
 两种模型均以节点/边特征为输入，输出每个节点的（标准化）温升预测值。
 """
@@ -11,6 +12,7 @@ from typing import Literal
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from torch_geometric.nn import GCNConv, SAGEConv
 from torch_geometric.utils import scatter
 
@@ -83,6 +85,109 @@ class MeshGraphNet(nn.Module):
         return out
 
 
+class PhysicsStateAttention(nn.Module):
+    """Per-graph slice/attend/deslice on irregular meshes, without node padding.
+
+    The learnable slices approximate physical states; attention is computed on
+    the small state set rather than on all mesh nodes. Graph IDs keep samples
+    independent even when their node counts differ within a PyG batch.
+    """
+
+    def __init__(self, hidden_dim: int, heads: int, slices: int, dropout: float = 0.0):
+        super().__init__()
+        if heads < 1 or slices < 1 or hidden_dim % heads:
+            raise ValueError("heads and slices must be positive and hidden_dim divisible by heads")
+        self.heads = heads
+        self.slices = slices
+        self.head_dim = hidden_dim // heads
+        self.state_values = nn.Linear(hidden_dim, hidden_dim)
+        self.slice_logits = nn.Linear(hidden_dim, heads * slices)
+        self.temperature = nn.Parameter(torch.tensor(0.5))
+        self.qkv = nn.Linear(hidden_dim, 3 * hidden_dim)
+        self.output = nn.Linear(hidden_dim, hidden_dim)
+        self.dropout = nn.Dropout(dropout)
+
+    def forward(self, x: torch.Tensor, graph_id: torch.Tensor, node_weight: torch.Tensor | None = None):
+        n_nodes, hidden_dim = x.shape
+        n_graphs = int(graph_id.max().item()) + 1
+        weights = F.softmax(
+            self.slice_logits(x).view(n_nodes, self.heads, self.slices)
+            / (F.softplus(self.temperature) + 1e-4), dim=-1,
+        )
+        if node_weight is not None:
+            if node_weight.numel() != n_nodes or torch.any(node_weight <= 0):
+                raise ValueError("node_weight must be positive and have one value per node")
+            weights_for_states = weights * node_weight.reshape(-1, 1, 1)
+        else:
+            weights_for_states = weights
+        values = self.state_values(x).view(n_nodes, self.heads, self.head_dim)
+        state_sum = scatter(
+            weights_for_states.unsqueeze(-1) * values.unsqueeze(2), graph_id,
+            dim=0, dim_size=n_graphs, reduce="sum",
+        )
+        state_mass = scatter(weights_for_states, graph_id, dim=0, dim_size=n_graphs, reduce="sum")
+        states = state_sum / state_mass.clamp_min(1e-8).unsqueeze(-1)
+        states = states.permute(0, 2, 1, 3).reshape(n_graphs, self.slices, hidden_dim)
+        qkv = self.qkv(states).reshape(n_graphs, self.slices, 3, self.heads, self.head_dim)
+        q, k, v = (qkv[:, :, i].transpose(1, 2) for i in range(3))
+        state_out = F.scaled_dot_product_attention(q, k, v, dropout_p=self.dropout.p if self.training else 0.0)
+        state_out = state_out.transpose(1, 2).reshape(n_graphs, self.slices, hidden_dim)
+        state_out = state_out.view(n_graphs, self.slices, self.heads, self.head_dim).permute(0, 2, 1, 3)
+        node_out = (weights.unsqueeze(-1) * state_out[graph_id]).sum(dim=2)
+        return self.dropout(self.output(node_out.reshape(n_nodes, hidden_dim)))
+
+
+class PhysicsStateBlock(nn.Module):
+    def __init__(self, hidden_dim: int, heads: int, slices: int, dropout: float):
+        super().__init__()
+        self.attn_norm = nn.LayerNorm(hidden_dim)
+        self.attn = PhysicsStateAttention(hidden_dim, heads, slices, dropout)
+        self.ffn_norm = nn.LayerNorm(hidden_dim)
+        self.ffn = nn.Sequential(
+            nn.Linear(hidden_dim, 2 * hidden_dim), nn.GELU(), nn.Dropout(dropout),
+            nn.Linear(2 * hidden_dim, hidden_dim), nn.Dropout(dropout),
+        )
+
+    def forward(self, x: torch.Tensor, graph_id: torch.Tensor, node_weight: torch.Tensor | None = None):
+        x = x + self.attn(self.attn_norm(x), graph_id, node_weight)
+        return x + self.ffn(self.ffn_norm(x))
+
+
+class MGNTransolverHybrid(nn.Module):
+    """Local mesh messages followed by global physics-state interactions."""
+
+    def __init__(self, node_in_dim: int, edge_in_dim: int, hidden_dim: int = 128,
+                 n_message_passing_steps: int = 3, attention_blocks: int = 2,
+                 attention_heads: int = 4, attention_slices: int = 32, dropout: float = 0.03):
+        super().__init__()
+        if n_message_passing_steps < 1 or attention_blocks < 1:
+            raise ValueError("hybrid requires at least one mesh and attention block")
+        self.node_encoder = MLP(node_in_dim, hidden_dim, hidden_dim, dropout=0.0)
+        self.edge_encoder = MLP(edge_in_dim, hidden_dim, hidden_dim, dropout=0.0)
+        self.processor = nn.ModuleList([
+            ProcessorLayer(hidden_dim, dropout) for _ in range(n_message_passing_steps)
+        ])
+        self.global_blocks = nn.ModuleList([
+            PhysicsStateBlock(hidden_dim, attention_heads, attention_slices, dropout)
+            for _ in range(attention_blocks)
+        ])
+        self.decoder = nn.Sequential(nn.LayerNorm(hidden_dim), nn.Linear(hidden_dim, hidden_dim),
+                                     nn.GELU(), nn.Linear(hidden_dim, 1))
+
+    def forward(self, data) -> torch.Tensor:
+        x = self.node_encoder(data.x)
+        e = self.edge_encoder(data.edge_attr)
+        for layer in self.processor:
+            x, e = layer(x, data.edge_index, e)
+        graph_id = getattr(data, "batch", None)
+        if graph_id is None:
+            graph_id = torch.zeros(x.size(0), dtype=torch.long, device=x.device)
+        node_weight = getattr(data, "node_volume", None)
+        for block in self.global_blocks:
+            x = block(x, graph_id, node_weight)
+        return self.decoder(x).squeeze(-1)
+
+
 class BaselineGNN(nn.Module):
     """简洁基线：4 层 GCNConv 或 GraphSAGE（不使用边特征，仅利用图结构与节点特征）。"""
 
@@ -129,6 +234,17 @@ def build_model(name: str, node_in_dim: int, edge_in_dim: int, cfg: dict) -> nn.
             n_layers=bcfg["n_layers"],
             dropout=bcfg["dropout"],
             conv_type=bcfg["type"],
+        )
+    elif name == "mgn_transolver":
+        hcfg = cfg["hybrid_model"]
+        return MGNTransolverHybrid(
+            node_in_dim=node_in_dim, edge_in_dim=edge_in_dim,
+            hidden_dim=hcfg["hidden_dim"],
+            n_message_passing_steps=hcfg["n_message_passing_steps"],
+            attention_blocks=hcfg["attention_blocks"],
+            attention_heads=hcfg["attention_heads"],
+            attention_slices=hcfg["attention_slices"],
+            dropout=hcfg["dropout"],
         )
     else:
         raise ValueError(f"未知模型名称: {name}")

@@ -3,7 +3,7 @@ import torch
 from torch_geometric.data import Data
 from torch_geometric.loader import DataLoader
 
-from train import peak_loss_fn, run_epoch
+from train import field_loss_fn, peak_loss_fn, run_epoch
 from evaluate import checkpoint_normalization, evaluate_model
 from utils import build_data_contract, validate_data_contract
 
@@ -67,6 +67,15 @@ def test_data_contract_rejects_semantic_feature_mismatch():
         validate_data_contract(checkpoint, metadata)
 
 
+def test_data_contract_rejects_missing_mesh_integration_weights():
+    metadata = _metadata_contract() | {"node_volume_weighting": True}
+    checkpoint = {"node_in_dim": 24, "edge_in_dim": 5, "data_contract": build_data_contract(metadata)}
+    validate_data_contract(checkpoint, metadata)
+    metadata["node_volume_weighting"] = False
+    with pytest.raises(ValueError, match="node_volume_weighting"):
+        validate_data_contract(checkpoint, metadata)
+
+
 def test_legacy_checkpoint_checks_dimensions_and_warns():
     metadata = _metadata_contract()
     checkpoint = {"node_in_dim": 24, "edge_in_dim": 5}
@@ -82,6 +91,16 @@ def test_global_peak_loss_penalizes_spurious_hotspots():
     truth = torch.tensor([3.0, 1.0])
     assert peak_loss_fn(prediction, truth, 1, "true_peak_node").item() == pytest.approx(1.0)
     assert peak_loss_fn(prediction, truth, 1, "global_max").item() == pytest.approx(49.0)
+
+
+def test_variable_node_counts_use_per_graph_losses():
+    truth = torch.tensor([0., 1., 0., 1., 2.])
+    prediction = torch.tensor([0., 2., 0., 2., 2.])
+    graph_id = torch.tensor([0, 0, 1, 1, 1])
+    assert field_loss_fn(prediction, truth, 2, "zscore_mse", graph_id).item() == pytest.approx((0.5 + 1 / 3) / 2)
+    assert peak_loss_fn(prediction, truth, 2, "global_max", graph_id).item() == pytest.approx(0.5)
+    assert peak_loss_fn(prediction, truth, 2, "true_peak_node", graph_id).item() == pytest.approx(0.5)
+    assert torch.isfinite(field_loss_fn(prediction, truth, 2, "per_sample_rel", graph_id))
 
 
 def test_unknown_peak_loss_type_is_rejected():

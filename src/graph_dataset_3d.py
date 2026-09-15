@@ -50,6 +50,19 @@ def build_edge_index_from_tets(tets: np.ndarray) -> np.ndarray:
     return directed[keep].T
 
 
+def lumped_node_volumes(points: np.ndarray, tets: np.ndarray) -> np.ndarray:
+    """P1 mass-lumped integration weights; normalize to mean one."""
+    vertices = points[:, tets].transpose(2, 1, 0)
+    edges = vertices[:, 1:] - vertices[:, :1]
+    tet_volumes = np.abs(np.linalg.det(edges)) / 6.0
+    weights = np.zeros(points.shape[1], dtype=np.float64)
+    for corner in tets:
+        np.add.at(weights, corner, tet_volumes / 4.0)
+    if np.any(weights <= 0):
+        raise ValueError("tetrahedral mesh contains a node with zero lumped volume")
+    return (weights / weights.mean()).astype(np.float32)
+
+
 
 def k_by_material(material_id: np.ndarray, case: dict) -> np.ndarray:
     return np.asarray([case["k_sub"], case["k_cu"], case["k_tim"], case["k_die"]], dtype=np.float64)[material_id]
@@ -213,6 +226,7 @@ def build_dataset_3d(raw_dir: str, out_dir: str) -> dict:
     nc = NormConsts3D(raw_meta)
     edge_index_np = build_edge_index_from_tets(tets)
     edge_index_t = torch.from_numpy(edge_index_np)
+    node_volume_t = torch.from_numpy(lumped_node_volumes(points, tets))
     split_data = {name: [] for name in ("train", "val", "test")}
     split_info = {name: [] for name in ("train", "val", "test")}
     train_dT = []
@@ -231,6 +245,7 @@ def build_dataset_3d(raw_dir: str, out_dir: str) -> dict:
             edge_attr=torch.from_numpy(edge_attr),
             y=torch.from_numpy(dT),
             pos=torch.from_numpy(points.T.astype(np.float32)),
+            node_volume=node_volume_t,
         )
         data.t_ambient = torch.tensor([case["t_ambient"]], dtype=torch.float32)
         data.dT_max_true = torch.tensor([float(dT.max())], dtype=torch.float32)
@@ -256,6 +271,7 @@ def build_dataset_3d(raw_dir: str, out_dir: str) -> dict:
         "edge_feature_dim": len(EDGE_FEATURE_NAMES_3D),
         "node_feature_names": NODE_FEATURE_NAMES_3D,
         "edge_feature_names": EDGE_FEATURE_NAMES_3D,
+        "node_volume_weighting": True,
         "norm_consts": nc.to_dict(),
         "dT_train_mean": float(dT_train.mean()),
         "dT_train_std": float(dT_train.std()),

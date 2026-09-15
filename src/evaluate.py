@@ -186,7 +186,7 @@ def main():
     parser.add_argument("--timing_repeats", type=int, default=5, help="warmed forward passes per single-sample timing")
     parser.add_argument("--benchmark_batch_size", type=int, default=4, help="graphs per warmed throughput batch")
     parser.add_argument(
-        "--models", nargs="+", choices=["meshgraphnet", "baseline"], default=["meshgraphnet", "baseline"],
+        "--models", nargs="+", choices=["meshgraphnet", "baseline", "mgn_transolver"], default=["meshgraphnet", "baseline"],
         help="models to evaluate; use one name for a focused timing run",
     )
     args = parser.parse_args()
@@ -210,7 +210,8 @@ def main():
     metrics_dir = os.path.join(args.out_dir, "metrics")
     os.makedirs(metrics_dir, exist_ok=True)
 
-    model_files = {"meshgraphnet": "meshgraphnet_best.pt", "baseline": "baseline_best.pt"}
+    model_files = {"meshgraphnet": "meshgraphnet_best.pt", "baseline": "baseline_best.pt",
+                   "mgn_transolver": "mgn_transolver_best.pt"}
     comparison_rows = []
 
     for model_name in args.models:

@@ -1,0 +1,24 @@
+# First MGN + lightweight physics-state attention path on the 3D cooling study.
+seed: 2024
+
+hybrid_model:
+  hidden_dim: 128
+  n_message_passing_steps: 3
+  attention_blocks: 2
+  attention_heads: 4
+  attention_slices: 32
+  dropout: 0.03
+
+train:
+  batch_size: 2
+  cpu_num_threads: 4
+  epochs: 150
+  lr: 1.0e-3
+  weight_decay: 1.0e-5
+  patience: 30
+  peak_loss_weight: 0.1
+  peak_loss_type: global_max
+  loss_type: per_sample_rel
+  lr_scheduler_factor: 0.5
+  lr_scheduler_patience: 10
+  grad_clip_norm: 1.0

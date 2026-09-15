@@ -21,17 +21,21 @@ import torch
 import torch.nn as nn
 import psutil
 from torch_geometric.loader import DataLoader
+from torch_geometric.utils import scatter
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from models import build_model
 from utils import build_data_contract, get_device, load_processed_metadata, load_split, load_yaml, set_seed
 
 
-def _reshape_per_graph(pred_norm: torch.Tensor, true_norm: torch.Tensor, num_graphs: int):
-    n_total = pred_norm.shape[0]
-    assert n_total % num_graphs == 0, "要求每个样本节点数相同（本项目所有样本共用同一网格）"
-    n_per_graph = n_total // num_graphs
-    return pred_norm.view(num_graphs, n_per_graph), true_norm.view(num_graphs, n_per_graph)
+def _graph_ids(values: torch.Tensor, num_graphs: int, batch: torch.Tensor | None) -> torch.Tensor:
+    if batch is not None:
+        if batch.numel() != values.numel():
+            raise ValueError("batch must contain one graph id per node")
+        return batch
+    if num_graphs < 1 or values.numel() % num_graphs:
+        raise ValueError("without batch, every graph must have the same number of nodes")
+    return torch.arange(num_graphs, device=values.device).repeat_interleave(values.numel() // num_graphs)
 
 
 def peak_loss_fn(
@@ -39,6 +43,7 @@ def peak_loss_fn(
     true_norm: torch.Tensor,
     num_graphs: int,
     peak_loss_type: str = "true_peak_node",
+    batch: torch.Tensor | None = None,
 ) -> torch.Tensor:
     """Compare per-graph peak temperatures in normalized space.
 
@@ -46,34 +51,39 @@ def peak_loss_fn(
     ``global_max`` also penalizes spurious predicted hot spots and matches the
     peak metric reported by evaluation.
     """
-    pred_r, true_r = _reshape_per_graph(pred_norm, true_norm, num_graphs)
+    graph_id = _graph_ids(pred_norm, num_graphs, batch)
     if peak_loss_type == "true_peak_node":
-        peak_idx = true_r.argmax(dim=1)
-        rows = torch.arange(num_graphs, device=pred_norm.device)
-        pred_peak = pred_r[rows, peak_idx]
-        true_peak = true_r[rows, peak_idx]
+        # Small graph batch: exact argmax node, preserving the historical loss.
+        peak_indices = torch.stack([true_norm.masked_fill(graph_id != i, float("-inf")).argmax()
+                                    for i in range(num_graphs)])
+        pred_peak = pred_norm[peak_indices]
+        true_peak = true_norm[peak_indices]
     elif peak_loss_type == "global_max":
-        pred_peak = pred_r.max(dim=1).values
-        true_peak = true_r.max(dim=1).values
+        pred_peak = scatter(pred_norm, graph_id, dim=0, dim_size=num_graphs, reduce="max")
+        true_peak = scatter(true_norm, graph_id, dim=0, dim_size=num_graphs, reduce="max")
     else:
         raise ValueError(f"Unknown peak loss type: {peak_loss_type}")
     return torch.mean((pred_peak - true_peak) ** 2)
 
 
-def field_loss_fn(pred_norm: torch.Tensor, true_norm: torch.Tensor, num_graphs: int, loss_type: str) -> torch.Tensor:
+def field_loss_fn(pred_norm: torch.Tensor, true_norm: torch.Tensor, num_graphs: int,
+                  loss_type: str, batch: torch.Tensor | None = None) -> torch.Tensor:
     """温度场主损失（标准化空间）。
 
     zscore_mse:      全局标准化温升的逐节点 MSE。
     per_sample_rel:  在标准化温升基础上，将每个样本的误差平方和再除以该样本自身的
                      信号能量（约等于逐样本相对 L2 误差的平方），避免大温升样本主导损失。
     """
+    graph_id = _graph_ids(pred_norm, num_graphs, batch)
+    counts = scatter(torch.ones_like(true_norm), graph_id, dim=0, dim_size=num_graphs, reduce="sum")
+    error = scatter((pred_norm - true_norm) ** 2, graph_id, dim=0, dim_size=num_graphs, reduce="sum")
     if loss_type == "zscore_mse":
-        return torch.nn.functional.mse_loss(pred_norm, true_norm)
+        return torch.mean(error / counts)
     elif loss_type == "per_sample_rel":
-        pred_r, true_r = _reshape_per_graph(pred_norm, true_norm, num_graphs)
-        err_energy = torch.sum((pred_r - true_r) ** 2, dim=1)
-        signal_energy = torch.sum((true_r - true_r.mean(dim=1, keepdim=True)) ** 2, dim=1)
-        return torch.mean(err_energy / (signal_energy + 1e-4))
+        graph_means = scatter(true_norm, graph_id, dim=0, dim_size=num_graphs, reduce="sum") / counts
+        signal = scatter((true_norm - graph_means[graph_id]) ** 2,
+                         graph_id, dim=0, dim_size=num_graphs, reduce="sum")
+        return torch.mean(error / (signal + 1e-4))
     else:
         raise ValueError(f"未知损失类型: {loss_type}")
 
@@ -88,8 +98,8 @@ def run_epoch(model, loader, device, dT_mean, dT_std, peak_weight, loss_type, pe
         y_norm = (batch.y - dT_mean) / dT_std
         with torch.set_grad_enabled(is_train):
             pred_norm = model(batch)
-            field = field_loss_fn(pred_norm, y_norm, batch.num_graphs, loss_type)
-            pk = peak_loss_fn(pred_norm, y_norm, batch.num_graphs, peak_loss_type)
+            field = field_loss_fn(pred_norm, y_norm, batch.num_graphs, loss_type, batch.batch)
+            pk = peak_loss_fn(pred_norm, y_norm, batch.num_graphs, peak_loss_type, batch.batch)
             loss = field + peak_weight * pk
             if is_train:
                 optimizer.zero_grad()
@@ -106,7 +116,7 @@ def run_epoch(model, loader, device, dT_mean, dT_std, peak_weight, loss_type, pe
 
 def main():
     parser = argparse.ArgumentParser(description="训练芯片封装温度场图神经网络代理模型")
-    parser.add_argument("--model", type=str, choices=["meshgraphnet", "baseline"], required=True)
+    parser.add_argument("--model", type=str, choices=["meshgraphnet", "baseline", "mgn_transolver"], required=True)
     parser.add_argument("--data_dir", type=str, default="data/processed")
     parser.add_argument("--config", type=str, default="configs/train_config.yaml")
     parser.add_argument("--out_dir", type=str, default="outputs")

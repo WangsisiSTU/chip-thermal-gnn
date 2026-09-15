@@ -59,7 +59,10 @@ def build_data_contract(metadata: dict) -> dict:
     missing = [key for key in required if key not in metadata]
     if missing:
         raise ValueError(f"Processed metadata is missing contract fields: {missing}")
-    return {key: metadata[key] for key in required} | {"dimension": metadata.get("dimension")}
+    return {key: metadata[key] for key in required} | {
+        "dimension": metadata.get("dimension"),
+        "node_volume_weighting": metadata.get("node_volume_weighting", False),
+    }
 
 
 def validate_data_contract(checkpoint: dict, metadata: dict) -> None:

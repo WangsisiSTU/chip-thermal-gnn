@@ -4,6 +4,8 @@
 
 项目覆盖完整闭环：**工况采样 → FEM 求解 → 网格转图 → GNN 训练 → 精度、速度与 OOD 评估 → 切面可视化**。数据均由 `scikit-fem` 实际求解生成，不依赖商业热仿真软件。
 
+MGN + 轻量 Physics-Attention 的实验路径已接入训练和评估。局部 MeshGraphNet 处理四面体网格边，随后按每张图将节点聚合为 32 个可学习物理状态，状态间做全局注意力并映射回节点。PyG 批次可包含不同节点数的图；新构建的三维图还保存归一化节点控制体积作为状态聚合权重。该模型尚未完成跨网格训练与精度评估。
+
 ## 当前状态
 
 | 流程 | 状态 | 推荐用途 |
@@ -89,6 +91,17 @@ python src/evaluate.py `
 
 # 5. FEM、图数据和训练工具测试
 python -m pytest tests -q
+
+# 实验模型：使用同一份数据协议，输出到独立目录
+python src/train.py --model mgn_transolver `
+  --data_dir data/processed_3d_cooling_coverage `
+  --config configs/train_config_3d_mgn_transolver.yaml `
+  --out_dir outputs/3d/mgn_transolver --cpu_threads 4
+python src/evaluate.py `
+  --data_dir data/processed_3d_cooling_coverage `
+  --ckpt_dir outputs/3d/mgn_transolver/checkpoints `
+  --out_dir outputs/3d/mgn_transolver --models mgn_transolver `
+  --cpu_threads 4 --timing_repeats 3 --benchmark_batch_size 2
 ```
 
 数据、checkpoint 和重复评估输出默认不纳入 Git；配置、测试和机器可读的实验协议会被版本控制。

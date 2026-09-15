@@ -7,7 +7,19 @@ from graph_dataset_3d import (
     build_edge_index_from_tets,
     build_node_features_3d,
     cooling_path_resistance_fraction_3d,
+    lumped_node_volumes,
 )
+
+
+def test_lumped_volume_tracks_irregular_tetrahedral_node_density():
+    points = np.array([[0., 1., 0., 0., 0.],
+                       [0., 0., 1., 0., 0.],
+                       [0., 0., 0., 1., 2.]])
+    tets = np.array([[0, 0], [1, 1], [2, 2], [3, 4]])
+    weights = lumped_node_volumes(points, tets)
+    assert weights.shape == (5,)
+    assert weights.mean() == np.float32(1.)
+    assert weights[4] == 2 * weights[3]
 
 
 def fake_raw_meta_3d():
