@@ -1,0 +1,14 @@
+{
+  "model": "mgn_transolver",
+  "loss_type": "per_sample_rel",
+  "peak_loss_type": "global_max",
+  "n_params": 732803,
+  "best_epoch": 64,
+  "best_val_loss": 0.09183128084987402,
+  "total_epochs_run": 80,
+  "total_train_time_s": 183.9778726999648,
+  "seed": 2024,
+  "runtime_device": "cuda",
+  "process_rss_MiB": 1266.69921875,
+  "cuda_peak_memory_MiB": 725.9306640625
+}

@@ -1,0 +1,23 @@
+{
+  "model": "mgn_transolver",
+  "loss_type": "per_sample_rel",
+  "peak_loss_type": "global_max",
+  "gradient_loss_weight": 0.05,
+  "energy_residual_weight": 0.02,
+  "interface_flux_weight": 0.02,
+  "n_params": 142755,
+  "best_epoch": 55,
+  "best_val_loss": 0.05998482462018728,
+  "total_epochs_run": 60,
+  "total_train_time_s": 342.8219800000079,
+  "seed": 2024,
+  "train_mesh_dirs": [
+    "data/processed_3d_fem_operator_medium",
+    "data/processed_3d_fem_operator_coarse",
+    "data/processed_3d_fem_operator_fine"
+  ],
+  "n_train_graphs": 288,
+  "runtime_device": "cuda",
+  "process_rss_MiB": 1632.88671875,
+  "cuda_peak_memory_MiB": 478.71826171875
+}

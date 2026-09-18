@@ -4,9 +4,17 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
+.pytest_tmp*/
+.pytest_run*/
+.codex_ppt_build/
 
-# Reproducible-but-large generated datasets (regenerate with the documented commands)
-data/
+# Reproducible-but-large generated datasets (regenerate with the documented commands).
+# Keep the small ATPlace geometry manifests required by the public configs.
+data/*
+!data/atplace_layouts/
+!data/atplace_layouts/*.json
+!data/atplace_import/
+!data/atplace_import/*.json
 
 # Third-party repositories and downloaded reference artifacts are cited in the report,
 # rather than duplicated inside this project repository.
@@ -15,6 +23,7 @@ external/
 # Model checkpoints and repeated benchmark outputs
 outputs/checkpoints/
 outputs/3d/checkpoints/
+outputs/3d/mgn_transolver_benchmark/checkpoints/
 outputs/3d/benchmark*/
 outputs/*_train_log.txt
 outputs/3d/*_train*.log

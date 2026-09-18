@@ -1,0 +1,31 @@
+# Same split, objective, optimizer and training budget for all three models.
+seed: 2024
+model:
+  hidden_dim: 64
+  n_message_passing_steps: 2
+  dropout: 0.03
+baseline_model:
+  type: sage
+  hidden_dim: 64
+  n_layers: 3
+  dropout: 0.03
+hybrid_model:
+  hidden_dim: 128
+  n_message_passing_steps: 3
+  attention_blocks: 2
+  attention_heads: 4
+  attention_slices: 32
+  dropout: 0.03
+train:
+  batch_size: 2
+  cpu_num_threads: 4
+  epochs: 80
+  lr: 1.0e-3
+  weight_decay: 1.0e-5
+  patience: 20
+  peak_loss_weight: 0.1
+  peak_loss_type: global_max
+  loss_type: per_sample_rel
+  lr_scheduler_factor: 0.5
+  lr_scheduler_patience: 8
+  grad_clip_norm: 1.0

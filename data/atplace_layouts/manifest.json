@@ -1,0 +1,52 @@
+[
+  {
+    "case_id": "Case1",
+    "status": "geometry_validated",
+    "ready_for_fem": false
+  },
+  {
+    "case_id": "Case2",
+    "status": "packing_not_found",
+    "reason": "No legal packing found for Case2; no dimensions were changed"
+  },
+  {
+    "case_id": "Case3",
+    "status": "geometry_validated",
+    "ready_for_fem": false
+  },
+  {
+    "case_id": "Case4",
+    "status": "packing_not_found",
+    "reason": "No legal packing found for Case4; no dimensions were changed"
+  },
+  {
+    "case_id": "Case5",
+    "status": "geometry_validated",
+    "ready_for_fem": false
+  },
+  {
+    "case_id": "Case6",
+    "status": "geometry_validated",
+    "ready_for_fem": false
+  },
+  {
+    "case_id": "Case7",
+    "status": "geometry_validated",
+    "ready_for_fem": false
+  },
+  {
+    "case_id": "Case8",
+    "status": "geometry_validated",
+    "ready_for_fem": false
+  },
+  {
+    "case_id": "Case9",
+    "status": "geometry_validated",
+    "ready_for_fem": false
+  },
+  {
+    "case_id": "Case10",
+    "status": "geometry_validated",
+    "ready_for_fem": false
+  }
+]

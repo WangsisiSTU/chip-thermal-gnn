@@ -62,24 +62,63 @@ def build_data_contract(metadata: dict) -> dict:
     return {key: metadata[key] for key in required} | {
         "dimension": metadata.get("dimension"),
         "node_volume_weighting": metadata.get("node_volume_weighting", False),
+        "heat_source_projection": metadata.get("heat_source_projection", "point_sampled"),
+        "tetra_gradient_geometry": metadata.get("tetra_gradient_geometry", "none"),
+        "discrete_operator": metadata.get("discrete_operator", "none"),
+        "material_interface_flux": metadata.get("material_interface_flux", "none"),
     }
 
 
-def validate_data_contract(checkpoint: dict, metadata: dict) -> None:
+def attach_data_contract(checkpoint: dict, metadata: dict) -> dict:
+    """Return a checkpoint with a verified contract attached.
+
+    Migration is allowed only when dimensions and stored output normalization
+    match the supplied training metadata.  This prevents a current dataset
+    contract from being stamped onto an unrelated legacy checkpoint.
+    """
+    expected = (checkpoint.get("node_in_dim"), checkpoint.get("edge_in_dim"))
+    actual = (metadata.get("node_feature_dim"), metadata.get("edge_feature_dim"))
+    if expected != actual:
+        raise ValueError(f"Checkpoint expects node/edge dimensions {expected}, dataset has {actual}")
+    for checkpoint_key, metadata_key in (("dT_mean", "dT_train_mean"),
+                                         ("dT_std", "dT_train_std")):
+        if checkpoint_key not in checkpoint:
+            raise ValueError(f"Legacy checkpoint is missing {checkpoint_key}")
+        if not np.isclose(float(checkpoint[checkpoint_key]), float(metadata[metadata_key]),
+                          rtol=1e-6, atol=1e-8):
+            raise ValueError(
+                f"Checkpoint {checkpoint_key} does not match training metadata {metadata_key}")
+    migrated = dict(checkpoint)
+    migrated["data_contract"] = build_data_contract(metadata)
+    migrated["data_contract_migration"] = {
+        "version": 1,
+        "method": "verified_dimensions_and_output_normalization",
+    }
+    return migrated
+
+
+def validate_data_contract(checkpoint: dict, metadata: dict, *, allow_output_stats_shift: bool = False) -> None:
     """Reject evaluation data whose feature semantics differ from training data."""
     trained = checkpoint.get("data_contract")
     if trained is None:
+        expected = (checkpoint["node_in_dim"], checkpoint["edge_in_dim"])
+        actual = (metadata["node_feature_dim"], metadata["edge_feature_dim"])
+        if actual != expected:
+            raise ValueError(f"Checkpoint expects node/edge dimensions {expected}, dataset has {actual}")
         warnings.warn(
             "Checkpoint has no data contract; only input dimensions can be verified.",
             RuntimeWarning,
             stacklevel=2,
         )
-        expected = (checkpoint["node_in_dim"], checkpoint["edge_in_dim"])
-        actual = (metadata["node_feature_dim"], metadata["edge_feature_dim"])
-        if actual != expected:
-            raise ValueError(f"Checkpoint expects node/edge dimensions {expected}, dataset has {actual}")
         return
     actual = build_data_contract(metadata)
-    mismatches = [key for key in trained if trained[key] != actual.get(key)]
+    allowed = {"dT_train_mean", "dT_train_std"} if allow_output_stats_shift else set()
+    mismatches = [key for key in trained if key not in allowed and trained[key] != actual.get(key)]
+    # Older checkpoints predate these fields and must not silently consume
+    # FEM-projected source features with different physical semantics.
+    for key, legacy in (("heat_source_projection", "point_sampled"), ("tetra_gradient_geometry", "none"),
+                        ("discrete_operator", "none"), ("material_interface_flux", "none")):
+        if trained.get(key, legacy) != actual[key] and key not in mismatches:
+            mismatches.append(key)
     if mismatches:
         raise ValueError(f"Dataset is incompatible with checkpoint; mismatched contract fields: {mismatches}")

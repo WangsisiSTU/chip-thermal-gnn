@@ -1,0 +1,123 @@
+{
+  "case_id": "Case3",
+  "layout_id": "derived_maxrects_v1",
+  "provenance": "project-generated; NOT official optimized placement",
+  "axes": "x,z in plane; y reserved for stack; origin is lower-left",
+  "interposer_size_um": [
+    39000,
+    39000
+  ],
+  "chiplets": [
+    {
+      "name": "CPU2_0",
+      "origin_um": [
+        0,
+        9000
+      ],
+      "size_um": [
+        8000,
+        9000
+      ],
+      "rotation_deg": 0,
+      "power_W": 150.0
+    },
+    {
+      "name": "CPU2_1",
+      "origin_um": [
+        0,
+        18000
+      ],
+      "size_um": [
+        8000,
+        9000
+      ],
+      "rotation_deg": 0,
+      "power_W": 150.0
+    },
+    {
+      "name": "CPU2_2",
+      "origin_um": [
+        0,
+        27000
+      ],
+      "size_um": [
+        8000,
+        9000
+      ],
+      "rotation_deg": 0,
+      "power_W": 150.0
+    },
+    {
+      "name": "CPU2_3",
+      "origin_um": [
+        8000,
+        9000
+      ],
+      "size_um": [
+        8000,
+        9000
+      ],
+      "rotation_deg": 0,
+      "power_W": 150.0
+    },
+    {
+      "name": "DRAM_0",
+      "origin_um": [
+        0,
+        0
+      ],
+      "size_um": [
+        9000,
+        9000
+      ],
+      "rotation_deg": 0,
+      "power_W": 20.0
+    },
+    {
+      "name": "DRAM_1",
+      "origin_um": [
+        9000,
+        0
+      ],
+      "size_um": [
+        9000,
+        9000
+      ],
+      "rotation_deg": 0,
+      "power_W": 20.0
+    },
+    {
+      "name": "DRAM_2",
+      "origin_um": [
+        18000,
+        0
+      ],
+      "size_um": [
+        9000,
+        9000
+      ],
+      "rotation_deg": 0,
+      "power_W": 20.0
+    },
+    {
+      "name": "DRAM_3",
+      "origin_um": [
+        27000,
+        0
+      ],
+      "size_um": [
+        9000,
+        9000
+      ],
+      "rotation_deg": 0,
+      "power_W": 20.0
+    }
+  ],
+  "geometric_checks_passed": true,
+  "ready_for_fem": false,
+  "clearance_um": 0,
+  "routing_validated": false,
+  "packing_attempt": 0,
+  "total_power_W": 680.0,
+  "input_sha256": "33f6735885e1580a9c19efbdecd3796f189e5ce70d1e33d0a4eb0f80f2f4f818"
+}

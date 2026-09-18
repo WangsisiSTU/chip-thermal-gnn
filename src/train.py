@@ -25,7 +25,8 @@ from torch_geometric.utils import scatter
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from models import build_model
-from utils import build_data_contract, get_device, load_processed_metadata, load_split, load_yaml, set_seed
+from utils import (build_data_contract, get_device, load_json, load_processed_metadata,
+                   load_split, load_yaml, set_seed, validate_data_contract)
 
 
 def _graph_ids(values: torch.Tensor, num_graphs: int, batch: torch.Tensor | None) -> torch.Tensor:
@@ -88,10 +89,99 @@ def field_loss_fn(pred_norm: torch.Tensor, true_norm: torch.Tensor, num_graphs: 
         raise ValueError(f"未知损失类型: {loss_type}")
 
 
-def run_epoch(model, loader, device, dT_mean, dT_std, peak_weight, loss_type, peak_loss_type="true_peak_node", optimizer=None, grad_clip=None):
+def tetra_gradient_loss_fn(pred_norm: torch.Tensor, true_norm: torch.Tensor, batch) -> torch.Tensor:
+    """Volume-weighted relative H1 error inside die tetrahedra only.
+
+    Elementwise P1 gradients avoid imposing artificial smoothness across TIM,
+    Cu, and die material interfaces. Normalized temperature units cancel in
+    the relative ratio, so the result is independent of checkpoint scaling.
+    """
+    required = ("tet_index", "tet_grad_phi", "tet_volume", "tet_die")
+    if any(getattr(batch, key, None) is None for key in required):
+        raise ValueError("tetra gradient loss requires FEM tetrahedron geometry")
+    corners = batch.tet_index.long()
+    grad = batch.tet_grad_phi
+    if corners.shape[0] != 4 or grad.shape != (corners.shape[1], 4, 3):
+        raise ValueError("invalid tetrahedron index or P1 gradient shape")
+    pred_gradient = (pred_norm[corners].transpose(0, 1).unsqueeze(-1) * grad).sum(dim=1)
+    true_gradient = (true_norm[corners].transpose(0, 1).unsqueeze(-1) * grad).sum(dim=1)
+    weights = batch.tet_volume * batch.tet_die.to(batch.tet_volume.dtype)
+    graph_id = batch.batch[corners[0]] if hasattr(batch, "batch") and batch.batch is not None else torch.zeros_like(corners[0])
+    n_graphs = int(batch.num_graphs)
+    mass = scatter(weights, graph_id, dim=0, dim_size=n_graphs, reduce="sum")
+    if torch.any(mass <= 0):
+        raise ValueError("every graph must contain die tetrahedra")
+    error = scatter(weights * ((pred_gradient - true_gradient) ** 2).sum(-1),
+                    graph_id, dim=0, dim_size=n_graphs, reduce="sum")
+    signal = scatter(weights * (true_gradient ** 2).sum(-1),
+                     graph_id, dim=0, dim_size=n_graphs, reduce="sum")
+    return (error / (signal + 1e-4)).mean()
+
+
+def fem_energy_residual_loss_fn(pred_norm: torch.Tensor, true_norm: torch.Tensor, batch,
+                                dT_mean, dT_std) -> torch.Tensor:
+    """Row-scaled residual of the exact P1 FEM equation ``(K+R)dT=f``."""
+    required = ("fem_operator_index", "fem_operator_value", "fem_operator_diag",
+                "fem_source_load", "fem_free_node")
+    if any(getattr(batch, key, None) is None for key in required):
+        raise ValueError("FEM energy loss requires a sparse discrete operator")
+    index = batch.fem_operator_index.long()
+    if index.shape[0] != 2:
+        raise ValueError("fem_operator_index must have shape (2, nnz)")
+    pred_dT = pred_norm * dT_std + dT_mean
+    row, col = index
+    residual = scatter(batch.fem_operator_value * pred_dT[col], row, dim=0,
+                       dim_size=pred_dT.numel(), reduce="sum") - batch.fem_source_load
+    scaled = residual / batch.fem_operator_diag.clamp_min(1e-12)
+    free = batch.fem_free_node.bool()
+    graph_id = batch.batch
+    n_graphs = int(batch.num_graphs)
+    count = scatter(free.to(pred_dT.dtype), graph_id, dim=0, dim_size=n_graphs, reduce="sum")
+    error = scatter((scaled.square() * free), graph_id, dim=0, dim_size=n_graphs, reduce="sum") / count
+    rhs_scaled = batch.fem_source_load / batch.fem_operator_diag.clamp_min(1e-12)
+    signal = scatter((rhs_scaled.square() * free), graph_id, dim=0, dim_size=n_graphs, reduce="sum") / count
+    return (error / (signal + 1e-8)).mean()
+
+
+def interface_flux_loss_fn(pred_norm: torch.Tensor, true_norm: torch.Tensor, batch) -> torch.Tensor:
+    """Match FEM normal heat flux on both sides of every material interface."""
+    required = ("interface_node_index", "interface_normal", "interface_area",
+                "interface_grad_phi_left", "interface_grad_phi_right",
+                "interface_k_left", "interface_k_right")
+    if any(getattr(batch, key, None) is None for key in required):
+        raise ValueError("interface flux loss requires paired material-interface tetrahedra")
+    nodes = batch.interface_node_index.long()
+    if nodes.shape[0] != 8:
+        raise ValueError("interface_node_index must contain four nodes per adjacent tetrahedron")
+    if nodes.shape[1] == 0:
+        return pred_norm.new_zeros(())
+
+    def flux(values):
+        left_grad = (values[nodes[:4]].transpose(0, 1).unsqueeze(-1) *
+                     batch.interface_grad_phi_left).sum(1)
+        right_grad = (values[nodes[4:]].transpose(0, 1).unsqueeze(-1) *
+                      batch.interface_grad_phi_right).sum(1)
+        left = batch.interface_k_left * (left_grad * batch.interface_normal).sum(-1)
+        right = batch.interface_k_right * (right_grad * batch.interface_normal).sum(-1)
+        return left, right
+
+    pred_left, pred_right = flux(pred_norm)
+    true_left, true_right = flux(true_norm)
+    error = ((pred_left - pred_right) - (true_left - true_right)).square()
+    signal = 0.5 * (true_left.square() + true_right.square())
+    graph_id = batch.batch[nodes[0]]
+    n_graphs = int(batch.num_graphs)
+    weighted_error = scatter(batch.interface_area * error, graph_id, dim=0, dim_size=n_graphs, reduce="sum")
+    weighted_signal = scatter(batch.interface_area * signal, graph_id, dim=0, dim_size=n_graphs, reduce="sum")
+    return (weighted_error / (weighted_signal + 1e-8)).mean()
+
+
+def run_epoch(model, loader, device, dT_mean, dT_std, peak_weight, loss_type, peak_loss_type="true_peak_node",
+              optimizer=None, grad_clip=None, gradient_weight=0.0,
+              energy_weight=0.0, interface_flux_weight=0.0):
     is_train = optimizer is not None
     model.train(is_train)
-    totals = torch.zeros(3, dtype=torch.float64, device=device)
+    totals = torch.zeros(6, dtype=torch.float64, device=device)
     n_graphs = 0
     for batch in loader:
         batch = batch.to(device)
@@ -100,14 +190,21 @@ def run_epoch(model, loader, device, dT_mean, dT_std, peak_weight, loss_type, pe
             pred_norm = model(batch)
             field = field_loss_fn(pred_norm, y_norm, batch.num_graphs, loss_type, batch.batch)
             pk = peak_loss_fn(pred_norm, y_norm, batch.num_graphs, peak_loss_type, batch.batch)
-            loss = field + peak_weight * pk
+            gradient = tetra_gradient_loss_fn(pred_norm, y_norm, batch) if gradient_weight > 0 else field.new_zeros(())
+            energy = (fem_energy_residual_loss_fn(pred_norm, y_norm, batch, dT_mean, dT_std)
+                      if energy_weight > 0 else field.new_zeros(()))
+            interface_flux = (interface_flux_loss_fn(pred_norm, y_norm, batch)
+                              if interface_flux_weight > 0 else field.new_zeros(()))
+            loss = (field + peak_weight * pk + gradient_weight * gradient +
+                    energy_weight * energy + interface_flux_weight * interface_flux)
             if is_train:
                 optimizer.zero_grad()
                 loss.backward()
                 if grad_clip is not None:
                     torch.nn.utils.clip_grad_norm_(model.parameters(), grad_clip)
                 optimizer.step()
-        totals += torch.stack((loss.detach(), field.detach(), pk.detach())).to(torch.float64) * batch.num_graphs
+        totals += torch.stack((loss.detach(), field.detach(), pk.detach(), gradient.detach(),
+                               energy.detach(), interface_flux.detach())).to(torch.float64) * batch.num_graphs
         n_graphs += batch.num_graphs
     if n_graphs == 0:
         raise ValueError("Cannot run an epoch on an empty dataset")
@@ -116,12 +213,21 @@ def run_epoch(model, loader, device, dT_mean, dT_std, peak_weight, loss_type, pe
 
 def main():
     parser = argparse.ArgumentParser(description="训练芯片封装温度场图神经网络代理模型")
-    parser.add_argument("--model", type=str, choices=["meshgraphnet", "baseline", "mgn_transolver"], required=True)
+    parser.add_argument("--model", type=str, choices=[
+        "meshgraphnet", "baseline", "mgn_transolver", "mgn_global_pool",
+        "mgn_transolver_slice_only", "mgn_transolver_adaptive", "mgn_transolver_adaptive_gumbel",
+    ], required=True)
     parser.add_argument("--data_dir", type=str, default="data/processed")
+    parser.add_argument("--extra_train_dirs", nargs="*", default=[],
+                        help="additional meshes for the same physical training cases; validation stays on data_dir")
     parser.add_argument("--config", type=str, default="configs/train_config.yaml")
     parser.add_argument("--out_dir", type=str, default="outputs")
     parser.add_argument("--seed", type=int, default=None)
     parser.add_argument("--epochs", type=int, default=None, help="override the configured epoch count (useful for benchmarks)")
+    parser.add_argument("--gradient_weight", type=float, default=None, help="override die tetrahedral gradient loss weight")
+    parser.add_argument("--energy_weight", type=float, default=None, help="override exact FEM energy residual weight")
+    parser.add_argument("--interface_flux_weight", type=float, default=None,
+                        help="override material-interface normal heat-flux weight")
     parser.add_argument("--cpu_threads", type=int, default=None, help="limit CPU worker threads for reproducible CPU runs")
     args = parser.parse_args()
 
@@ -130,6 +236,16 @@ def main():
         if args.epochs < 1:
             raise ValueError("--epochs must be positive")
         cfg = {**cfg, "train": {**cfg["train"], "epochs": args.epochs}}
+    if args.gradient_weight is not None:
+        if args.gradient_weight < 0:
+            raise ValueError("--gradient_weight must be non-negative")
+        cfg = {**cfg, "train": {**cfg["train"], "gradient_loss_weight": args.gradient_weight}}
+    for argument, key in ((args.energy_weight, "energy_residual_weight"),
+                          (args.interface_flux_weight, "interface_flux_weight")):
+        if argument is not None:
+            if argument < 0:
+                raise ValueError(f"{key} must be non-negative")
+            cfg = {**cfg, "train": {**cfg["train"], key: argument}}
     seed = args.seed if args.seed is not None else cfg["seed"]
     set_seed(seed)
 
@@ -153,9 +269,29 @@ def main():
     proc_meta = load_processed_metadata(args.data_dir)
     dT_mean = torch.tensor(proc_meta["dT_train_mean"], dtype=torch.float32, device=device)
     dT_std = torch.tensor(proc_meta["dT_train_std"], dtype=torch.float32, device=device)
+    # Operator-corrected models need physical units inside their forward pass.
+    # Persist these values in the checkpoint config so every inference path
+    # applies exactly the same correction as training.
+    cfg = {**cfg, "output_normalization": {
+        "mean": proc_meta["dT_train_mean"], "std": proc_meta["dT_train_std"],
+    }}
 
     train_set = load_split(args.data_dir, "train")
     val_set = load_split(args.data_dir, "val")
+    primary_train_info = load_json(os.path.join(args.data_dir, "train_info.json"))
+    for extra_dir in args.extra_train_dirs:
+        extra_meta = load_processed_metadata(extra_dir)
+        validate_data_contract(
+            {"node_in_dim": proc_meta["node_feature_dim"], "edge_in_dim": proc_meta["edge_feature_dim"],
+             "data_contract": build_data_contract(proc_meta)},
+            extra_meta, allow_output_stats_shift=True,
+        )
+        extra_info = load_json(os.path.join(extra_dir, "train_info.json"))
+        if [(item["case"], item["regime"]) for item in extra_info] != [
+            (item["case"], item["regime"]) for item in primary_train_info
+        ]:
+            raise ValueError("extra training meshes must contain the same ordered physical cases")
+        train_set.extend(load_split(extra_dir, "train"))
 
     node_in_dim = train_set[0].x.shape[1]
     edge_in_dim = train_set[0].edge_attr.shape[1]
@@ -187,13 +323,21 @@ def main():
     t0 = time.perf_counter()
     loss_type = tcfg.get("loss_type", "per_sample_rel")
     peak_loss_type = tcfg.get("peak_loss_type", "true_peak_node")
+    gradient_weight = float(tcfg.get("gradient_loss_weight", 0.0))
+    energy_weight = float(tcfg.get("energy_residual_weight", 0.0))
+    interface_flux_weight = float(tcfg.get("interface_flux_weight", 0.0))
+    if min(gradient_weight, energy_weight, interface_flux_weight) < 0:
+        raise ValueError("physics loss weights must be non-negative")
     for epoch in range(1, tcfg["epochs"] + 1):
-        train_loss, train_field, train_peak = run_epoch(
+        train_loss, train_field, train_peak, train_gradient, train_energy, train_interface_flux = run_epoch(
             model, train_loader, device, dT_mean, dT_std, tcfg["peak_loss_weight"], loss_type, peak_loss_type,
-            optimizer=optimizer, grad_clip=tcfg["grad_clip_norm"],
+            optimizer=optimizer, grad_clip=tcfg["grad_clip_norm"], gradient_weight=gradient_weight,
+            energy_weight=energy_weight, interface_flux_weight=interface_flux_weight,
         )
-        val_loss, val_field, val_peak = run_epoch(
-            model, val_loader, device, dT_mean, dT_std, tcfg["peak_loss_weight"], loss_type, peak_loss_type, optimizer=None,
+        val_loss, val_field, val_peak, val_gradient, val_energy, val_interface_flux = run_epoch(
+            model, val_loader, device, dT_mean, dT_std, tcfg["peak_loss_weight"], loss_type, peak_loss_type,
+            optimizer=None, gradient_weight=gradient_weight, energy_weight=energy_weight,
+            interface_flux_weight=interface_flux_weight,
         )
         scheduler.step(val_loss)
         peak_process_rss = max(peak_process_rss, process.memory_info().rss)
@@ -201,7 +345,11 @@ def main():
         history.append(
             {
                 "epoch": epoch, "train_loss": train_loss, "train_field": train_field, "train_peak": train_peak,
-                "val_loss": val_loss, "val_field": val_field, "val_peak": val_peak, "lr": current_lr,
+                "train_gradient": train_gradient, "val_loss": val_loss, "val_field": val_field,
+                "val_peak": val_peak, "val_gradient": val_gradient,
+                "train_energy": train_energy, "val_energy": val_energy,
+                "train_interface_flux": train_interface_flux, "val_interface_flux": val_interface_flux,
+                "lr": current_lr,
             }
         )
 
@@ -231,7 +379,8 @@ def main():
         if epoch % 5 == 0 or epoch == 1 or improved:
             print(
                 f"[{args.model}] epoch {epoch:4d} | train_loss {train_loss:.5f} | "
-                f"val_loss {val_loss:.5f} (field {val_field:.5f}, peak {val_peak:.5f}) | "
+                f"val_loss {val_loss:.5f} (field {val_field:.5f}, peak {val_peak:.5f}, "
+                f"gradient {val_gradient:.5f}, energy {val_energy:.5f}, interface {val_interface_flux:.5f}) | "
                 f"lr {current_lr:.2e}" + (" *" if improved else "")
             )
 
@@ -252,12 +401,17 @@ def main():
         "model": args.model,
         "loss_type": loss_type,
         "peak_loss_type": peak_loss_type,
+        "gradient_loss_weight": gradient_weight,
+        "energy_residual_weight": energy_weight,
+        "interface_flux_weight": interface_flux_weight,
         "n_params": n_params,
         "best_epoch": best_epoch,
         "best_val_loss": best_val_loss,
         "total_epochs_run": len(history),
         "total_train_time_s": total_time,
         "seed": seed,
+        "train_mesh_dirs": [args.data_dir, *args.extra_train_dirs],
+        "n_train_graphs": len(train_set),
         "runtime_device": str(device),
         "process_rss_MiB": peak_process_rss / 2 ** 20,
         "cuda_peak_memory_MiB": (

@@ -1,0 +1,36 @@
+# All meshes reuse the exact same independently sampled physical cases.
+meshes:
+  coarse:
+    role: train
+    geometry: {nx: 9, ny: 13, nz: 7, refine_levels: 0}
+  medium:
+    role: train_validation
+    geometry: {nx: 13, ny: 13, nz: 11, refine_levels: 0}
+  anisotropic:
+    role: train
+    geometry: {nx: 15, ny: 13, nz: 9, refine_levels: 0}
+  local_center:
+    role: train
+    geometry:
+      nx: 13
+      ny: 13
+      nz: 11
+      refine_levels: 2
+      refine_center_x_frac: 0.50
+      refine_center_z_frac: 0.50
+      refine_width_x_frac: 0.45
+      refine_width_z_frac: 0.45
+  fine:
+    role: holdout
+    geometry: {nx: 17, ny: 13, nz: 15, refine_levels: 0}
+  local_offset:
+    role: holdout
+    geometry:
+      nx: 13
+      ny: 13
+      nz: 11
+      refine_levels: 3
+      refine_center_x_frac: 0.68
+      refine_center_z_frac: 0.32
+      refine_width_x_frac: 0.38
+      refine_width_z_frac: 0.50

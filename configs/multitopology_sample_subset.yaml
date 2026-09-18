@@ -1,0 +1,34 @@
+dataset: Multi-topology-Dataset
+repository: https://github.com/henkuailederen/Multi-topology-Dataset
+repository_commit: 9a0ff9688b7f6ae78a99d9c3a6838f3fee722104
+selection:
+  split: TestData
+  per_topology: 1
+  policy: lexicographically_first_available_manifest_row_per_topology
+official_manifest:
+  relative_path: metadata/manifest.csv
+  rows: 20350
+  sha256: ba6ac5ccf24ef23470130356a40a023b9e7cc81e31ba7fa9ca1337347cd795ef
+samples:
+  - path: TestData/Mask_3P6P_V1/000_Pigbt150_Pfwd100_h6000/data.h5
+    bytes: 244949
+    sha256: 56ae8f876204abf83fe862a7cfab088a03fac0811ba01138df2015d65a103c46
+  - path: TestData/Mask_3P6P_V2/000_Pigbt150_Pfwd100_h6000/data.h5
+    bytes: 243908
+    sha256: adb980a885bb6a2aaa8cc7dccfdcd6467f0e591133314d6e4fa40c0e45cdefbd
+  - path: TestData/Mask_HB_V1/000_Pigbt150_Pfwd150_h6000/data.h5
+    bytes: 244060
+    sha256: 416cc9fe99979c0511a3384e2c8b14a9ed046fe43f39c7396cb552d474bd00a1
+  - path: TestData/Mask_HB_V2/000_Pigbt150_Pfwd100_h6000/data.h5
+    bytes: 243949
+    sha256: 3590a2656cffe6c54dd58828e93de0ffb1611727ee22e6a206998ab0c3f718bd
+  - path: TestData/Mask_HB_V3-0/000_Pigbt150_Pfwd100_h8000/data.h5
+    bytes: 246225
+    sha256: 5552d4297b15fab55239f47620a7b6438b50209724bb6f1eb852cae3d3f5b211
+  - path: TestData/Mask_HB_V3-1/002_Pigbt150_Pfwd100_h6000/data.h5
+    bytes: 244865
+    sha256: 97a59214d1781fd3eba88e518b343aa4bad99299f29380a2a5674c2c526bb2cf
+  - path: TestData/Mask_HB_V3-2/000_Pigbt150_Pfwd100_h4000/data.h5
+    bytes: 242198
+    sha256: f6e2533e1c232831f02367b143f1b7d293fd7f4ac7cb85b72a661e2ced6bfd1f
+

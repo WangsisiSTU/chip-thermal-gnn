@@ -1,0 +1,60 @@
+{
+  "device": "cuda",
+  "reference_role": "unseen baseline layout and finer mesh",
+  "models": {
+    "graphsage": {
+      "n_cells": 26040,
+      "volume_weighted_mae_K": 0.8241498254058829,
+      "volume_weighted_rmse_K": 0.9808925884058763,
+      "peak_temperature_error_K": 0.4725345841691251,
+      "max_absolute_cell_error_K": 2.916017888563772,
+      "chip_mean_temperature_error_K": {
+        "0": 0.012733753876432274,
+        "1": -1.0721658105412075,
+        "2": -0.04112382292521488,
+        "3": -0.07231722122554629,
+        "4": 0.08917528869415037,
+        "5": 0.010142517332155876
+      },
+      "predicted_heat_rejection_W": 780.0042066973652,
+      "energy_balance_rel_error": 5.393201750318136e-06,
+      "inference_ms": 3.110874997219071
+    },
+    "meshgraphnet": {
+      "n_cells": 26040,
+      "volume_weighted_mae_K": 0.8360693931077782,
+      "volume_weighted_rmse_K": 1.0327113205550058,
+      "peak_temperature_error_K": -0.1333289869978671,
+      "max_absolute_cell_error_K": 3.485308911297409,
+      "chip_mean_temperature_error_K": {
+        "0": -0.49814954857799876,
+        "1": -1.507520391070443,
+        "2": -0.8054376381675183,
+        "3": -0.39010862473622865,
+        "4": -0.22406683849334286,
+        "5": -0.8294649141014361
+      },
+      "predicted_heat_rejection_W": 780.0043343117641,
+      "energy_balance_rel_error": 5.5568099539344144e-06,
+      "inference_ms": 21.00812999997288
+    },
+    "mgn_transolver": {
+      "n_cells": 26040,
+      "volume_weighted_mae_K": 1.0296698654901966,
+      "volume_weighted_rmse_K": 1.2147256417174188,
+      "peak_temperature_error_K": -0.7261214979841952,
+      "max_absolute_cell_error_K": 4.144127156231491,
+      "chip_mean_temperature_error_K": {
+        "0": -0.19558123571948727,
+        "1": -1.1941756065714912,
+        "2": -1.5103308707421093,
+        "3": -0.8150989151928911,
+        "4": -0.4891419890912516,
+        "5": -0.9848193278108965
+      },
+      "predicted_heat_rejection_W": 780.0023253066538,
+      "energy_balance_rel_error": 2.9811623766689966e-06,
+      "inference_ms": 24.519270000746474
+    }
+  }
+}

@@ -1,0 +1,383 @@
+{
+  "case_id": "Case7",
+  "layout_id": "derived_maxrects_v1",
+  "provenance": "project-generated; NOT official optimized placement",
+  "axes": "x,z in plane; y reserved for stack; origin is lower-left",
+  "interposer_size_um": [
+    30000,
+    25000
+  ],
+  "chiplets": [
+    {
+      "name": "Analog_0",
+      "origin_um": [
+        0,
+        23000
+      ],
+      "size_um": [
+        3000,
+        2000
+      ],
+      "rotation_deg": 0,
+      "power_W": 4.0
+    },
+    {
+      "name": "Analog_1",
+      "origin_um": [
+        3000,
+        23000
+      ],
+      "size_um": [
+        3000,
+        2000
+      ],
+      "rotation_deg": 0,
+      "power_W": 4.0
+    },
+    {
+      "name": "Analog_2",
+      "origin_um": [
+        6000,
+        23000
+      ],
+      "size_um": [
+        3000,
+        2000
+      ],
+      "rotation_deg": 0,
+      "power_W": 4.0
+    },
+    {
+      "name": "Analog_3",
+      "origin_um": [
+        11500,
+        3500
+      ],
+      "size_um": [
+        2000,
+        3000
+      ],
+      "rotation_deg": 90,
+      "power_W": 4.0
+    },
+    {
+      "name": "Analog_4",
+      "origin_um": [
+        11500,
+        6500
+      ],
+      "size_um": [
+        2000,
+        3000
+      ],
+      "rotation_deg": 90,
+      "power_W": 4.0
+    },
+    {
+      "name": "Analog_5",
+      "origin_um": [
+        11500,
+        9500
+      ],
+      "size_um": [
+        2000,
+        3000
+      ],
+      "rotation_deg": 90,
+      "power_W": 4.0
+    },
+    {
+      "name": "Analog_6",
+      "origin_um": [
+        11500,
+        12500
+      ],
+      "size_um": [
+        2000,
+        3000
+      ],
+      "rotation_deg": 90,
+      "power_W": 4.0
+    },
+    {
+      "name": "Analog_7",
+      "origin_um": [
+        11500,
+        15500
+      ],
+      "size_um": [
+        3000,
+        2000
+      ],
+      "rotation_deg": 0,
+      "power_W": 4.0
+    },
+    {
+      "name": "CPU1_0",
+      "origin_um": [
+        9000,
+        0
+      ],
+      "size_um": [
+        2500,
+        3500
+      ],
+      "rotation_deg": 0,
+      "power_W": 12.0
+    },
+    {
+      "name": "CPU1_1",
+      "origin_um": [
+        9000,
+        3500
+      ],
+      "size_um": [
+        2500,
+        3500
+      ],
+      "rotation_deg": 0,
+      "power_W": 12.0
+    },
+    {
+      "name": "CPU1_2",
+      "origin_um": [
+        9000,
+        7000
+      ],
+      "size_um": [
+        2500,
+        3500
+      ],
+      "rotation_deg": 0,
+      "power_W": 12.0
+    },
+    {
+      "name": "CPU1_3",
+      "origin_um": [
+        9000,
+        10500
+      ],
+      "size_um": [
+        2500,
+        3500
+      ],
+      "rotation_deg": 0,
+      "power_W": 12.0
+    },
+    {
+      "name": "CPU1_4",
+      "origin_um": [
+        9000,
+        14000
+      ],
+      "size_um": [
+        2500,
+        3500
+      ],
+      "rotation_deg": 0,
+      "power_W": 12.0
+    },
+    {
+      "name": "CPU1_5",
+      "origin_um": [
+        10000,
+        17500
+      ],
+      "size_um": [
+        2500,
+        3500
+      ],
+      "rotation_deg": 0,
+      "power_W": 12.0
+    },
+    {
+      "name": "CPU1_6",
+      "origin_um": [
+        10000,
+        21000
+      ],
+      "size_um": [
+        2500,
+        3500
+      ],
+      "rotation_deg": 0,
+      "power_W": 12.0
+    },
+    {
+      "name": "CPU1_7",
+      "origin_um": [
+        11500,
+        0
+      ],
+      "size_um": [
+        2500,
+        3500
+      ],
+      "rotation_deg": 0,
+      "power_W": 12.0
+    },
+    {
+      "name": "CPU2_0",
+      "origin_um": [
+        0,
+        18000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 34.0
+    },
+    {
+      "name": "CPU2_1",
+      "origin_um": [
+        5000,
+        18000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 34.0
+    },
+    {
+      "name": "DRAM_0",
+      "origin_um": [
+        0,
+        0
+      ],
+      "size_um": [
+        9000,
+        9000
+      ],
+      "rotation_deg": 0,
+      "power_W": 20.0
+    },
+    {
+      "name": "DRAM_1",
+      "origin_um": [
+        0,
+        9000
+      ],
+      "size_um": [
+        9000,
+        9000
+      ],
+      "rotation_deg": 0,
+      "power_W": 20.0
+    },
+    {
+      "name": "MEMS_0",
+      "origin_um": [
+        12500,
+        17500
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_1",
+      "origin_um": [
+        12500,
+        19500
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_2",
+      "origin_um": [
+        12500,
+        21500
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_3",
+      "origin_um": [
+        12500,
+        23500
+      ],
+      "size_um": [
+        2000,
+        1200
+      ],
+      "rotation_deg": 0,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_4",
+      "origin_um": [
+        13700,
+        17500
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_5",
+      "origin_um": [
+        13700,
+        19500
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_6",
+      "origin_um": [
+        13700,
+        21500
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_7",
+      "origin_um": [
+        14500,
+        23500
+      ],
+      "size_um": [
+        2000,
+        1200
+      ],
+      "rotation_deg": 0,
+      "power_W": 3.0
+    }
+  ],
+  "geometric_checks_passed": true,
+  "ready_for_fem": false,
+  "clearance_um": 0,
+  "routing_validated": false,
+  "packing_attempt": 0,
+  "total_power_W": 260.0,
+  "input_sha256": "00bc50a665bd40e01403b439e2975f3644c646b2d269ab9556add447750417a4"
+}

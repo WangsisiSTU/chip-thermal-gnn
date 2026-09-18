@@ -1,0 +1,380 @@
+{
+  "case_id": "Case8",
+  "interposer_size_m": [
+    0.026,
+    0.023
+  ],
+  "chiplets": [
+    {
+      "name": "CPU1_0",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU1_1",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU1_2",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU1_3",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU1_4",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU1_5",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU1_6",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU1_7",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU1_8",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU1_9",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU1_10",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU1_11",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_0",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_1",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_2",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_3",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_4",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_5",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_6",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_7",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_8",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_9",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_10",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_11",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_12",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_13",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_14",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_15",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_16",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_17",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_18",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_19",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_20",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_21",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_22",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_23",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "total_power_W": 240.0,
+  "layout_status": "all_zero_initial_positions",
+  "ready_for_fem": false,
+  "source_sha256": {
+    "Case8.blocks": "c411287913ba7b704423cd1f3694fe2a0319a6d961ca7795ec5b14ff4ef86f09",
+    "Case8.nets": "3189d09c09154b0ae3af01c5799d7a979600c79b84d27e7e0b5e981c79f519b5",
+    "Case8.pl": "0f2df1312fe89bfb7d46b64bb67e8d4230ec8baf4111fa234fa9b034a0a2461a",
+    "Case8.power": "b4942216166281e150846d8e5353ab107a7a8db285a2dfdea6e4e88e31d164dd",
+    "Thermal-aware.json": "726716c2d4284e88f3f9b498dca25d632cea7824d70a0108cbaed9ca19245aee",
+    "WL-driven.json": "13a62248a7c35880b94702f9d3450bd6011ea1a3a303f4fbf315e58b1265d530"
+  }
+}

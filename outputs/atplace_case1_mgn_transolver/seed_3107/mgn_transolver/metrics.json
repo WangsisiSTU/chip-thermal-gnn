@@ -1,0 +1,428 @@
+{
+  "run": {
+    "best_val_loss": 0.02495944903542598,
+    "epochs_run": 60,
+    "train_time_s": 70.81942670000717,
+    "parameter_count": 142435,
+    "seed": 3107
+  },
+  "suites": {
+    "layout_only_medium": {
+      "n_cases": 12,
+      "volume_weighted_mae_K": 0.8105070913831393,
+      "volume_weighted_mae_p95_K": 1.1339306592941283,
+      "volume_weighted_rmse_K": 1.062372128168742,
+      "mean_absolute_peak_error_K": 0.3916076024373372,
+      "mean_chip_mean_error_K": 0.7968356410662335,
+      "mean_energy_balance_rel_error": 3.3497674737740607e-07,
+      "layout_mean_mae_K": 0.8105070913831393,
+      "layout_worst_mae_K": 0.8794955015182495,
+      "mae_by_layout_K": {
+        "21": 0.8794955015182495,
+        "22": 0.683305136859417,
+        "23": 0.8687206357717514
+      },
+      "inference_ms_per_graph": 9.272516666290661,
+      "cases": [
+        {
+          "layout_id": 21,
+          "power_profile_id": 0,
+          "physical_case_id": 84,
+          "volume_weighted_mae_K": 0.5671611428260803,
+          "volume_weighted_rmse_K": 0.730728030204773,
+          "absolute_peak_error_K": 0.2152118682861328,
+          "mean_chip_mean_error_K": 0.3858030637105306,
+          "energy_balance_rel_error": 7.825020276186478e-08
+        },
+        {
+          "layout_id": 21,
+          "power_profile_id": 1,
+          "physical_case_id": 85,
+          "volume_weighted_mae_K": 0.9601130485534668,
+          "volume_weighted_rmse_K": 1.3041421175003052,
+          "absolute_peak_error_K": 1.447885513305664,
+          "mean_chip_mean_error_K": 0.8883971373240153,
+          "energy_balance_rel_error": 1.341539217492027e-07
+        },
+        {
+          "layout_id": 21,
+          "power_profile_id": 2,
+          "physical_case_id": 86,
+          "volume_weighted_mae_K": 1.0106110572814941,
+          "volume_weighted_rmse_K": 1.3529561758041382,
+          "absolute_peak_error_K": 0.3273181915283203,
+          "mean_chip_mean_error_K": 1.0131847063700359,
+          "energy_balance_rel_error": 5.327563599166751e-07
+        },
+        {
+          "layout_id": 21,
+          "power_profile_id": 3,
+          "physical_case_id": 87,
+          "volume_weighted_mae_K": 0.9800967574119568,
+          "volume_weighted_rmse_K": 1.2154737710952759,
+          "absolute_peak_error_K": 0.44672584533691406,
+          "mean_chip_mean_error_K": 1.1616875330607097,
+          "energy_balance_rel_error": 2.04348140186994e-07
+        },
+        {
+          "layout_id": 22,
+          "power_profile_id": 0,
+          "physical_case_id": 88,
+          "volume_weighted_mae_K": 0.49409928917884827,
+          "volume_weighted_rmse_K": 0.6390283107757568,
+          "absolute_peak_error_K": 0.3587932586669922,
+          "mean_chip_mean_error_K": 0.30337341626485187,
+          "energy_balance_rel_error": 3.9125100670389656e-07
+        },
+        {
+          "layout_id": 22,
+          "power_profile_id": 1,
+          "physical_case_id": 89,
+          "volume_weighted_mae_K": 0.5941390991210938,
+          "volume_weighted_rmse_K": 0.7548455595970154,
+          "absolute_peak_error_K": 0.13777732849121094,
+          "mean_chip_mean_error_K": 0.5318634510040283,
+          "energy_balance_rel_error": 1.4576316686998325e-07
+        },
+        {
+          "layout_id": 22,
+          "power_profile_id": 2,
+          "physical_case_id": 90,
+          "volume_weighted_mae_K": 0.9530299305915833,
+          "volume_weighted_rmse_K": 1.3938804864883423,
+          "absolute_peak_error_K": 0.16385269165039062,
+          "mean_chip_mean_error_K": 1.3052440484364827,
+          "energy_balance_rel_error": 2.9378085741882387e-07
+        },
+        {
+          "layout_id": 22,
+          "power_profile_id": 3,
+          "physical_case_id": 91,
+          "volume_weighted_mae_K": 0.6919522285461426,
+          "volume_weighted_rmse_K": 0.8097279667854309,
+          "absolute_peak_error_K": 0.08433723449707031,
+          "mean_chip_mean_error_K": 0.7495246728261312,
+          "energy_balance_rel_error": 2.2978225899805693e-07
+        },
+        {
+          "layout_id": 23,
+          "power_profile_id": 0,
+          "physical_case_id": 92,
+          "volume_weighted_mae_K": 0.5120841860771179,
+          "volume_weighted_rmse_K": 0.6592923402786255,
+          "absolute_peak_error_K": 0.2653064727783203,
+          "mean_chip_mean_error_K": 0.3564764658610026,
+          "energy_balance_rel_error": 6.260016220949183e-07
+        },
+        {
+          "layout_id": 23,
+          "power_profile_id": 1,
+          "physical_case_id": 93,
+          "volume_weighted_mae_K": 0.8826798796653748,
+          "volume_weighted_rmse_K": 1.158599853515625,
+          "absolute_peak_error_K": 0.2162456512451172,
+          "mean_chip_mean_error_K": 0.8607787291208903,
+          "energy_balance_rel_error": 5.684821076101798e-07
+        },
+        {
+          "layout_id": 23,
+          "power_profile_id": 2,
+          "physical_case_id": 94,
+          "volume_weighted_mae_K": 0.7954638600349426,
+          "volume_weighted_rmse_K": 1.008537769317627,
+          "absolute_peak_error_K": 0.625152587890625,
+          "mean_chip_mean_error_K": 0.6473848819732666,
+          "energy_balance_rel_error": 6.628411597375816e-07
+        },
+        {
+          "layout_id": 23,
+          "power_profile_id": 3,
+          "physical_case_id": 95,
+          "volume_weighted_mae_K": 1.2846546173095703,
+          "volume_weighted_rmse_K": 1.7212531566619873,
+          "absolute_peak_error_K": 0.41068458557128906,
+          "mean_chip_mean_error_K": 1.3583095868428547,
+          "energy_balance_rel_error": 1.5231016448069568e-07
+        }
+      ]
+    },
+    "mesh_only_fine": {
+      "n_cases": 12,
+      "volume_weighted_mae_K": 0.8564536472161611,
+      "volume_weighted_mae_p95_K": 1.146282285451889,
+      "volume_weighted_rmse_K": 1.1336793353160222,
+      "mean_absolute_peak_error_K": 0.6541392008463541,
+      "mean_chip_mean_error_K": 0.8416968186696371,
+      "mean_energy_balance_rel_error": 1.317617948378332e-06,
+      "layout_mean_mae_K": 0.8564536472161611,
+      "layout_worst_mae_K": 0.9235182106494904,
+      "mae_by_layout_K": {
+        "0": 0.9235182106494904,
+        "1": 0.8381908982992172,
+        "2": 0.8076518326997757
+      },
+      "inference_ms_per_graph": 14.002649996352071,
+      "cases": [
+        {
+          "layout_id": 0,
+          "power_profile_id": 0,
+          "physical_case_id": 0,
+          "volume_weighted_mae_K": 0.7084692120552063,
+          "volume_weighted_rmse_K": 0.9078913927078247,
+          "absolute_peak_error_K": 0.2581443786621094,
+          "mean_chip_mean_error_K": 0.5068641503651937,
+          "energy_balance_rel_error": 1.4867538311591488e-06
+        },
+        {
+          "layout_id": 0,
+          "power_profile_id": 1,
+          "physical_case_id": 1,
+          "volume_weighted_mae_K": 0.6889025568962097,
+          "volume_weighted_rmse_K": 0.8934140205383301,
+          "absolute_peak_error_K": 0.38363075256347656,
+          "mean_chip_mean_error_K": 0.5399446487426758,
+          "energy_balance_rel_error": 1.6046968767113867e-06
+        },
+        {
+          "layout_id": 0,
+          "power_profile_id": 2,
+          "physical_case_id": 2,
+          "volume_weighted_mae_K": 1.1690330505371094,
+          "volume_weighted_rmse_K": 1.6579781770706177,
+          "absolute_peak_error_K": 1.9074859619140625,
+          "mean_chip_mean_error_K": 1.2824770609537761,
+          "energy_balance_rel_error": 3.5911943996325135e-07
+        },
+        {
+          "layout_id": 0,
+          "power_profile_id": 3,
+          "physical_case_id": 3,
+          "volume_weighted_mae_K": 1.127668023109436,
+          "volume_weighted_rmse_K": 1.433028221130371,
+          "absolute_peak_error_K": 0.093017578125,
+          "mean_chip_mean_error_K": 1.2966582775115967,
+          "energy_balance_rel_error": 7.581287491120747e-07
+        },
+        {
+          "layout_id": 1,
+          "power_profile_id": 0,
+          "physical_case_id": 4,
+          "volume_weighted_mae_K": 0.6848652958869934,
+          "volume_weighted_rmse_K": 0.8978230357170105,
+          "absolute_peak_error_K": 0.2604999542236328,
+          "mean_chip_mean_error_K": 0.44480284055074054,
+          "energy_balance_rel_error": 2.817007271005423e-06
+        },
+        {
+          "layout_id": 1,
+          "power_profile_id": 1,
+          "physical_case_id": 5,
+          "volume_weighted_mae_K": 0.9755859375,
+          "volume_weighted_rmse_K": 1.2297310829162598,
+          "absolute_peak_error_K": 0.7008495330810547,
+          "mean_chip_mean_error_K": 1.039007027943929,
+          "energy_balance_rel_error": 2.083713070533122e-06
+        },
+        {
+          "layout_id": 1,
+          "power_profile_id": 2,
+          "physical_case_id": 6,
+          "volume_weighted_mae_K": 0.8896270394325256,
+          "volume_weighted_rmse_K": 1.1857612133026123,
+          "absolute_peak_error_K": 1.2171573638916016,
+          "mean_chip_mean_error_K": 0.7863442103068033,
+          "energy_balance_rel_error": 1.240333972418739e-06
+        },
+        {
+          "layout_id": 1,
+          "power_profile_id": 3,
+          "physical_case_id": 7,
+          "volume_weighted_mae_K": 0.8026853203773499,
+          "volume_weighted_rmse_K": 1.0881633758544922,
+          "absolute_peak_error_K": 0.6299152374267578,
+          "mean_chip_mean_error_K": 0.8288856347401937,
+          "energy_balance_rel_error": 1.993685373236076e-06
+        },
+        {
+          "layout_id": 2,
+          "power_profile_id": 0,
+          "physical_case_id": 8,
+          "volume_weighted_mae_K": 0.6390396356582642,
+          "volume_weighted_rmse_K": 0.8226951360702515,
+          "absolute_peak_error_K": 0.3030853271484375,
+          "mean_chip_mean_error_K": 0.5093121528625488,
+          "energy_balance_rel_error": 1.4085036355027114e-06
+        },
+        {
+          "layout_id": 2,
+          "power_profile_id": 1,
+          "physical_case_id": 9,
+          "volume_weighted_mae_K": 0.9295268058776855,
+          "volume_weighted_rmse_K": 1.2473478317260742,
+          "absolute_peak_error_K": 0.7383556365966797,
+          "mean_chip_mean_error_K": 1.0970006783803303,
+          "energy_balance_rel_error": 2.93957839403447e-07
+        },
+        {
+          "layout_id": 2,
+          "power_profile_id": 2,
+          "physical_case_id": 10,
+          "volume_weighted_mae_K": 0.702119767665863,
+          "volume_weighted_rmse_K": 0.951033353805542,
+          "absolute_peak_error_K": 0.6219558715820312,
+          "mean_chip_mean_error_K": 0.740750789642334,
+          "energy_balance_rel_error": 7.029341304587433e-07
+        },
+        {
+          "layout_id": 2,
+          "power_profile_id": 3,
+          "physical_case_id": 11,
+          "volume_weighted_mae_K": 0.95992112159729,
+          "volume_weighted_rmse_K": 1.2892851829528809,
+          "absolute_peak_error_K": 0.7355728149414062,
+          "mean_chip_mean_error_K": 1.0283143520355225,
+          "energy_balance_rel_error": 1.0625811910358607e-06
+        }
+      ]
+    },
+    "layout_mesh_fine": {
+      "n_cases": 12,
+      "volume_weighted_mae_K": 0.9128377834955851,
+      "volume_weighted_mae_p95_K": 1.271551966667175,
+      "volume_weighted_rmse_K": 1.20488603413105,
+      "mean_absolute_peak_error_K": 0.4850219090779622,
+      "mean_chip_mean_error_K": 0.8540622128380669,
+      "mean_energy_balance_rel_error": 1.2882987749189094e-06,
+      "layout_mean_mae_K": 0.9128377834955851,
+      "layout_worst_mae_K": 0.9768631458282471,
+      "mae_by_layout_K": {
+        "21": 0.9129532873630524,
+        "22": 0.8486969172954559,
+        "23": 0.9768631458282471
+      },
+      "inference_ms_per_graph": 13.856541666124636,
+      "cases": [
+        {
+          "layout_id": 21,
+          "power_profile_id": 0,
+          "physical_case_id": 84,
+          "volume_weighted_mae_K": 0.6419985294342041,
+          "volume_weighted_rmse_K": 0.8446382880210876,
+          "absolute_peak_error_K": 0.2622661590576172,
+          "mean_chip_mean_error_K": 0.49000318845113117,
+          "energy_balance_rel_error": 2.504006488379673e-06
+        },
+        {
+          "layout_id": 21,
+          "power_profile_id": 1,
+          "physical_case_id": 85,
+          "volume_weighted_mae_K": 0.9878876209259033,
+          "volume_weighted_rmse_K": 1.3948931694030762,
+          "absolute_peak_error_K": 1.4954910278320312,
+          "mean_chip_mean_error_K": 0.8533100287119547,
+          "energy_balance_rel_error": 6.036927402419678e-07
+        },
+        {
+          "layout_id": 21,
+          "power_profile_id": 2,
+          "physical_case_id": 86,
+          "volume_weighted_mae_K": 1.0270013809204102,
+          "volume_weighted_rmse_K": 1.3877959251403809,
+          "absolute_peak_error_K": 0.4134044647216797,
+          "mean_chip_mean_error_K": 1.1303002834320068,
+          "energy_balance_rel_error": 2.4861963083822047e-06
+        },
+        {
+          "layout_id": 21,
+          "power_profile_id": 3,
+          "physical_case_id": 87,
+          "volume_weighted_mae_K": 0.9949256181716919,
+          "volume_weighted_rmse_K": 1.2959779500961304,
+          "absolute_peak_error_K": 0.1723308563232422,
+          "mean_chip_mean_error_K": 1.1085863908131917,
+          "energy_balance_rel_error": 4.768123744725017e-07
+        },
+        {
+          "layout_id": 22,
+          "power_profile_id": 0,
+          "physical_case_id": 88,
+          "volume_weighted_mae_K": 0.6889890432357788,
+          "volume_weighted_rmse_K": 0.9013707637786865,
+          "absolute_peak_error_K": 0.23708152770996094,
+          "mean_chip_mean_error_K": 0.4478288491566976,
+          "energy_balance_rel_error": 2.112755510097486e-06
+        },
+        {
+          "layout_id": 22,
+          "power_profile_id": 1,
+          "physical_case_id": 89,
+          "volume_weighted_mae_K": 0.8019228577613831,
+          "volume_weighted_rmse_K": 1.0151208639144897,
+          "absolute_peak_error_K": 0.2740306854248047,
+          "mean_chip_mean_error_K": 0.7204969724019369,
+          "energy_balance_rel_error": 1.7491579455963802e-06
+        },
+        {
+          "layout_id": 22,
+          "power_profile_id": 2,
+          "physical_case_id": 90,
+          "volume_weighted_mae_K": 1.1766210794448853,
+          "volume_weighted_rmse_K": 1.56718909740448,
+          "absolute_peak_error_K": 0.3218669891357422,
+          "mean_chip_mean_error_K": 1.4496495723724365,
+          "energy_balance_rel_error": 2.2033566438039998e-07
+        },
+        {
+          "layout_id": 22,
+          "power_profile_id": 3,
+          "physical_case_id": 91,
+          "volume_weighted_mae_K": 0.7272546887397766,
+          "volume_weighted_rmse_K": 0.958060622215271,
+          "absolute_peak_error_K": 0.06702995300292969,
+          "mean_chip_mean_error_K": 0.6740010579427084,
+          "energy_balance_rel_error": 1.2255053434273577e-06
+        },
+        {
+          "layout_id": 23,
+          "power_profile_id": 0,
+          "physical_case_id": 92,
+          "volume_weighted_mae_K": 0.7203145623207092,
+          "volume_weighted_rmse_K": 0.919426441192627,
+          "absolute_peak_error_K": 0.3493461608886719,
+          "mean_chip_mean_error_K": 0.4717092514038086,
+          "energy_balance_rel_error": 1.3302535535331117e-06
+        },
+        {
+          "layout_id": 23,
+          "power_profile_id": 1,
+          "physical_case_id": 93,
+          "volume_weighted_mae_K": 0.9652416110038757,
+          "volume_weighted_rmse_K": 1.2259196043014526,
+          "absolute_peak_error_K": 0.6510486602783203,
+          "mean_chip_mean_error_K": 0.9004275798797607,
+          "energy_balance_rel_error": 4.737351275707624e-07
+        },
+        {
+          "layout_id": 23,
+          "power_profile_id": 2,
+          "physical_case_id": 94,
+          "volume_weighted_mae_K": 0.8343178033828735,
+          "volume_weighted_rmse_K": 1.1271889209747314,
+          "absolute_peak_error_K": 0.9782238006591797,
+          "mean_chip_mean_error_K": 0.6513218879699707,
+          "energy_balance_rel_error": 2.2094702956110268e-07
+        },
+        {
+          "layout_id": 23,
+          "power_profile_id": 3,
+          "physical_case_id": 95,
+          "volume_weighted_mae_K": 1.3875786066055298,
+          "volume_weighted_rmse_K": 1.821050763130188,
+          "absolute_peak_error_K": 0.5981426239013672,
+          "mean_chip_mean_error_K": 1.3511114915211995,
+          "energy_balance_rel_error": 2.0561872133839643e-06
+        }
+      ]
+    }
+  }
+}

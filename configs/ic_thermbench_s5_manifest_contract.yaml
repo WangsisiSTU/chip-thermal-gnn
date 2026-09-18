@@ -1,0 +1,19 @@
+# Validator contract from official IC-ThermBench code/docs.
+# This is not a replacement for the unretrieved official manifest.
+scope: level5
+manifest_filename: manifest.json
+format: json_array
+required_record_fields: [case]
+expected_total_records: 5000
+expected_case_count: 5
+expected_records_per_case: 1000
+ordering_semantics:
+  adaptation_pool_per_case: [0, 500]
+  holdout_per_case: [500, 1000]
+zero_shot_indices: all
+case_labels_hard_coded: false
+source:
+  repository_commit: 75566fa8a213a5fd61bb89d33a25af258d2a4ae8
+  archive_url: https://drive.google.com/file/d/15Do8Raf070VseV9cn44j1hdVpD3Rz-Un/view
+  retrieval_status: blocked_by_google_drive_timeout
+

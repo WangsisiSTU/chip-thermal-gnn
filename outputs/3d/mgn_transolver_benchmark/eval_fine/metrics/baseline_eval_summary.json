@@ -1,0 +1,64 @@
+{
+  "model": "baseline",
+  "n_params": 19969,
+  "best_epoch": 80,
+  "overall_mae_K": 0.08578814566135406,
+  "overall_volume_mae_K": 0.08421855419874191,
+  "overall_rel_l2": 0.33215134408415586,
+  "overall_volume_rel_l2": 0.32341638463295413,
+  "overall_r2": 0.824371992508674,
+  "peak_abs_err_mean_K": 0.3348389659076929,
+  "peak_abs_err_std_K": 0.5448094633775321,
+  "mean_inference_time_ms": 0.6985874999372754,
+  "mean_fem_solve_time_ms": 134.70905274152756,
+  "timing_repeats": 5,
+  "benchmark_batch_size": 4,
+  "speedup_vs_fem": 192.83060855458018,
+  "batched_inference_time_per_sample_ms": 0.4799612499482464,
+  "speedup_vs_fem_batched": 280.66651788254376,
+  "runtime_device": "cuda",
+  "process_rss_MiB": 842.58203125,
+  "cuda_peak_memory_MiB": 175.65087890625,
+  "regime_breakdown": {
+    "id": {
+      "n_samples": 12,
+      "mae_K_mean": 0.026461775181815028,
+      "volume_mae_K_mean": 0.026335583301261067,
+      "rel_l2_mean": 0.1592083860103657,
+      "volume_rel_l2_mean": 0.16015134002138676,
+      "peak_abs_err_K_mean": 0.10209823648134868
+    },
+    "covered_poor_cooling": {
+      "n_samples": 8,
+      "mae_K_mean": 0.07743541453965008,
+      "volume_mae_K_mean": 0.07805470610037446,
+      "rel_l2_mean": 0.19258820681845107,
+      "volume_rel_l2_mean": 0.19263360182967101,
+      "peak_abs_err_K_mean": 0.11598056927323341
+    },
+    "ood_high_power": {
+      "n_samples": 4,
+      "mae_K_mean": 0.18127766251564026,
+      "volume_mae_K_mean": 0.18571801483631134,
+      "rel_l2_mean": 0.3823378268031723,
+      "volume_rel_l2_mean": 0.39700818559649537,
+      "peak_abs_err_K_mean": 0.6059267222881317
+    },
+    "ood_poor_tim": {
+      "n_samples": 4,
+      "mae_K_mean": 0.15187966963276267,
+      "volume_mae_K_mean": 0.13467801408842206,
+      "rel_l2_mean": 1.0153958806287429,
+      "volume_rel_l2_mean": 0.9677608105851498,
+      "peak_abs_err_K_mean": 1.258129544556141
+    },
+    "ood_poor_cooling": {
+      "n_samples": 4,
+      "mae_K_mean": 0.11889161355793476,
+      "volume_mae_K_mean": 0.11823625396937132,
+      "rel_l2_mean": 0.287756400979647,
+      "volume_rel_l2_mean": 0.28776980576853217,
+      "peak_abs_err_K_mean": 0.2763996124267578
+    }
+  }
+}

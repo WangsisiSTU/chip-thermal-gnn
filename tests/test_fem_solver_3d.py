@@ -1,12 +1,16 @@
 """Small-scale smoke and physical-consistency tests for 3D tetrahedral FEM."""
 import numpy as np
+import pytest
 
 from fem_solver_3d import (
     CaseParams3D,
     GeometryConfig3D,
+    HAS_SKFEM,
     build_mesh_3d,
     material_id_of_points_3d,
     q_field_3d,
+    lumped_mass_3d,
+    source_load_3d,
     solve_case_3d,
 )
 
@@ -63,3 +67,32 @@ def test_3d_material_layers_follow_y_coordinate():
     x = np.zeros_like(y)
     z = np.zeros_like(y)
     assert material_id_of_points_3d(x, y, z, geom).tolist() == [0, 1, 2, 3]
+
+
+def test_projected_source_matches_the_fem_load_even_at_layer_interface():
+    geom = GeometryConfig3D(nx=5, ny=13, nz=5)
+    mesh, basis = build_mesh_3d(geom)
+    case = make_case_3d()
+    result = solve_case_3d(mesh, basis, geom, case)
+    nodal_power = np.dot(result.q_node, lumped_mass_3d(mesh.p, mesh.t))
+    fem_power = source_load_3d(mesh, basis, geom, case).sum()
+    assert np.isclose(nodal_power, fem_power, rtol=1e-12)
+    interface = np.isclose(mesh.p[1], geom.y_tim)
+    assert np.any(result.q_node[interface] > 0)
+
+
+@pytest.mark.skipif(not HAS_SKFEM, reason="adaptive tetrahedral refinement requires scikit-fem")
+def test_local_refinement_changes_topology_and_retains_layered_fem_solution():
+    regular = GeometryConfig3D(nx=5, ny=13, nz=5)
+    refined = GeometryConfig3D(nx=5, ny=13, nz=5, refine_levels=2)
+    base_mesh, _ = build_mesh_3d(regular)
+    local_mesh, basis = build_mesh_3d(refined)
+    assert local_mesh.t.shape[1] > base_mesh.t.shape[1]
+    assert local_mesh.p.shape[1] > base_mesh.p.shape[1]
+    from scipy.spatial import cKDTree
+    distances, _ = cKDTree(local_mesh.p.T).query(base_mesh.p.T)
+    assert distances.max() < 1e-12
+    result = solve_case_3d(local_mesh, basis, refined, make_case_3d())
+    assert np.isfinite(result.T).all()
+    assert np.isclose(np.dot(result.q_node, lumped_mass_3d(local_mesh.p, local_mesh.t)),
+                      source_load_3d(local_mesh, basis, refined, result.case).sum(), rtol=1e-12)

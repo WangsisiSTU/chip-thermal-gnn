@@ -1,0 +1,144 @@
+{
+  "training_seeds": [
+    3107
+  ],
+  "bootstrap_repeats": 10000,
+  "resampling_unit": "matched physical test case; training-seed uncertainty excluded",
+  "grids": {
+    "medium": {
+      "n_cases": 128,
+      "paired": {
+        "mae_K": {
+          "mean_difference": -0.07153857637604233,
+          "ci95": [
+            -0.0995041311390196,
+            -0.047998754595573706
+          ],
+          "hybrid_wins_fraction": 0.8046875
+        },
+        "die_gradient_mae_K_per_mm": {
+          "mean_difference": -0.008458399460067455,
+          "ci95": [
+            -0.011251912502633172,
+            -0.006030687687230789
+          ],
+          "hybrid_wins_fraction": 0.8125
+        },
+        "peak_abs_err_K": {
+          "mean_difference": -0.14251943270210177,
+          "ci95": [
+            -0.21647781856008805,
+            -0.07920342154393441
+          ],
+          "hybrid_wins_fraction": 0.6015625
+        },
+        "fem_energy_residual_relative": {
+          "mean_difference": -0.5367053662193939,
+          "ci95": [
+            -0.6075470830546692,
+            -0.47344544930383564
+          ],
+          "hybrid_wins_fraction": 0.9921875
+        },
+        "interface_flux_relative_l2": {
+          "mean_difference": -0.7147732931189239,
+          "ci95": [
+            -0.7985432536108419,
+            -0.637997887993697
+          ],
+          "hybrid_wins_fraction": 1.0
+        }
+      }
+    },
+    "fine": {
+      "n_cases": 128,
+      "paired": {
+        "mae_K": {
+          "mean_difference": -0.06908586562167329,
+          "ci95": [
+            -0.09669799962753131,
+            -0.04622021696241064
+          ],
+          "hybrid_wins_fraction": 0.796875
+        },
+        "die_gradient_mae_K_per_mm": {
+          "mean_difference": -0.004278852927167415,
+          "ci95": [
+            -0.00628593935483574,
+            -0.0023740478965287035
+          ],
+          "hybrid_wins_fraction": 0.6328125
+        },
+        "peak_abs_err_K": {
+          "mean_difference": -0.10965432890225202,
+          "ci95": [
+            -0.18090096058440394,
+            -0.048446987578063296
+          ],
+          "hybrid_wins_fraction": 0.5703125
+        },
+        "fem_energy_residual_relative": {
+          "mean_difference": -0.22011001128703356,
+          "ci95": [
+            -0.28816206789342685,
+            -0.14958396222791637
+          ],
+          "hybrid_wins_fraction": 0.890625
+        },
+        "interface_flux_relative_l2": {
+          "mean_difference": -0.34805658948607743,
+          "ci95": [
+            -0.4273899222374894,
+            -0.2733856105420273
+          ],
+          "hybrid_wins_fraction": 0.8359375
+        }
+      }
+    },
+    "local_offset": {
+      "n_cases": 128,
+      "paired": {
+        "mae_K": {
+          "mean_difference": -0.1081240240491752,
+          "ci95": [
+            -0.15121023326573776,
+            -0.07170289632049391
+          ],
+          "hybrid_wins_fraction": 0.8046875
+        },
+        "die_gradient_mae_K_per_mm": {
+          "mean_difference": -0.007043270222390551,
+          "ci95": [
+            -0.00909625026324082,
+            -0.005129111364503021
+          ],
+          "hybrid_wins_fraction": 0.78125
+        },
+        "peak_abs_err_K": {
+          "mean_difference": -0.12556363781914115,
+          "ci95": [
+            -0.2040288928808877,
+            -0.05473928686697036
+          ],
+          "hybrid_wins_fraction": 0.59375
+        },
+        "fem_energy_residual_relative": {
+          "mean_difference": -2.2420517201535404,
+          "ci95": [
+            -2.6037720012827776,
+            -1.9039901492767968
+          ],
+          "hybrid_wins_fraction": 0.96875
+        },
+        "interface_flux_relative_l2": {
+          "mean_difference": -1.0468268395634368,
+          "ci95": [
+            -1.1921071385993856,
+            -0.908367562215426
+          ],
+          "hybrid_wins_fraction": 0.984375
+        }
+      }
+    }
+  }
+}

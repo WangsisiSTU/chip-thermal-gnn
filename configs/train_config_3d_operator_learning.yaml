@@ -1,0 +1,38 @@
+seed: 3107
+model:
+  hidden_dim: 64
+  n_message_passing_steps: 3
+  dropout: 0.03
+  aggregation: mean
+baseline_model:
+  type: sage
+  hidden_dim: 64
+  n_layers: 3
+  dropout: 0.03
+hybrid_model:
+  hidden_dim: 64
+  n_message_passing_steps: 3
+  attention_blocks: 1
+  attention_heads: 4
+  attention_slices: 8
+  dropout: 0.03
+  aggregation: mean
+  global_gate: true
+  operator_correction_steps: 3
+  operator_correction_omega: 0.65
+train:
+  batch_size: 4
+  cpu_num_threads: 4
+  epochs: 100
+  lr: 1.0e-3
+  weight_decay: 1.0e-5
+  patience: 20
+  peak_loss_weight: 0.1
+  peak_loss_type: global_max
+  gradient_loss_weight: 0.05
+  energy_residual_weight: 0.02
+  interface_flux_weight: 0.02
+  loss_type: per_sample_rel
+  lr_scheduler_factor: 0.5
+  lr_scheduler_patience: 8
+  grad_clip_norm: 1.0

@@ -1,0 +1,80 @@
+{
+  "case_id": "Case1",
+  "interposer_size_m": [
+    0.041999999999999996,
+    0.041999999999999996
+  ],
+  "chiplets": [
+    {
+      "name": "CPU1_0",
+      "width_m": 0.012,
+      "depth_m": 0.012,
+      "power_W": 105.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "GPU_0",
+      "width_m": 0.018,
+      "depth_m": 0.018,
+      "power_W": 300.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "GPU_1",
+      "width_m": 0.018,
+      "depth_m": 0.018,
+      "power_W": 300.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "HBM_0",
+      "width_m": 0.008,
+      "depth_m": 0.012,
+      "power_W": 25.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "HBM_1",
+      "width_m": 0.008,
+      "depth_m": 0.012,
+      "power_W": 25.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "HBM_2",
+      "width_m": 0.008,
+      "depth_m": 0.012,
+      "power_W": 25.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "total_power_W": 780.0,
+  "layout_status": "all_zero_initial_positions",
+  "ready_for_fem": false,
+  "source_sha256": {
+    "Case1.blocks": "08b048c6f27ba3057df12b06be9bf1f83927b936db26f2ed0dc9e7aa10fcbcbb",
+    "Case1.nets": "598e068bda0ff880391bc3e932faa2ceb21b5cad2f3b3a194d11208e9a16434e",
+    "Case1.pl": "ffb0ae4b98760b81f102b75ec2752106346251ec19b103ce2ac1b97a18158cfe",
+    "Case1.power": "48332cac2e68c74e14cf33810ae8d8c3da0b2e04d665b31829ec04cc1a727375",
+    "Thermal-aware.json": "10619f8ec7d6e389fe73468770662e321462450bbe4b62f3637b41b6314b58fc",
+    "WL-driven.json": "ca83d01016523f380609a4522b8d02db9cb3f2d1eb5645be6148d3922dbc9d84"
+  }
+}

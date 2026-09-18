@@ -4,7 +4,7 @@
 
 项目覆盖完整闭环：**工况采样 → FEM 求解 → 网格转图 → GNN 训练 → 精度、速度与 OOD 评估 → 切面可视化**。数据均由 `scikit-fem` 实际求解生成，不依赖商业热仿真软件。
 
-MGN + 轻量 Physics-Attention 的实验路径已接入训练和评估。局部 MeshGraphNet 处理四面体网格边，随后按每张图将节点聚合为 32 个可学习物理状态，状态间做全局注意力并映射回节点。PyG 批次可包含不同节点数的图；新构建的三维图还保存归一化节点控制体积作为状态聚合权重。该模型尚未完成跨网格训练与精度评估。
+MGN + 轻量 Physics-Attention 的实验路径已接入训练和评估。局部 MeshGraphNet 处理四面体网格边，随后将节点聚合为可学习物理状态，状态间做全局注意力并映射回节点；PyG 批次可包含不同节点数的图。2026-09-15 的初轮三分辨率 benchmark 使用 32 状态、仅中网格训练与单个种子，现保留为历史记录。2026-09-16 修正了图热源与 FEM 装配不一致的问题，增加四面体物理梯度、局部加密留出网格和三种子多网格测评；新的 8 状态轻量混合模型在局部网格的 die 梯度误差优于 GraphSAGE，但全场节点 MAE 尚未稳定更好。
 
 ## 当前状态
 
@@ -12,9 +12,32 @@ MGN + 轻量 Physics-Attention 的实验路径已接入训练和评估。局部 
 | --- | --- | --- |
 | 三维四面体热场 | 当前主线 | 封装堆叠、x-z 热点、差散热泛化研究 |
 | 三维差散热覆盖实验 | 已完成首轮训练与评估 | 低对流支持范围与严格 OOD 的区分 |
+| MGN+TRANS 三网格 benchmark | 已完成单训练种子配对评估 | 跨分辨率迁移、精度/速度权衡；尚非任意网格泛化 |
+| 修正热源后的 MGN+TRANS 四网格测评 | 已完成三种子及局部加密网格留出测试 | 热点梯度研究；全场精度仍以 GraphSAGE 为强基线 |
+| ATPlace2.5D Case1 六层多芯粒模型 | 已完成三模型、三种子、布局/网格解耦评测 | 公开多芯粒对象；GraphSAGE、MGN、MGN+TRANS 公平对比 |
+| ATPlace 接触/各向异性/温变材料 | 已完成五级收敛、物理消融和多实体图契约 | 界面温跳、非线性 Robin 能量投影；尚未宣称跨材料泛化 |
+| 高级材料 MGN+TRANS | 已完成三模型、三种子、三套布局/网格评测 | 真实 checkpoint 云图；MGN+TRANS 场误差领先，MGN 界面温跳领先 |
+| ATPlace 非线性算子热启动 | 已接通温度一致 FVM 残差与完整非线性修正 | 修正后约 `9.5e-7 K` MAE；端到端速度仍未超过冷启动 |
 | 二维三角网格热场 | 保留 | 快速冒烟、教学和架构对照 |
 
 三维工作流的完整实验记录见 [差散热覆盖研究](docs/cooling_coverage_study.md)，三维 FEM、数据格式与基线审查见 [三维执行报告](docs/three_dimensional_run_report.md)。
+
+最新的 FEM 算子学习路线已经接入四面体刚度、Robin 面积分、材料界面热流、能量残差和三步稀疏算子前向校正；扩展为 384/64/128 个独立物理工况及四训练/两留出网格。实现、benchsize、云图和单种子能力检查见 [FEM 离散算子学习报告](docs/fem_operator_learning_3d_report.md)。
+
+ATPlace2.5D Case1 已建立独立的六层多芯粒参考入口；其材料与边界契约不同于旧四层演示模型，
+详情、复现命令和 ML 接口见 [ATPlace 计算对象说明](docs/atplace_computational_objects.md)。
+24 个布局的分组训练及 Node MLP、GraphSAGE、守恒 GraphSAGE 对比见
+[Case1 首轮 ML 报告](docs/atplace_case1_ml_report.md)。
+MGN、MGN+TRANS 接入后的三种子结果，以及布局、网格和二者组合的三套配对评测见
+[Case1 MGN+TRANS 泛化报告](docs/atplace_mgn_transolver_generalization_report.md)。
+接触热阻、对角各向异性、温变导热率的离散方式、五级 benchsize、受控消融及图契约见
+[Case1 高级材料物理报告](docs/atplace_contact_anisotropic_temperature_report.md)。
+高级材料图真正接入 GraphSAGE、MeshGraphNet、MGN+TRANS 后的三种子结果和预测云图见
+[高级材料 MGN+TRANS 端到端报告](docs/atplace_advanced_mgn_transolver_report.md)。
+网络热启动、可重装配离散算子契约、真实残差训练及冷/热启动 benchmark 见
+[ATPlace 非线性算子热启动报告](docs/atplace_nonlinear_warm_start_report.md)。该实验当前是 FVM，不应表述为四面体 FEM。
+
+混合模型的 [三维原型说明](docs/mgn_transolver_3d_technical_documentation.md) 与 [初轮能力测评](docs/mgn_transolver_3d_benchmark_report.md)保留原始网格和结构记录；修正、四网格三种子效果对比、benchsize、模型消融、云图和复现命令见[修正后的三维测评报告](docs/mgn_transolver_3d_corrected_benchmark_report.md)。其 `96/16/32` 配对 benchmark 与上面的 `360/60/150` 差散热覆盖实验不是同一数据协议，不能直接横比 MAE；初轮与修正版的热源图输入、模型规模及训练协议也不同，不能只看旧表中的排名。
 
 ## 三维物理模型
 
@@ -142,8 +165,12 @@ docs/
   technical_documentation.md
 ```
 
+外部复杂数据的轻量接入、字段映射和 split 风险见
+[外部复杂热数据接入报告](docs/external_dataset_onboarding_report.md)。下载的第三方仓库和 HDF5
+样本位于 `external/`（默认不提交）；可复现的样本清单和校验契约保存在 `configs/`。
+
 ## 当前限制与下一步
 
-- 所有三维样本共享固定几何与网格，尚未验证跨几何或跨网格泛化。
-- 材料均为线性、各向同性；未加入温度相关材料、接触热阻或辐射。
+- 已完成 Case1 内的布局隔离和中/细网格配对评测；尚未验证跨芯粒数量或跨封装家族泛化。
+- ATPlace Case1 已加入温变导热率、对角各向异性和显式接触热阻；参数目前是研究配置，尚未用实测材料卡标定，也尚未完成跨材料 OOD 训练。旧三维四面体主线仍需迁移相同的多实体面契约。
 - 严格低对流外推仍是最大误差来源。下一步应在相同 150 样本测试集上做特征、损失和数据覆盖的消融，并用多个训练种子报告均值和方差。

@@ -1,0 +1,116 @@
+{
+  "source": "https://github.com/PKU-IDEA/ATPlace_pub",
+  "archive_sha256": "6b0e05270690cf98ec023abc8957d1efe1eeed1790fc97135fd0a76f3224d47f",
+  "cases": [
+    {
+      "case_id": "Case1",
+      "interposer_size_m": [
+        0.041999999999999996,
+        0.041999999999999996
+      ],
+      "total_power_W": 780.0,
+      "layout_status": "all_zero_initial_positions",
+      "ready_for_fem": false,
+      "chiplet_count": 6
+    },
+    {
+      "case_id": "Case2",
+      "interposer_size_m": [
+        0.032,
+        0.032
+      ],
+      "total_power_W": 370.0,
+      "layout_status": "all_zero_initial_positions",
+      "ready_for_fem": false,
+      "chiplet_count": 6
+    },
+    {
+      "case_id": "Case3",
+      "interposer_size_m": [
+        0.039,
+        0.039
+      ],
+      "total_power_W": 680.0,
+      "layout_status": "all_zero_initial_positions",
+      "ready_for_fem": false,
+      "chiplet_count": 8
+    },
+    {
+      "case_id": "Case4",
+      "interposer_size_m": [
+        0.037,
+        0.037
+      ],
+      "total_power_W": 1535.0,
+      "layout_status": "all_zero_initial_positions",
+      "ready_for_fem": false,
+      "chiplet_count": 11
+    },
+    {
+      "case_id": "Case5",
+      "interposer_size_m": [
+        0.056999999999999995,
+        0.059
+      ],
+      "total_power_W": 1020.0,
+      "layout_status": "all_zero_initial_positions",
+      "ready_for_fem": false,
+      "chiplet_count": 12
+    },
+    {
+      "case_id": "Case6",
+      "interposer_size_m": [
+        0.048999999999999995,
+        0.053
+      ],
+      "total_power_W": 852.0,
+      "layout_status": "all_zero_initial_positions",
+      "ready_for_fem": false,
+      "chiplet_count": 20
+    },
+    {
+      "case_id": "Case7",
+      "interposer_size_m": [
+        0.03,
+        0.024999999999999998
+      ],
+      "total_power_W": 260.0,
+      "layout_status": "all_zero_initial_positions",
+      "ready_for_fem": false,
+      "chiplet_count": 28
+    },
+    {
+      "case_id": "Case8",
+      "interposer_size_m": [
+        0.026,
+        0.023
+      ],
+      "total_power_W": 240.0,
+      "layout_status": "all_zero_initial_positions",
+      "ready_for_fem": false,
+      "chiplet_count": 36
+    },
+    {
+      "case_id": "Case9",
+      "interposer_size_m": [
+        0.059,
+        0.061
+      ],
+      "total_power_W": 1548.0,
+      "layout_status": "all_zero_initial_positions",
+      "ready_for_fem": false,
+      "chiplet_count": 44
+    },
+    {
+      "case_id": "Case10",
+      "interposer_size_m": [
+        0.047,
+        0.047
+      ],
+      "total_power_W": 1006.0,
+      "layout_status": "all_zero_initial_positions",
+      "ready_for_fem": false,
+      "chiplet_count": 61
+    }
+  ]
+}

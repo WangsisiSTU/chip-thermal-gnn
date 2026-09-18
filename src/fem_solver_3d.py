@@ -38,6 +38,12 @@ class GeometryConfig3D:
     nx: int = 13
     ny: int = 13
     nz: int = 11
+    refine_levels: int = 0
+    refine_region: str = "tim_die_center"
+    refine_center_x_frac: float = 0.5
+    refine_center_z_frac: float = 0.5
+    refine_width_x_frac: float = 0.6
+    refine_width_z_frac: float = 0.6
 
     @property
     def y_sub(self) -> float:
@@ -67,6 +73,12 @@ class GeometryConfig3D:
             nx=d["nx"],
             ny=d["ny"],
             nz=d["nz"],
+            refine_levels=int(d.get("refine_levels", 0)),
+            refine_region=d.get("refine_region", "tim_die_center"),
+            refine_center_x_frac=float(d.get("refine_center_x_frac", 0.5)),
+            refine_center_z_frac=float(d.get("refine_center_z_frac", 0.5)),
+            refine_width_x_frac=float(d.get("refine_width_x_frac", 0.6)),
+            refine_width_z_frac=float(d.get("refine_width_z_frac", 0.6)),
         )
 
 
@@ -121,12 +133,38 @@ def build_mesh_3d(geom: GeometryConfig3D):
     """
     if min(geom.nx, geom.ny, geom.nz) < 2:
         raise ValueError("nx, ny, and nz must each be at least 2")
+    if geom.refine_levels < 0:
+        raise ValueError("refine_levels must be non-negative")
+    if geom.refine_region != "tim_die_center":
+        raise ValueError("unknown refinement region")
+    for name, value in (("refine_center_x_frac", geom.refine_center_x_frac),
+                        ("refine_center_z_frac", geom.refine_center_z_frac),
+                        ("refine_width_x_frac", geom.refine_width_x_frac),
+                        ("refine_width_z_frac", geom.refine_width_z_frac)):
+        if not 0.0 < value <= 1.0:
+            raise ValueError(f"{name} must be in (0, 1]")
     x = np.linspace(0.0, geom.width, geom.nx)
     y = np.linspace(0.0, geom.height, geom.ny)
     z = np.linspace(0.0, geom.depth, geom.nz)
     if HAS_SKFEM:
         mesh = MeshTet.init_tensor(x, y, z)
+        x_lo = max(0.0, geom.refine_center_x_frac - 0.5 * geom.refine_width_x_frac) * geom.width
+        x_hi = min(1.0, geom.refine_center_x_frac + 0.5 * geom.refine_width_x_frac) * geom.width
+        z_lo = max(0.0, geom.refine_center_z_frac - 0.5 * geom.refine_width_z_frac) * geom.depth
+        z_hi = min(1.0, geom.refine_center_z_frac + 0.5 * geom.refine_width_z_frac) * geom.depth
+        for _ in range(geom.refine_levels):
+            center = mesh.p[:, mesh.t].mean(axis=1)
+            selected = np.flatnonzero(
+                (center[1] >= geom.y_cu - 1e-12) &
+                (center[0] >= x_lo) & (center[0] <= x_hi) &
+                (center[2] >= z_lo) & (center[2] <= z_hi)
+            )
+            if selected.size == 0:
+                raise ValueError("refinement region contains no tetrahedra")
+            mesh = mesh.refined(selected)
         return mesh, Basis(mesh, ElementTetP1())
+    if geom.refine_levels:
+        raise RuntimeError("adaptive tetrahedral refinement requires scikit-fem")
     return _build_tensor_tet_mesh_fallback(x, y, z), None
 
 
@@ -188,35 +226,109 @@ def q_field_3d(x: np.ndarray, y: np.ndarray, z: np.ndarray, geom: GeometryConfig
     return np.where(in_die, np.where(in_hotspot, case.q_hot, case.q_base), 0.0)
 
 
+def lumped_mass_3d(points: np.ndarray, tets: np.ndarray) -> np.ndarray:
+    """Physical P1 nodal volumes in m^3; their sum is the mesh volume."""
+    vertices = points[:, tets].transpose(2, 1, 0)
+    volumes = np.abs(np.linalg.det(vertices[:, 1:] - vertices[:, :1])) / 6.0
+    mass = np.zeros(points.shape[1], dtype=np.float64)
+    for corner in tets:
+        np.add.at(mass, corner, volumes / 4.0)
+    if np.any(mass <= 0):
+        raise ValueError("tetrahedral mesh contains a zero-volume node")
+    return mass
+
+
+def source_load_3d(mesh, basis, geom: GeometryConfig3D, case: CaseParams3D) -> np.ndarray:
+    """Assemble the very same source load used by the thermal FEM solve."""
+    if basis is not None:
+        @LinearForm
+        def load(v, w):
+            return q_field_3d(w.x[0], w.x[1], w.x[2], geom, case) * v
+
+        return np.asarray(load.assemble(basis), dtype=np.float64)
+
+    # The tiny offline fallback uses centroid quadrature in its FEM assembly.
+    vertices = mesh.p[:, mesh.t].transpose(2, 1, 0)
+    volumes = np.abs(np.linalg.det(vertices[:, 1:] - vertices[:, :1])) / 6.0
+    center = vertices.mean(axis=1)
+    q = q_field_3d(center[:, 0], center[:, 1], center[:, 2], geom, case)
+    load = np.zeros(mesh.p.shape[1], dtype=np.float64)
+    for corner in mesh.t:
+        np.add.at(load, corner, q * volumes / 4.0)
+    return load
+
+
+def project_source_to_nodes_3d(mesh, basis, geom: GeometryConfig3D, case: CaseParams3D) -> np.ndarray:
+    """FEM-consistent q_i = (integral q phi_i) / (integral phi_i)."""
+    return source_load_3d(mesh, basis, geom, case) / lumped_mass_3d(mesh.p, mesh.t)
+
+
+def assemble_thermal_operator_3d(mesh, basis, geom: GeometryConfig3D, case: CaseParams3D):
+    """Assemble the conductive matrix, Robin surface matrix, and source load.
+
+    For temperature rise ``theta = T - T_ambient`` the unconstrained FEM
+    equation is ``(K + R) theta = f``.  Returning the components separately
+    lets the graph model consume the exact discrete operator and lets the
+    training loss check the same energy balance as the FEM solve.
+    """
+    if basis is not None:
+        @BilinearForm
+        def stiffness(u, v, w):
+            return k_field_3d(w.x[0], w.x[1], w.x[2], geom, case) * dot(grad(u), grad(v))
+
+        @BilinearForm
+        def robin(u, v, w):
+            return case.h_top * u * v
+
+        top_facets = mesh.facets_satisfying(lambda p: np.isclose(p[1], geom.height))
+        fbasis_top = FacetBasis(mesh, basis.elem, facets=top_facets)
+        conductive = stiffness.assemble(basis).tocsr()
+        robin_matrix = robin.assemble(fbasis_top).tocsr()
+        return conductive, robin_matrix, source_load_3d(mesh, basis, geom, case)
+
+    # Dense fallback mirrors the small dependency-free solver exactly.
+    n_nodes = mesh.p.shape[1]
+    conductive = np.zeros((n_nodes, n_nodes), dtype=np.float64)
+    robin_matrix = np.zeros_like(conductive)
+    for tet in mesh.t.T:
+        coords = mesh.p[:, tet].T
+        affine = np.column_stack([np.ones(4), coords])
+        gradients = np.linalg.inv(affine)[1:, :].T
+        volume = abs(np.linalg.det(coords[1:] - coords[0])) / 6.0
+        centroid = coords.mean(axis=0)
+        conductivity = float(k_field_3d(centroid[0], centroid[1], centroid[2], geom, case))
+        conductive[np.ix_(tet, tet)] += conductivity * volume * (gradients @ gradients.T)
+
+    top_faces = set()
+    for tet in mesh.t.T:
+        for face in ((tet[0], tet[1], tet[2]), (tet[0], tet[1], tet[3]),
+                     (tet[0], tet[2], tet[3]), (tet[1], tet[2], tet[3])):
+            if np.all(np.isclose(mesh.p[1, list(face)], geom.height)):
+                top_faces.add(tuple(sorted(map(int, face))))
+    for face in top_faces:
+        nodes = np.asarray(face)
+        coords = mesh.p[:, nodes].T
+        area = 0.5 * np.linalg.norm(np.cross(coords[1] - coords[0], coords[2] - coords[0]))
+        robin_matrix[np.ix_(nodes, nodes)] += case.h_top * area / 12.0 * np.array(
+            [[2.0, 1.0, 1.0], [1.0, 2.0, 1.0], [1.0, 1.0, 2.0]]
+        )
+    return conductive, robin_matrix, source_load_3d(mesh, None, geom, case)
+
+
 def solve_case_3d(mesh: MeshTet, basis: Basis, geom: GeometryConfig3D, case: CaseParams3D) -> FemResult3D:
     """Solve ``-div(k grad(T)) = q`` with bottom Dirichlet and top Robin BCs."""
 
     if not HAS_SKFEM:
         return _solve_case_dense_fallback(mesh, geom, case)
 
-    @BilinearForm
-    def stiffness(u, v, w):
-        return k_field_3d(w.x[0], w.x[1], w.x[2], geom, case) * dot(grad(u), grad(v))
-
-    @LinearForm
-    def load(v, w):
-        return q_field_3d(w.x[0], w.x[1], w.x[2], geom, case) * v
-
-    @BilinearForm
-    def robin(u, v, w):
-        return case.h_top * u * v
-
-    @LinearForm
-    def robin_rhs(v, w):
-        return case.h_top * case.t_ambient * v
-
     top_facets = mesh.facets_satisfying(lambda p: np.isclose(p[1], geom.height))
     bottom_facets = mesh.facets_satisfying(lambda p: np.isclose(p[1], 0.0))
-    fbasis_top = FacetBasis(mesh, basis.elem, facets=top_facets)
 
     t0 = time.perf_counter()
-    A_total = stiffness.assemble(basis) + robin.assemble(fbasis_top)
-    b_total = load.assemble(basis) + robin_rhs.assemble(fbasis_top)
+    conductive, robin_matrix, source_load = assemble_thermal_operator_3d(mesh, basis, geom, case)
+    A_total = conductive + robin_matrix
+    # R @ T_ambient is identical to assembling integral(h*T_ambient*v).
+    b_total = source_load + robin_matrix @ np.full(mesh.p.shape[1], case.t_ambient)
 
     bottom_dofs = basis.get_dofs(bottom_facets)
     x0 = basis.zeros()
@@ -228,7 +340,7 @@ def solve_case_3d(mesh: MeshTet, basis: Basis, geom: GeometryConfig3D, case: Cas
 
     px, py, pz = mesh.p
     material_id = material_id_of_points_3d(px, py, pz, geom)
-    q_node = q_field_3d(px, py, pz, geom, case)
+    q_node = source_load / lumped_mass_3d(mesh.p, mesh.t)
     top_dofs = np.asarray(basis.get_dofs(top_facets))
     bottom_dofs_arr = np.asarray(bottom_dofs)
     is_top = np.zeros(mesh.p.shape[1], dtype=bool)
@@ -299,7 +411,7 @@ def _solve_case_dense_fallback(mesh: _TetraMeshFallback, geom: GeometryConfig3D,
         tets=mesh.t.copy(),
         T=T,
         material_id=material_id_of_points_3d(px, py, pz, geom),
-        q_node=q_field_3d(px, py, pz, geom, case),
+        q_node=project_source_to_nodes_3d(mesh, None, geom, case),
         is_top=is_top,
         is_bottom=is_bottom,
         h_node=np.where(is_top, case.h_top, 0.0),

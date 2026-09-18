@@ -1,0 +1,100 @@
+{
+  "case_id": "Case3",
+  "interposer_size_m": [
+    0.039,
+    0.039
+  ],
+  "chiplets": [
+    {
+      "name": "CPU2_0",
+      "width_m": 0.008,
+      "depth_m": 0.009,
+      "power_W": 150.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_1",
+      "width_m": 0.008,
+      "depth_m": 0.009,
+      "power_W": 150.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_2",
+      "width_m": 0.008,
+      "depth_m": 0.009,
+      "power_W": 150.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_3",
+      "width_m": 0.008,
+      "depth_m": 0.009,
+      "power_W": 150.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "DRAM_0",
+      "width_m": 0.009,
+      "depth_m": 0.009,
+      "power_W": 20.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "DRAM_1",
+      "width_m": 0.009,
+      "depth_m": 0.009,
+      "power_W": 20.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "DRAM_2",
+      "width_m": 0.009,
+      "depth_m": 0.009,
+      "power_W": 20.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "DRAM_3",
+      "width_m": 0.009,
+      "depth_m": 0.009,
+      "power_W": 20.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "total_power_W": 680.0,
+  "layout_status": "all_zero_initial_positions",
+  "ready_for_fem": false,
+  "source_sha256": {
+    "Case3.blocks": "17f3a3e27c37fc99877a76d4b2a078e53d4a725edfc8e843ec2c48baf0a719bb",
+    "Case3.nets": "303e6314a998cce2467608bc4246e45bbcff9ff8e54f4d0e29cf58d4c9a29f98",
+    "Case3.pl": "bf183fe8e93377c568ff2b32bb7a373052805982452c0c970da4cf72b6170161",
+    "Case3.power": "fa641474b526b3540c071bffa0578640af615c23499fa74cf1f24e266ea79384",
+    "Thermal-aware.json": "645d96902e9f824ccddfc5b2a34af723ed9feb038a93774e2e49a2fc185bed2d",
+    "WL-driven.json": "afac24abb63e5acbdc5303f402b41649f2ae7941ce504662b4eb2a86f1b3cf67"
+  }
+}

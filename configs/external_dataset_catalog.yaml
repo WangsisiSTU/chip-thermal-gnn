@@ -1,0 +1,145 @@
+# Machine-readable research catalog. This file records acquisition candidates;
+# it does not imply that large archives have already been downloaded.
+catalog_version: 1
+reviewed_at: 2026-09-16
+
+resources:
+  - id: ic_thermbench_s2_s5
+    priority: 1
+    kind: public_dataset_and_benchmark
+    title: IC-ThermBench S2-S5
+    homepage: https://github.com/Day333/ThermalBench
+    paper: https://arxiv.org/abs/2608.23977
+    data_entrypoint: https://github.com/Day333/ThermalBench/blob/main/docs/DATASETS.md
+    license:
+      data: CC-BY-4.0
+      code: MIT
+      note: S1 source tasks retain upstream licenses
+    approximate_download_gb: 4.6
+    samples:
+      s2_layout: 15000
+      s3_material: 15000
+      s4_boundary: 15000
+      s5_structural_ood: 5000
+    representation: regular_grid_64x64_z1_mat_hdf5
+    recommended_use:
+      - progressive layout/material/boundary benchmark
+      - structural OOD and few-shot package adaptation
+    caveats:
+      - 2D top-layer field rather than 3D tetrahedral volume
+      - keep official splits and report separately from local FEM data
+    acquisition: metadata_first_then_full_archive
+
+  - id: multi_topology_power_module
+    priority: 2
+    kind: public_dataset
+    title: Multi-topology Power Module Thermal Simulation Dataset
+    homepage: https://github.com/henkuailederen/Multi-topology-Dataset
+    license:
+      data: CC-BY-4.0
+    approximate_download_gb: 4.67
+    sample_count: 20350
+    topology_families: 7
+    representation: hdf5_256x256_surface_fields_and_masks
+    recommended_use:
+      - topology-aware multimodal surrogate benchmark
+      - per-chip peak temperature prediction
+    caveats:
+      - COMSOL top-surface absolute temperature, not 3D nodal temperature rise
+    acquisition: stratified_subset_before_full_archive
+
+  - id: therm_fm
+    priority: 3
+    kind: public_dataset_code_and_checkpoints
+    title: Therm-FM thermal steady/transient datasets
+    homepage: https://github.com/haiyangxin/Therm-FM
+    paper: https://arxiv.org/abs/2605.22663
+    data_entrypoint: https://github.com/haiyangxin/Therm-FM#datasets
+    license:
+      code: MIT
+      note: verify dataset/checkpoint archive terms on download
+    representation: matlab_arrays_with_normalization_constants
+    recommended_use:
+      - pretrained PDE foundation model comparison
+      - steady/transient and cross-chip transfer
+      - multi-fidelity fine-tuning
+    caveats:
+      - heavy model and checkpoint dependencies
+      - separate pretraining benefit from architecture benefit
+    acquisition: dataset_readme_and_small_model_first
+
+  - id: ucr_commercial_thermal_maps
+    priority: 4
+    kind: measured_dataset
+    title: Thermal Map Dataset for Commercial CPU/GPU/TPU
+    homepage: https://github.com/sheldonucr/commercial_thermal_map_dataset
+    project_page: https://vsclab.ece.ucr.edu/news/2025/01/06/vsclab-introduced-open-sourced-thermal-map-dataset-commercial-cpugputpu-multi-core
+    license:
+      note: repository does not present a simple reusable data license; verify with authors
+    representation: pickle_inputs_and_infrared_temperature_maps
+    recommended_use:
+      - simulation-to-real calibration
+      - measured hotspot location validation
+    caveats:
+      - repository contains representative samples; full datasets are by request
+      - geometry and sensor alignment differ from the local FEM problem
+    acquisition: representative_samples_then_author_request
+
+  - id: rigno_unstructured_pde
+    priority: 5
+    kind: method_validation_dataset
+    title: RIGNO unstructured PDE datasets
+    homepage: https://github.com/camlab-ethz/rigno
+    paper: https://arxiv.org/abs/2501.19205
+    license:
+      code: MIT
+      note: verify Zenodo dataset license per archive
+    representation: netcdf_unstructured_point_clouds
+    recommended_use:
+      - irregular-domain and resolution-invariance smoke tests
+      - regional graph architecture validation
+    caveats:
+      - not a chip thermal dataset
+    acquisition: heat_l_shape_first
+
+generators:
+  - id: three_d_ice_4
+    priority: 1
+    title: 3D-ICE 4.0
+    homepage: https://github.com/esl-epfl/3d-ice
+    license: GPL-3.0-or-later
+    platform: Linux
+    supports:
+      - heterogeneous_and_anisotropic_floorplans
+      - GDS_layouts
+      - nonuniform_grids
+      - steady_and_transient
+      - configurable_heat_sinks
+
+  - id: atsim_2
+    priority: 2
+    title: ATSim 2.0
+    homepage: https://github.com/PKU-IDEA/ATSim_pub
+    license: verify_before_use
+    platform: Ubuntu_20_04_recommended
+    supports:
+      - 2D_to_3p5D_packages
+      - nonlinear_and_orthotropic_materials
+      - temperature_feedback_power
+      - TSVs
+      - adaptive_multiscale_mesh
+      - steady_and_transient
+
+  - id: mfit
+    priority: 3
+    title: MFIT
+    homepage: https://github.com/AlishKanani/MFIT
+    license: GPL-3.0
+    platform: Linux_runtime_dependencies
+    supports:
+      - heterogeneous_chiplets
+      - nonuniform_nodes
+      - anisotropic_materials
+      - RC_and_DSS
+      - steady_and_transient
+

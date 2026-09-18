@@ -1,0 +1,591 @@
+{
+  "case_id": "Case9",
+  "layout_id": "derived_maxrects_v1",
+  "provenance": "project-generated; NOT official optimized placement",
+  "axes": "x,z in plane; y reserved for stack; origin is lower-left",
+  "interposer_size_um": [
+    59000,
+    61000
+  ],
+  "chiplets": [
+    {
+      "name": "Analog_0",
+      "origin_um": [
+        0,
+        58000
+      ],
+      "size_um": [
+        2000,
+        3000
+      ],
+      "rotation_deg": 90,
+      "power_W": 4.0
+    },
+    {
+      "name": "Analog_1",
+      "origin_um": [
+        2000,
+        58000
+      ],
+      "size_um": [
+        2000,
+        3000
+      ],
+      "rotation_deg": 90,
+      "power_W": 4.0
+    },
+    {
+      "name": "Analog_2",
+      "origin_um": [
+        4000,
+        58000
+      ],
+      "size_um": [
+        2000,
+        3000
+      ],
+      "rotation_deg": 90,
+      "power_W": 4.0
+    },
+    {
+      "name": "Analog_3",
+      "origin_um": [
+        6000,
+        58000
+      ],
+      "size_um": [
+        2000,
+        3000
+      ],
+      "rotation_deg": 90,
+      "power_W": 4.0
+    },
+    {
+      "name": "Analog_4",
+      "origin_um": [
+        8000,
+        58000
+      ],
+      "size_um": [
+        2000,
+        3000
+      ],
+      "rotation_deg": 90,
+      "power_W": 4.0
+    },
+    {
+      "name": "Analog_5",
+      "origin_um": [
+        10000,
+        47000
+      ],
+      "size_um": [
+        2000,
+        3000
+      ],
+      "rotation_deg": 90,
+      "power_W": 4.0
+    },
+    {
+      "name": "Analog_6",
+      "origin_um": [
+        10000,
+        50000
+      ],
+      "size_um": [
+        2000,
+        3000
+      ],
+      "rotation_deg": 90,
+      "power_W": 4.0
+    },
+    {
+      "name": "Analog_7",
+      "origin_um": [
+        10000,
+        53000
+      ],
+      "size_um": [
+        2000,
+        3000
+      ],
+      "rotation_deg": 90,
+      "power_W": 4.0
+    },
+    {
+      "name": "CPU1_0",
+      "origin_um": [
+        45000,
+        8000
+      ],
+      "size_um": [
+        2500,
+        3500
+      ],
+      "rotation_deg": 0,
+      "power_W": 12.0
+    },
+    {
+      "name": "CPU1_1",
+      "origin_um": [
+        56000,
+        0
+      ],
+      "size_um": [
+        2500,
+        3500
+      ],
+      "rotation_deg": 0,
+      "power_W": 12.0
+    },
+    {
+      "name": "CPU1_2",
+      "origin_um": [
+        56000,
+        3500
+      ],
+      "size_um": [
+        2500,
+        3500
+      ],
+      "rotation_deg": 0,
+      "power_W": 12.0
+    },
+    {
+      "name": "CPU1_3",
+      "origin_um": [
+        56000,
+        7000
+      ],
+      "size_um": [
+        2500,
+        3500
+      ],
+      "rotation_deg": 0,
+      "power_W": 12.0
+    },
+    {
+      "name": "CPU2_0",
+      "origin_um": [
+        0,
+        25000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 34.0
+    },
+    {
+      "name": "CPU2_1",
+      "origin_um": [
+        5000,
+        25000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 34.0
+    },
+    {
+      "name": "CPU2_10",
+      "origin_um": [
+        9000,
+        32000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 34.0
+    },
+    {
+      "name": "CPU2_11",
+      "origin_um": [
+        10000,
+        26000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 34.0
+    },
+    {
+      "name": "CPU2_2",
+      "origin_um": [
+        54000,
+        12000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 34.0
+    },
+    {
+      "name": "CPU2_3",
+      "origin_um": [
+        54000,
+        17000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 34.0
+    },
+    {
+      "name": "CPU2_4",
+      "origin_um": [
+        54000,
+        22000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 34.0
+    },
+    {
+      "name": "CPU2_5",
+      "origin_um": [
+        54000,
+        27000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 34.0
+    },
+    {
+      "name": "CPU2_6",
+      "origin_um": [
+        0,
+        48000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 34.0
+    },
+    {
+      "name": "CPU2_7",
+      "origin_um": [
+        0,
+        53000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 34.0
+    },
+    {
+      "name": "CPU2_8",
+      "origin_um": [
+        5000,
+        48000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 34.0
+    },
+    {
+      "name": "CPU2_9",
+      "origin_um": [
+        5000,
+        53000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 34.0
+    },
+    {
+      "name": "DRAM_0",
+      "origin_um": [
+        0,
+        30000
+      ],
+      "size_um": [
+        9000,
+        9000
+      ],
+      "rotation_deg": 0,
+      "power_W": 20.0
+    },
+    {
+      "name": "DRAM_1",
+      "origin_um": [
+        0,
+        39000
+      ],
+      "size_um": [
+        9000,
+        9000
+      ],
+      "rotation_deg": 0,
+      "power_W": 20.0
+    },
+    {
+      "name": "GPU_0",
+      "origin_um": [
+        36000,
+        8000
+      ],
+      "size_um": [
+        9000,
+        9000
+      ],
+      "rotation_deg": 0,
+      "power_W": 100.0
+    },
+    {
+      "name": "GPU_1",
+      "origin_um": [
+        45000,
+        12000
+      ],
+      "size_um": [
+        9000,
+        9000
+      ],
+      "rotation_deg": 0,
+      "power_W": 100.0
+    },
+    {
+      "name": "GPU_2",
+      "origin_um": [
+        0,
+        16000
+      ],
+      "size_um": [
+        9000,
+        9000
+      ],
+      "rotation_deg": 0,
+      "power_W": 100.0
+    },
+    {
+      "name": "GPU_3",
+      "origin_um": [
+        9000,
+        16000
+      ],
+      "size_um": [
+        9000,
+        9000
+      ],
+      "rotation_deg": 0,
+      "power_W": 100.0
+    },
+    {
+      "name": "GPU_4",
+      "origin_um": [
+        18000,
+        16000
+      ],
+      "size_um": [
+        9000,
+        9000
+      ],
+      "rotation_deg": 0,
+      "power_W": 100.0
+    },
+    {
+      "name": "GPU_5",
+      "origin_um": [
+        27000,
+        16000
+      ],
+      "size_um": [
+        9000,
+        9000
+      ],
+      "rotation_deg": 0,
+      "power_W": 100.0
+    },
+    {
+      "name": "GPU_6",
+      "origin_um": [
+        36000,
+        17000
+      ],
+      "size_um": [
+        9000,
+        9000
+      ],
+      "rotation_deg": 0,
+      "power_W": 100.0
+    },
+    {
+      "name": "GPU_7",
+      "origin_um": [
+        45000,
+        21000
+      ],
+      "size_um": [
+        9000,
+        9000
+      ],
+      "rotation_deg": 0,
+      "power_W": 100.0
+    },
+    {
+      "name": "HBM_0",
+      "origin_um": [
+        0,
+        0
+      ],
+      "size_um": [
+        12000,
+        8000
+      ],
+      "rotation_deg": 90,
+      "power_W": 25.0
+    },
+    {
+      "name": "HBM_1",
+      "origin_um": [
+        12000,
+        0
+      ],
+      "size_um": [
+        12000,
+        8000
+      ],
+      "rotation_deg": 90,
+      "power_W": 25.0
+    },
+    {
+      "name": "HBM_2",
+      "origin_um": [
+        24000,
+        0
+      ],
+      "size_um": [
+        12000,
+        8000
+      ],
+      "rotation_deg": 90,
+      "power_W": 25.0
+    },
+    {
+      "name": "HBM_3",
+      "origin_um": [
+        36000,
+        0
+      ],
+      "size_um": [
+        12000,
+        8000
+      ],
+      "rotation_deg": 90,
+      "power_W": 25.0
+    },
+    {
+      "name": "HBM_4",
+      "origin_um": [
+        48000,
+        0
+      ],
+      "size_um": [
+        8000,
+        12000
+      ],
+      "rotation_deg": 0,
+      "power_W": 25.0
+    },
+    {
+      "name": "HBM_5",
+      "origin_um": [
+        0,
+        8000
+      ],
+      "size_um": [
+        12000,
+        8000
+      ],
+      "rotation_deg": 90,
+      "power_W": 25.0
+    },
+    {
+      "name": "HBM_6",
+      "origin_um": [
+        12000,
+        8000
+      ],
+      "size_um": [
+        12000,
+        8000
+      ],
+      "rotation_deg": 90,
+      "power_W": 25.0
+    },
+    {
+      "name": "HBM_7",
+      "origin_um": [
+        24000,
+        8000
+      ],
+      "size_um": [
+        12000,
+        8000
+      ],
+      "rotation_deg": 90,
+      "power_W": 25.0
+    },
+    {
+      "name": "IODie_0",
+      "origin_um": [
+        9000,
+        37000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 10.0
+    },
+    {
+      "name": "IODie_1",
+      "origin_um": [
+        9000,
+        42000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 10.0
+    }
+  ],
+  "geometric_checks_passed": true,
+  "ready_for_fem": false,
+  "clearance_um": 0,
+  "routing_validated": false,
+  "packing_attempt": 0,
+  "total_power_W": 1548.0,
+  "input_sha256": "d346e66f9f4e9c4d1174f23cdd5bcd6fe06bad04e2a52e39ae75f1a6059edb02"
+}

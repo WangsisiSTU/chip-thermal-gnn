@@ -78,3 +78,22 @@ def test_covered_poor_cooling_has_explicit_split_counts_and_labels():
     covered = [case for _, case in cases if case.regime == "covered_poor_cooling"]
     assert len(covered) == 4
     assert all(100.0 <= case.h_top <= 400.0 for case in covered)
+
+
+def test_multiple_covered_physics_regimes_keep_exact_split_counts():
+    cfg = sampling_config()
+    cfg["split"] = {"n_train": 8, "n_val": 5, "n_test": 9}
+    cfg["coverage"] = {
+        "high_power": {"train": 1, "val": 1, "test": 1, "q_hot": {"low": 3.1e7, "high": 3.4e7}},
+        "poor_tim": {"train": 1, "val": 1, "test": 1, "k_tim": {"low": 0.3, "high": 0.8}},
+        "poor_cooling": {"train": 1, "val": 1, "test": 1, "h_top": {"low": 100.0, "high": 400.0}},
+    }
+    cfg["ood"]["test_counts"] = {"high_power": 1, "poor_tim": 1, "poor_cooling": 1}
+    cases = build_case_list_3d(cfg)
+    assert {split: sum(case_split == split for case_split, _ in cases)
+            for split in ("train", "val", "test")} == {
+                "train": 8, "val": 5, "test": 9,
+            }
+    regimes = [case.regime for _, case in cases]
+    for kind in ("high_power", "poor_tim", "poor_cooling"):
+        assert regimes.count(f"covered_{kind}") == 3

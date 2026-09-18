@@ -1,0 +1,300 @@
+{
+  "case_id": "Case7",
+  "interposer_size_m": [
+    0.03,
+    0.024999999999999998
+  ],
+  "chiplets": [
+    {
+      "name": "CPU1_0",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU1_1",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU1_2",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU1_3",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU1_4",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU1_5",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU1_6",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU1_7",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_0",
+      "width_m": 0.005,
+      "depth_m": 0.005,
+      "power_W": 34.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_1",
+      "width_m": 0.005,
+      "depth_m": 0.005,
+      "power_W": 34.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "DRAM_0",
+      "width_m": 0.009,
+      "depth_m": 0.009,
+      "power_W": 20.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "DRAM_1",
+      "width_m": 0.009,
+      "depth_m": 0.009,
+      "power_W": 20.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_0",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_1",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_2",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_3",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_4",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_5",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_6",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Analog_7",
+      "width_m": 0.003,
+      "depth_m": 0.002,
+      "power_W": 4.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_0",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_1",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_2",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_3",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_4",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_5",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_6",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_7",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "total_power_W": 260.0,
+  "layout_status": "all_zero_initial_positions",
+  "ready_for_fem": false,
+  "source_sha256": {
+    "Case7.blocks": "34d082c081a60511209abd8e10883fce4bb181556ba93fbcac30c99c5e9ea791",
+    "Case7.nets": "328fe21689fc7fc3989b07b1d8e47d41e66efe1c06cbc6e4ad382341d3fa8489",
+    "Case7.pl": "00589b585e285402f2972f493312ba1ec0236253f2db0ef62839d9c7743fc5d2",
+    "Case7.power": "e5361c4358d7e8f602157ec57a4871767e6fb643da1eabd4f896948b2ef49090",
+    "Thermal-aware.json": "315d87f25e30b9e32403a9c5a262f33703cbdfbd829c853e1fd033a872311374",
+    "WL-driven.json": "44000dd7112d6494906b7945c325796034ab793d5b5c7da935e480bb69cdb1f3"
+  }
+}

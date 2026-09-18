@@ -1,0 +1,140 @@
+{
+  "case_id": "Case5",
+  "interposer_size_m": [
+    0.056999999999999995,
+    0.059
+  ],
+  "chiplets": [
+    {
+      "name": "CPU2_0",
+      "width_m": 0.008,
+      "depth_m": 0.009,
+      "power_W": 150.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_1",
+      "width_m": 0.008,
+      "depth_m": 0.009,
+      "power_W": 150.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_2",
+      "width_m": 0.008,
+      "depth_m": 0.009,
+      "power_W": 150.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_3",
+      "width_m": 0.008,
+      "depth_m": 0.009,
+      "power_W": 150.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_4",
+      "width_m": 0.008,
+      "depth_m": 0.009,
+      "power_W": 150.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_5",
+      "width_m": 0.008,
+      "depth_m": 0.009,
+      "power_W": 150.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "DRAM_0",
+      "width_m": 0.009,
+      "depth_m": 0.009,
+      "power_W": 20.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "DRAM_1",
+      "width_m": 0.009,
+      "depth_m": 0.009,
+      "power_W": 20.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "DRAM_2",
+      "width_m": 0.009,
+      "depth_m": 0.009,
+      "power_W": 20.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "DRAM_3",
+      "width_m": 0.009,
+      "depth_m": 0.009,
+      "power_W": 20.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "DRAM_4",
+      "width_m": 0.009,
+      "depth_m": 0.009,
+      "power_W": 20.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "DRAM_5",
+      "width_m": 0.009,
+      "depth_m": 0.009,
+      "power_W": 20.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "total_power_W": 1020.0,
+  "layout_status": "all_zero_initial_positions",
+  "ready_for_fem": false,
+  "source_sha256": {
+    "Case5.blocks": "c6eee958bc88be852bd0f650e41d2b53b6211f8911ef5023586e9f2a504ccc8f",
+    "Case5.nets": "dd0b51211372d4854896695b4be6ee54d69c79c6453dd4c51b0604c1e138ef15",
+    "Case5.pl": "f23442c0809a566f69fb8d86b43d50be2ddce4ea5b7873d66a4aab6339ee403b",
+    "Case5.power": "faf040963bb2ed79a7ee77c4d6b65bb553c259a01c750ad3c108a1aa4aa81427",
+    "Thermal-aware.json": "4015039f705121bb2211e991fdc2142bc90fd08d927574b95bdc7c317a8d93ed",
+    "WL-driven.json": "6e12155ef4e8acae3a7612ea56a81f108c1b1591f963f2d5e7b0cc1bf354c46f"
+  }
+}

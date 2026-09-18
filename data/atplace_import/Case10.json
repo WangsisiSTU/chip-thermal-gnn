@@ -1,0 +1,630 @@
+{
+  "case_id": "Case10",
+  "interposer_size_m": [
+    0.047,
+    0.047
+  ],
+  "chiplets": [
+    {
+      "name": "CPU1_0",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU1_1",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU1_2",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU1_3",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU1_4",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU1_5",
+      "width_m": 0.0025,
+      "depth_m": 0.0034999999999999996,
+      "power_W": 12.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_0",
+      "width_m": 0.005,
+      "depth_m": 0.005,
+      "power_W": 34.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_1",
+      "width_m": 0.005,
+      "depth_m": 0.005,
+      "power_W": 34.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_2",
+      "width_m": 0.005,
+      "depth_m": 0.005,
+      "power_W": 34.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_3",
+      "width_m": 0.005,
+      "depth_m": 0.005,
+      "power_W": 34.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_4",
+      "width_m": 0.005,
+      "depth_m": 0.005,
+      "power_W": 34.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_5",
+      "width_m": 0.005,
+      "depth_m": 0.005,
+      "power_W": 34.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_6",
+      "width_m": 0.005,
+      "depth_m": 0.005,
+      "power_W": 34.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_7",
+      "width_m": 0.005,
+      "depth_m": 0.005,
+      "power_W": 34.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_8",
+      "width_m": 0.005,
+      "depth_m": 0.005,
+      "power_W": 34.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "GPU_0",
+      "width_m": 0.009,
+      "depth_m": 0.009,
+      "power_W": 100.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "GPU_1",
+      "width_m": 0.009,
+      "depth_m": 0.009,
+      "power_W": 100.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "GPU_2",
+      "width_m": 0.009,
+      "depth_m": 0.009,
+      "power_W": 100.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "GPU_3",
+      "width_m": 0.009,
+      "depth_m": 0.009,
+      "power_W": 100.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "DUMMY_0",
+      "width_m": 0.008,
+      "depth_m": 0.012,
+      "power_W": 25.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "DUMMY_1",
+      "width_m": 0.008,
+      "depth_m": 0.012,
+      "power_W": 25.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "DUMMY_2",
+      "width_m": 0.008,
+      "depth_m": 0.012,
+      "power_W": 25.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "DUMMY_3",
+      "width_m": 0.008,
+      "depth_m": 0.012,
+      "power_W": 25.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "IODie_0",
+      "width_m": 0.005,
+      "depth_m": 0.005,
+      "power_W": 10.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "IODie_1",
+      "width_m": 0.005,
+      "depth_m": 0.005,
+      "power_W": 10.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_0",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_1",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_2",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_3",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_4",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_5",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_6",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_7",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_8",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_9",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_10",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_11",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_12",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_13",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_14",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_15",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_16",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_17",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_18",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_19",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_20",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_21",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_22",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_23",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_24",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_25",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_26",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_27",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_28",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_29",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_30",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_31",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_32",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_33",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_34",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "MEMS_35",
+      "width_m": 0.002,
+      "depth_m": 0.0012,
+      "power_W": 3.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "total_power_W": 1006.0,
+  "layout_status": "all_zero_initial_positions",
+  "ready_for_fem": false,
+  "source_sha256": {
+    "Case10.blocks": "6e4aacc05a2672f8e2fb3c62641bfe2e96348977d21670b764f0fd0a8c957775",
+    "Case10.nets": "75b6b73a12e766902a2cb4fd7a13cc4471848c6100d0c772dbe7aa93b1eb9d6b",
+    "Case10.pl": "cf12bebd45a89a75c30ca218bfc7900aefffc5ae6db6b6977e3bf9e30dda7bc5",
+    "Case10.power": "09c5c7a18d6c340bf5edc55ad8faedf5e80e35784776ac6026ff33959dd64e64",
+    "Thermal-aware.json": "6c68291afcaa7e93a29c5f48a6942482f335640fe845a0d7de51b74a9a3a4104",
+    "WL-driven.json": "ea34358be9aa76fbcee88103eed0e380ae750ecf9f3d998adee8d080d9914869"
+  }
+}

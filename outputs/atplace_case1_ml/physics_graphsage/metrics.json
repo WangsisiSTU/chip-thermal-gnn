@@ -1,0 +1,12 @@
+{
+  "volume_weighted_mae_K": 1.2185712208350499,
+  "volume_weighted_rmse_K": 1.6754023830095928,
+  "mean_absolute_peak_error_K": 0.2757813135782878,
+  "mean_chip_mean_error_K": 0.9560655686590407,
+  "mean_energy_balance_rel_error": 2.977817180986146e-07,
+  "inference_ms_per_graph": 13.279158330988139,
+  "best_val_loss": 0.055848815788825355,
+  "epochs_run": 60,
+  "train_time_s": 18.52555180003401,
+  "parameter_count": 20225
+}

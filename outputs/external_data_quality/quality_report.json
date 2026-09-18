@@ -1,0 +1,727 @@
+{
+  "multi_topology": {
+    "manifest": {
+      "valid": true,
+      "rows": 20350,
+      "duplicate_paths": 0,
+      "path_label_mismatches": 0,
+      "h_normalization_mismatches": 0,
+      "summary_errors": [],
+      "topology_split": {
+        "Mask_3P6P_V1": {
+          "counts": {
+            "TrainData": 2586,
+            "ValData": 554,
+            "TestData": 555
+          },
+          "layout_overlap": {
+            "train_val": 77,
+            "train_test": 77,
+            "val_test": 77
+          },
+          "condition_values": {
+            "Pigbt": {
+              "TrainData": [
+                150,
+                250,
+                350,
+                450
+              ],
+              "ValData": [
+                150,
+                250,
+                350,
+                450
+              ],
+              "TestData": [
+                150,
+                250,
+                350,
+                450
+              ]
+            },
+            "Pfwd": {
+              "TrainData": [
+                100,
+                150,
+                200
+              ],
+              "ValData": [
+                100,
+                150,
+                200
+              ],
+              "TestData": [
+                100,
+                150,
+                200
+              ]
+            },
+            "h_value": {
+              "TrainData": [
+                2000,
+                4000,
+                6000,
+                8000
+              ],
+              "ValData": [
+                2000,
+                4000,
+                6000,
+                8000
+              ],
+              "TestData": [
+                2000,
+                4000,
+                6000,
+                8000
+              ]
+            }
+          }
+        },
+        "Mask_3P6P_V2": {
+          "counts": {
+            "TrainData": 1948,
+            "ValData": 417,
+            "TestData": 419
+          },
+          "layout_overlap": {
+            "train_val": 58,
+            "train_test": 58,
+            "val_test": 58
+          },
+          "condition_values": {
+            "Pigbt": {
+              "TrainData": [
+                150,
+                250,
+                350,
+                450
+              ],
+              "ValData": [
+                150,
+                250,
+                350,
+                450
+              ],
+              "TestData": [
+                150,
+                250,
+                350,
+                450
+              ]
+            },
+            "Pfwd": {
+              "TrainData": [
+                100,
+                150,
+                200
+              ],
+              "ValData": [
+                100,
+                150,
+                200
+              ],
+              "TestData": [
+                100,
+                150,
+                200
+              ]
+            },
+            "h_value": {
+              "TrainData": [
+                2000,
+                4000,
+                6000,
+                8000
+              ],
+              "ValData": [
+                2000,
+                4000,
+                6000,
+                8000
+              ],
+              "TestData": [
+                2000,
+                4000,
+                6000,
+                8000
+              ]
+            }
+          }
+        },
+        "Mask_HB_V1": {
+          "counts": {
+            "TrainData": 672,
+            "ValData": 144,
+            "TestData": 144
+          },
+          "layout_overlap": {
+            "train_val": 20,
+            "train_test": 20,
+            "val_test": 20
+          },
+          "condition_values": {
+            "Pigbt": {
+              "TrainData": [
+                150,
+                250,
+                350,
+                450
+              ],
+              "ValData": [
+                150,
+                250,
+                350,
+                450
+              ],
+              "TestData": [
+                150,
+                250,
+                350,
+                450
+              ]
+            },
+            "Pfwd": {
+              "TrainData": [
+                100,
+                150,
+                200
+              ],
+              "ValData": [
+                100,
+                150,
+                200
+              ],
+              "TestData": [
+                100,
+                150,
+                200
+              ]
+            },
+            "h_value": {
+              "TrainData": [
+                2000,
+                4000,
+                6000,
+                8000
+              ],
+              "ValData": [
+                2000,
+                4000,
+                6000,
+                8000
+              ],
+              "TestData": [
+                2000,
+                4000,
+                6000,
+                8000
+              ]
+            }
+          }
+        },
+        "Mask_HB_V2": {
+          "counts": {
+            "TrainData": 2083,
+            "ValData": 446,
+            "TestData": 447
+          },
+          "layout_overlap": {
+            "train_val": 62,
+            "train_test": 62,
+            "val_test": 62
+          },
+          "condition_values": {
+            "Pigbt": {
+              "TrainData": [
+                150,
+                250,
+                350,
+                450
+              ],
+              "ValData": [
+                150,
+                250,
+                350,
+                450
+              ],
+              "TestData": [
+                150,
+                250,
+                350,
+                450
+              ]
+            },
+            "Pfwd": {
+              "TrainData": [
+                100,
+                150,
+                200
+              ],
+              "ValData": [
+                100,
+                150,
+                200
+              ],
+              "TestData": [
+                100,
+                150,
+                200
+              ]
+            },
+            "h_value": {
+              "TrainData": [
+                2000,
+                4000,
+                6000,
+                8000
+              ],
+              "ValData": [
+                2000,
+                4000,
+                6000,
+                8000
+              ],
+              "TestData": [
+                2000,
+                4000,
+                6000,
+                8000
+              ]
+            }
+          }
+        },
+        "Mask_HB_V3-0": {
+          "counts": {
+            "TrainData": 3427,
+            "ValData": 734,
+            "TestData": 735
+          },
+          "layout_overlap": {
+            "train_val": 102,
+            "train_test": 102,
+            "val_test": 102
+          },
+          "condition_values": {
+            "Pigbt": {
+              "TrainData": [
+                150,
+                250,
+                350,
+                450
+              ],
+              "ValData": [
+                150,
+                250,
+                350,
+                450
+              ],
+              "TestData": [
+                150,
+                250,
+                350,
+                450
+              ]
+            },
+            "Pfwd": {
+              "TrainData": [
+                100,
+                150,
+                200
+              ],
+              "ValData": [
+                100,
+                150,
+                200
+              ],
+              "TestData": [
+                100,
+                150,
+                200
+              ]
+            },
+            "h_value": {
+              "TrainData": [
+                2000,
+                4000,
+                6000,
+                8000
+              ],
+              "ValData": [
+                2000,
+                4000,
+                6000,
+                8000
+              ],
+              "TestData": [
+                2000,
+                4000,
+                6000,
+                8000
+              ]
+            }
+          }
+        },
+        "Mask_HB_V3-1": {
+          "counts": {
+            "TrainData": 2250,
+            "ValData": 482,
+            "TestData": 483
+          },
+          "layout_overlap": {
+            "train_val": 67,
+            "train_test": 67,
+            "val_test": 67
+          },
+          "condition_values": {
+            "Pigbt": {
+              "TrainData": [
+                150,
+                250,
+                350,
+                450
+              ],
+              "ValData": [
+                150,
+                250,
+                350,
+                450
+              ],
+              "TestData": [
+                150,
+                250,
+                350,
+                450
+              ]
+            },
+            "Pfwd": {
+              "TrainData": [
+                100,
+                150,
+                200
+              ],
+              "ValData": [
+                100,
+                150,
+                200
+              ],
+              "TestData": [
+                100,
+                150,
+                200
+              ]
+            },
+            "h_value": {
+              "TrainData": [
+                2000,
+                4000,
+                6000,
+                8000
+              ],
+              "ValData": [
+                2000,
+                4000,
+                6000,
+                8000
+              ],
+              "TestData": [
+                2000,
+                4000,
+                6000,
+                8000
+              ]
+            }
+          }
+        },
+        "Mask_HB_V3-2": {
+          "counts": {
+            "TrainData": 1276,
+            "ValData": 273,
+            "TestData": 275
+          },
+          "layout_overlap": {
+            "train_val": 38,
+            "train_test": 38,
+            "val_test": 38
+          },
+          "condition_values": {
+            "Pigbt": {
+              "TrainData": [
+                150,
+                250,
+                350,
+                450
+              ],
+              "ValData": [
+                150,
+                250,
+                350,
+                450
+              ],
+              "TestData": [
+                150,
+                250,
+                350,
+                450
+              ]
+            },
+            "Pfwd": {
+              "TrainData": [
+                100,
+                150,
+                200
+              ],
+              "ValData": [
+                100,
+                150,
+                200
+              ],
+              "TestData": [
+                100,
+                150,
+                200
+              ]
+            },
+            "h_value": {
+              "TrainData": [
+                2000,
+                4000,
+                6000,
+                8000
+              ],
+              "ValData": [
+                2000,
+                4000,
+                6000,
+                8000
+              ],
+              "TestData": [
+                2000,
+                4000,
+                6000,
+                8000
+              ]
+            }
+          }
+        }
+      },
+      "layout_disjoint": false,
+      "warning": "Official split is operating-condition stratified but reuses every layout id across train/validation/test; it is not a structural-OOD split."
+    },
+    "sampled_all_topologies": true,
+    "sample_count": 7,
+    "samples": [
+      {
+        "path": "TestData/Mask_3P6P_V1/000_Pigbt150_Pfwd100_h6000/data.h5",
+        "topology": "Mask_3P6P_V1",
+        "instances": 4,
+        "field_keys": [
+          "baseplate_mask",
+          "ceramic_mask",
+          "copper_mask",
+          "h_normalized",
+          "instance_map",
+          "max_temps",
+          "power_map",
+          "row_ids",
+          "temperature"
+        ],
+        "feature_shape": [
+          256,
+          256,
+          6
+        ],
+        "target_shape": [
+          256,
+          256
+        ],
+        "temperature_range_c": [
+          31.150096893310547,
+          83.3702621459961
+        ]
+      },
+      {
+        "path": "TestData/Mask_3P6P_V2/000_Pigbt150_Pfwd100_h6000/data.h5",
+        "topology": "Mask_3P6P_V2",
+        "instances": 4,
+        "field_keys": [
+          "baseplate_mask",
+          "ceramic_mask",
+          "copper_mask",
+          "h_normalized",
+          "instance_map",
+          "max_temps",
+          "power_map",
+          "row_ids",
+          "temperature"
+        ],
+        "feature_shape": [
+          256,
+          256,
+          6
+        ],
+        "target_shape": [
+          256,
+          256
+        ],
+        "temperature_range_c": [
+          31.63484764099121,
+          91.78871154785156
+        ]
+      },
+      {
+        "path": "TestData/Mask_HB_V1/000_Pigbt150_Pfwd150_h6000/data.h5",
+        "topology": "Mask_HB_V1",
+        "instances": 2,
+        "field_keys": [
+          "baseplate_mask",
+          "ceramic_mask",
+          "copper_mask",
+          "h_normalized",
+          "instance_map",
+          "max_temps",
+          "power_map",
+          "row_ids",
+          "temperature"
+        ],
+        "feature_shape": [
+          256,
+          256,
+          6
+        ],
+        "target_shape": [
+          256,
+          256
+        ],
+        "temperature_range_c": [
+          32.2901496887207,
+          148.19166564941406
+        ]
+      },
+      {
+        "path": "TestData/Mask_HB_V2/000_Pigbt150_Pfwd100_h6000/data.h5",
+        "topology": "Mask_HB_V2",
+        "instances": 4,
+        "field_keys": [
+          "baseplate_mask",
+          "ceramic_mask",
+          "copper_mask",
+          "h_normalized",
+          "instance_map",
+          "max_temps",
+          "power_map",
+          "row_ids",
+          "temperature"
+        ],
+        "feature_shape": [
+          256,
+          256,
+          6
+        ],
+        "target_shape": [
+          256,
+          256
+        ],
+        "temperature_range_c": [
+          32.44356155395508,
+          79.61239624023438
+        ]
+      },
+      {
+        "path": "TestData/Mask_HB_V3-0/000_Pigbt150_Pfwd100_h8000/data.h5",
+        "topology": "Mask_HB_V3-0",
+        "instances": 6,
+        "field_keys": [
+          "baseplate_mask",
+          "ceramic_mask",
+          "copper_mask",
+          "h_normalized",
+          "instance_map",
+          "max_temps",
+          "power_map",
+          "row_ids",
+          "temperature"
+        ],
+        "feature_shape": [
+          256,
+          256,
+          6
+        ],
+        "target_shape": [
+          256,
+          256
+        ],
+        "temperature_range_c": [
+          29.497135162353516,
+          74.40194702148438
+        ]
+      },
+      {
+        "path": "TestData/Mask_HB_V3-1/002_Pigbt150_Pfwd100_h6000/data.h5",
+        "topology": "Mask_HB_V3-1",
+        "instances": 4,
+        "field_keys": [
+          "baseplate_mask",
+          "ceramic_mask",
+          "copper_mask",
+          "h_normalized",
+          "instance_map",
+          "max_temps",
+          "power_map",
+          "row_ids",
+          "temperature"
+        ],
+        "feature_shape": [
+          256,
+          256,
+          6
+        ],
+        "target_shape": [
+          256,
+          256
+        ],
+        "temperature_range_c": [
+          31.717018127441406,
+          91.70471954345703
+        ]
+      },
+      {
+        "path": "TestData/Mask_HB_V3-2/000_Pigbt150_Pfwd100_h4000/data.h5",
+        "topology": "Mask_HB_V3-2",
+        "instances": 2,
+        "field_keys": [
+          "baseplate_mask",
+          "ceramic_mask",
+          "copper_mask",
+          "h_normalized",
+          "instance_map",
+          "max_temps",
+          "power_map",
+          "row_ids",
+          "temperature"
+        ],
+        "feature_shape": [
+          256,
+          256,
+          6
+        ],
+        "target_shape": [
+          256,
+          256
+        ],
+        "temperature_range_c": [
+          37.32036209106445,
+          154.27418518066406
+        ]
+      }
+    ]
+  },
+  "ic_thermbench": {
+    "code_present": true,
+    "official_metrics_present": true,
+    "dataset_contract_present": true,
+    "s5_manifest_present": false,
+    "checkpoint_downloaded": false
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "case_id": "Case4",
+  "interposer_size_m": [
+    0.037,
+    0.037
+  ],
+  "chiplets": [
+    {
+      "name": "CPU1_0",
+      "width_m": 0.012,
+      "depth_m": 0.012,
+      "power_W": 105.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU1_1",
+      "width_m": 0.012,
+      "depth_m": 0.012,
+      "power_W": 105.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "GPU_0",
+      "width_m": 0.018,
+      "depth_m": 0.018,
+      "power_W": 300.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "GPU_1",
+      "width_m": 0.018,
+      "depth_m": 0.018,
+      "power_W": 300.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "GPU_2",
+      "width_m": 0.018,
+      "depth_m": 0.018,
+      "power_W": 300.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "GPU_3",
+      "width_m": 0.018,
+      "depth_m": 0.018,
+      "power_W": 300.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "HBM_0",
+      "width_m": 0.008,
+      "depth_m": 0.012,
+      "power_W": 25.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "HBM_1",
+      "width_m": 0.008,
+      "depth_m": 0.012,
+      "power_W": 25.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "HBM_2",
+      "width_m": 0.008,
+      "depth_m": 0.012,
+      "power_W": 25.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "HBM_3",
+      "width_m": 0.008,
+      "depth_m": 0.012,
+      "power_W": 25.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "HBM_4",
+      "width_m": 0.008,
+      "depth_m": 0.012,
+      "power_W": 25.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "total_power_W": 1535.0,
+  "layout_status": "all_zero_initial_positions",
+  "ready_for_fem": false,
+  "source_sha256": {
+    "Case4.blocks": "b3f1b7749ebf80847e667f4119dbafd5e54e2a560ed282c6ede84159c00b1211",
+    "Case4.nets": "e32e34ee76b021fe2de7d4d1031319955d11a86d6e6a9942d8da42ec034f0e97",
+    "Case4.pl": "9a87838533ca9bcf19c18e8e3759ac64bf50397df077e5b41d3afe97dad637c9",
+    "Case4.power": "9c1f08b613617da10decf765577851045fdcad92bddcd1cbc223c0b0c4fa1dd9",
+    "Thermal-aware.json": "888fc98e4e572713c338dc91130587cecb2e6d334bc21e1b3df7e9d9f2b887a3",
+    "WL-driven.json": "2fd41bd40c30e79a0f47282f02a8419f3a6f63d3e66f55d5b49fb61e6fc46c40"
+  }
+}

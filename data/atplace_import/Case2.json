@@ -1,0 +1,80 @@
+{
+  "case_id": "Case2",
+  "interposer_size_m": [
+    0.032,
+    0.032
+  ],
+  "chiplets": [
+    {
+      "name": "HBM_0",
+      "width_m": 0.008,
+      "depth_m": 0.012,
+      "power_W": 25.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "HBM_1",
+      "width_m": 0.008,
+      "depth_m": 0.012,
+      "power_W": 25.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "HBM_2",
+      "width_m": 0.008,
+      "depth_m": 0.012,
+      "power_W": 25.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "HBM_3",
+      "width_m": 0.008,
+      "depth_m": 0.012,
+      "power_W": 25.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Virtuvian_0",
+      "width_m": 0.0314,
+      "depth_m": 0.014499999999999999,
+      "power_W": 256.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Nimbus_0",
+      "width_m": 0.010499999999999999,
+      "depth_m": 0.016,
+      "power_W": 14.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "total_power_W": 370.0,
+  "layout_status": "all_zero_initial_positions",
+  "ready_for_fem": false,
+  "source_sha256": {
+    "Case2.blocks": "8c91eb6eb30c822c452b2c6b7c71d8faa839943a0d21939e990652a508da4d43",
+    "Case2.nets": "682df252907f2299992164b85a5f5737325ac68b436425c69a3ec33b3f8e2be0",
+    "Case2.pl": "9c18c4aa36e9021ca114eb309125b46a2d174aceaca048462d3425defa11b2c8",
+    "Case2.power": "42f0690a1aac23c9b6f58b7e7216c14b3f59455595e934f694f867e59a2f5486",
+    "Thermal-aware.json": "d6370018ebe98422649fd77372c6570c65856b8c86e37b6eba3d070dec0828c0",
+    "WL-driven.json": "fce985e0174400d0065af55501b7faae62a078683bfb67b5e3f393b079152a22"
+  }
+}

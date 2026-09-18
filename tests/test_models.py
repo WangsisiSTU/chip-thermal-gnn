@@ -3,6 +3,7 @@ import torch
 from torch_geometric.data import Batch, Data
 
 from models import BaselineGNN, MGNTransolverHybrid, MeshGraphNet
+from models import build_model
 
 
 def make_toy_graph(n_nodes=20, node_dim=11, edge_dim=4):
@@ -57,3 +58,21 @@ def test_hybrid_keeps_variable_mesh_graphs_independent():
     batched.square().mean().backward()
     assert model.global_blocks[0].attn.slice_logits.weight.grad is not None
     assert model.processor[0].edge_mlp.net[0].weight.grad is not None
+
+
+def test_attention_ablations_are_finite_and_gumbel_evaluation_is_repeatable():
+    graph = make_toy_graph(n_nodes=11)
+    graph.node_volume = torch.ones(graph.num_nodes)
+    cfg = {"hybrid_model": {"hidden_dim": 32, "n_message_passing_steps": 2,
+                            "attention_blocks": 1, "attention_heads": 4,
+                            "attention_slices": 8, "dropout": 0.0,
+                            "aggregation": "mean", "global_gate": True}}
+    for name in ("mgn_global_pool", "mgn_transolver_slice_only",
+                 "mgn_transolver", "mgn_transolver_adaptive",
+                 "mgn_transolver_adaptive_gumbel"):
+        model = build_model(name, 11, 4, cfg)
+        model.eval()
+        first, second = model(graph), model(graph)
+        assert first.shape == (graph.num_nodes,)
+        assert torch.isfinite(first).all()
+        assert torch.allclose(first, second)

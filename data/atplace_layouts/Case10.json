@@ -1,0 +1,812 @@
+{
+  "case_id": "Case10",
+  "layout_id": "derived_maxrects_v1",
+  "provenance": "project-generated; NOT official optimized placement",
+  "axes": "x,z in plane; y reserved for stack; origin is lower-left",
+  "interposer_size_um": [
+    47000,
+    47000
+  ],
+  "chiplets": [
+    {
+      "name": "CPU1_0",
+      "origin_um": [
+        8000,
+        33000
+      ],
+      "size_um": [
+        3500,
+        2500
+      ],
+      "rotation_deg": 90,
+      "power_W": 12.0
+    },
+    {
+      "name": "CPU1_1",
+      "origin_um": [
+        8000,
+        0
+      ],
+      "size_um": [
+        3500,
+        2500
+      ],
+      "rotation_deg": 90,
+      "power_W": 12.0
+    },
+    {
+      "name": "CPU1_2",
+      "origin_um": [
+        8000,
+        2500
+      ],
+      "size_um": [
+        3500,
+        2500
+      ],
+      "rotation_deg": 90,
+      "power_W": 12.0
+    },
+    {
+      "name": "CPU1_3",
+      "origin_um": [
+        8000,
+        5000
+      ],
+      "size_um": [
+        2500,
+        3500
+      ],
+      "rotation_deg": 0,
+      "power_W": 12.0
+    },
+    {
+      "name": "CPU1_4",
+      "origin_um": [
+        17000,
+        15000
+      ],
+      "size_um": [
+        3500,
+        2500
+      ],
+      "rotation_deg": 90,
+      "power_W": 12.0
+    },
+    {
+      "name": "CPU1_5",
+      "origin_um": [
+        12000,
+        43000
+      ],
+      "size_um": [
+        2500,
+        3500
+      ],
+      "rotation_deg": 0,
+      "power_W": 12.0
+    },
+    {
+      "name": "CPU2_0",
+      "origin_um": [
+        39000,
+        0
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 34.0
+    },
+    {
+      "name": "CPU2_1",
+      "origin_um": [
+        39000,
+        5000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 34.0
+    },
+    {
+      "name": "CPU2_2",
+      "origin_um": [
+        8000,
+        18000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 34.0
+    },
+    {
+      "name": "CPU2_3",
+      "origin_um": [
+        8000,
+        23000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 34.0
+    },
+    {
+      "name": "CPU2_4",
+      "origin_um": [
+        8000,
+        28000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 34.0
+    },
+    {
+      "name": "CPU2_5",
+      "origin_um": [
+        12000,
+        33000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 34.0
+    },
+    {
+      "name": "CPU2_6",
+      "origin_um": [
+        12000,
+        38000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 34.0
+    },
+    {
+      "name": "CPU2_7",
+      "origin_um": [
+        13000,
+        18000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 34.0
+    },
+    {
+      "name": "CPU2_8",
+      "origin_um": [
+        17000,
+        10000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 34.0
+    },
+    {
+      "name": "DUMMY_0",
+      "origin_um": [
+        0,
+        0
+      ],
+      "size_um": [
+        8000,
+        12000
+      ],
+      "rotation_deg": 0,
+      "power_W": 25.0
+    },
+    {
+      "name": "DUMMY_1",
+      "origin_um": [
+        0,
+        12000
+      ],
+      "size_um": [
+        8000,
+        12000
+      ],
+      "rotation_deg": 0,
+      "power_W": 25.0
+    },
+    {
+      "name": "DUMMY_2",
+      "origin_um": [
+        0,
+        24000
+      ],
+      "size_um": [
+        8000,
+        12000
+      ],
+      "rotation_deg": 0,
+      "power_W": 25.0
+    },
+    {
+      "name": "DUMMY_3",
+      "origin_um": [
+        0,
+        36000
+      ],
+      "size_um": [
+        12000,
+        8000
+      ],
+      "rotation_deg": 90,
+      "power_W": 25.0
+    },
+    {
+      "name": "GPU_0",
+      "origin_um": [
+        12000,
+        0
+      ],
+      "size_um": [
+        9000,
+        9000
+      ],
+      "rotation_deg": 0,
+      "power_W": 100.0
+    },
+    {
+      "name": "GPU_1",
+      "origin_um": [
+        21000,
+        0
+      ],
+      "size_um": [
+        9000,
+        9000
+      ],
+      "rotation_deg": 0,
+      "power_W": 100.0
+    },
+    {
+      "name": "GPU_2",
+      "origin_um": [
+        30000,
+        0
+      ],
+      "size_um": [
+        9000,
+        9000
+      ],
+      "rotation_deg": 0,
+      "power_W": 100.0
+    },
+    {
+      "name": "GPU_3",
+      "origin_um": [
+        8000,
+        9000
+      ],
+      "size_um": [
+        9000,
+        9000
+      ],
+      "rotation_deg": 0,
+      "power_W": 100.0
+    },
+    {
+      "name": "IODie_0",
+      "origin_um": [
+        13000,
+        23000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 10.0
+    },
+    {
+      "name": "IODie_1",
+      "origin_um": [
+        13000,
+        28000
+      ],
+      "size_um": [
+        5000,
+        5000
+      ],
+      "rotation_deg": 0,
+      "power_W": 10.0
+    },
+    {
+      "name": "MEMS_0",
+      "origin_um": [
+        10500,
+        5000
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_1",
+      "origin_um": [
+        10500,
+        7000
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_10",
+      "origin_um": [
+        9600,
+        44000
+      ],
+      "size_um": [
+        2000,
+        1200
+      ],
+      "rotation_deg": 0,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_11",
+      "origin_um": [
+        9600,
+        45200
+      ],
+      "size_um": [
+        2000,
+        1200
+      ],
+      "rotation_deg": 0,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_12",
+      "origin_um": [
+        44000,
+        0
+      ],
+      "size_um": [
+        2000,
+        1200
+      ],
+      "rotation_deg": 0,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_13",
+      "origin_um": [
+        44000,
+        1200
+      ],
+      "size_um": [
+        2000,
+        1200
+      ],
+      "rotation_deg": 0,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_14",
+      "origin_um": [
+        44000,
+        2400
+      ],
+      "size_um": [
+        2000,
+        1200
+      ],
+      "rotation_deg": 0,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_15",
+      "origin_um": [
+        44000,
+        3600
+      ],
+      "size_um": [
+        2000,
+        1200
+      ],
+      "rotation_deg": 0,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_16",
+      "origin_um": [
+        44000,
+        4800
+      ],
+      "size_um": [
+        2000,
+        1200
+      ],
+      "rotation_deg": 0,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_17",
+      "origin_um": [
+        44000,
+        6000
+      ],
+      "size_um": [
+        2000,
+        1200
+      ],
+      "rotation_deg": 0,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_18",
+      "origin_um": [
+        44000,
+        7200
+      ],
+      "size_um": [
+        2000,
+        1200
+      ],
+      "rotation_deg": 0,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_19",
+      "origin_um": [
+        44000,
+        8400
+      ],
+      "size_um": [
+        2000,
+        1200
+      ],
+      "rotation_deg": 0,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_2",
+      "origin_um": [
+        0,
+        44000
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_20",
+      "origin_um": [
+        44000,
+        9600
+      ],
+      "size_um": [
+        2000,
+        1200
+      ],
+      "rotation_deg": 0,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_21",
+      "origin_um": [
+        14500,
+        43000
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_22",
+      "origin_um": [
+        14500,
+        45000
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_23",
+      "origin_um": [
+        15700,
+        43000
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_24",
+      "origin_um": [
+        15700,
+        45000
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_25",
+      "origin_um": [
+        16900,
+        43000
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_26",
+      "origin_um": [
+        16900,
+        45000
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_27",
+      "origin_um": [
+        17000,
+        33000
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_28",
+      "origin_um": [
+        17000,
+        35000
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_29",
+      "origin_um": [
+        17000,
+        37000
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_3",
+      "origin_um": [
+        1200,
+        44000
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_30",
+      "origin_um": [
+        17000,
+        39000
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_31",
+      "origin_um": [
+        17000,
+        41000
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_32",
+      "origin_um": [
+        18100,
+        43000
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_33",
+      "origin_um": [
+        18100,
+        45000
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_34",
+      "origin_um": [
+        18000,
+        17500
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_35",
+      "origin_um": [
+        18000,
+        19500
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_4",
+      "origin_um": [
+        2400,
+        44000
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_5",
+      "origin_um": [
+        3600,
+        44000
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_6",
+      "origin_um": [
+        4800,
+        44000
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_7",
+      "origin_um": [
+        6000,
+        44000
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_8",
+      "origin_um": [
+        7200,
+        44000
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    },
+    {
+      "name": "MEMS_9",
+      "origin_um": [
+        8400,
+        44000
+      ],
+      "size_um": [
+        1200,
+        2000
+      ],
+      "rotation_deg": 90,
+      "power_W": 3.0
+    }
+  ],
+  "geometric_checks_passed": true,
+  "ready_for_fem": false,
+  "clearance_um": 0,
+  "routing_validated": false,
+  "packing_attempt": 0,
+  "total_power_W": 1006.0,
+  "input_sha256": "22edaf829dadbc0d8dc474417d5d075a06a2eaeea319d48dae74fc3c0c41458c"
+}

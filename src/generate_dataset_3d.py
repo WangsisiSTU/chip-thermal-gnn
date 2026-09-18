@@ -22,7 +22,10 @@ SAMPLING_STREAMS_3D = (
     "train_id", "val_id", "test_id",
     "covered_poor_cooling_train", "covered_poor_cooling_val", "covered_poor_cooling_test",
     "ood_high_power", "ood_poor_tim", "ood_poor_cooling",
+    "covered_high_power_train", "covered_high_power_val", "covered_high_power_test",
+    "covered_poor_tim_train", "covered_poor_tim_val", "covered_poor_tim_test",
 )
+SUPPORTED_COVERAGE_3D = ("high_power", "poor_tim", "poor_cooling")
 
 def load_config(path: str) -> dict:
     with open(path, "r", encoding="utf-8") as f:
@@ -67,20 +70,19 @@ def sample_ood_case_3d(rng: np.random.Generator, cfg: dict, kind: str) -> CasePa
     return case
 
 
-def _sampling_rngs_3d(seed: int) -> dict[str, np.random.Generator]:
-    """Use one stable random stream per split/regime.
-
-    Changing a training-split count must never change validation or test cases.
-    """
-    return {
-        name: np.random.default_rng(np.random.SeedSequence(seed, spawn_key=(index,)))
-        for index, name in enumerate(SAMPLING_STREAMS_3D)
+def _coverage_counts_3d(cfg: dict) -> dict[str, dict[str, int]]:
+    coverage = cfg.get("coverage", {})
+    unknown = set(coverage) - set(SUPPORTED_COVERAGE_3D)
+    if unknown:
+        raise ValueError(f"Unknown coverage regimes: {sorted(unknown)}")
+    counts = {
+        kind: {split: int(coverage.get(kind, {}).get(split, 0))
+               for split in ("train", "val", "test")}
+        for kind in SUPPORTED_COVERAGE_3D
     }
-
-
-def _coverage_counts_3d(cfg: dict) -> dict[str, int]:
-    coverage = cfg.get("coverage", {}).get("poor_cooling", {})
-    return {split: int(coverage.get(split, 0)) for split in ("train", "val", "test")}
+    if any(value < 0 for per_kind in counts.values() for value in per_kind.values()):
+        raise ValueError("coverage counts must be non-negative")
+    return counts
 
 
 def _ood_counts_3d(cfg: dict) -> dict[str, int]:
@@ -112,6 +114,20 @@ def sample_covered_poor_cooling_case_3d(rng: np.random.Generator, cfg: dict) -> 
     return case
 
 
+def sample_covered_case_3d(rng: np.random.Generator, cfg: dict, kind: str) -> CaseParams3D:
+    """Sample a difficult regime deliberately represented during training."""
+    if kind == "poor_cooling":
+        return sample_covered_poor_cooling_case_3d(rng, cfg)
+    coverage = cfg.get("coverage", {}).get(kind, {})
+    case = sample_id_case_3d(rng, cfg)
+    field = {"high_power": "q_hot", "poor_tim": "k_tim"}.get(kind)
+    if field is None or field not in coverage:
+        raise ValueError(f"coverage.{kind}.{field} is required when its count is positive")
+    setattr(case, field, _uniform(rng, coverage[field]))
+    case.regime = f"covered_{kind}"
+    return case
+
+
 def _sampling_rngs_3d(seed: int) -> dict[str, np.random.Generator]:
     """Use one stable random stream per split/regime.
 
@@ -128,9 +144,9 @@ def build_case_list_3d(cfg: dict):
     coverage_counts = _coverage_counts_3d(cfg)
     ood_counts = _ood_counts_3d(cfg)
     n_id = {
-        "train": int(split["n_train"]) - coverage_counts["train"],
-        "val": int(split["n_val"]) - coverage_counts["val"],
-        "test": int(split["n_test"]) - coverage_counts["test"] - sum(ood_counts.values()),
+        "train": int(split["n_train"]) - sum(counts["train"] for counts in coverage_counts.values()),
+        "val": int(split["n_val"]) - sum(counts["val"] for counts in coverage_counts.values()),
+        "test": int(split["n_test"]) - sum(counts["test"] for counts in coverage_counts.values()) - sum(ood_counts.values()),
     }
     if any(count < 0 for count in n_id.values()):
         raise ValueError("Coverage and OOD counts cannot exceed their split sizes")
@@ -141,13 +157,14 @@ def build_case_list_3d(cfg: dict):
         rng = rngs[f"{split_name}_id"]
         cases.extend((split_name, sample_id_case_3d(rng, cfg)) for _ in range(n_id[split_name]))
 
-        coverage_count = coverage_counts[split_name]
-        if coverage_count:
-            coverage_rng = rngs[f"covered_poor_cooling_{split_name}"]
-            cases.extend(
-                (split_name, sample_covered_poor_cooling_case_3d(coverage_rng, cfg))
-                for _ in range(coverage_count)
-            )
+        for kind in SUPPORTED_COVERAGE_3D:
+            coverage_count = coverage_counts[kind][split_name]
+            if coverage_count:
+                coverage_rng = rngs[f"covered_{kind}_{split_name}"]
+                cases.extend(
+                    (split_name, sample_covered_case_3d(coverage_rng, cfg, kind))
+                    for _ in range(coverage_count)
+                )
 
     for kind, count in ood_counts.items():
         rng = rngs[f"ood_{kind}"]
@@ -229,9 +246,21 @@ def main():
     parser = argparse.ArgumentParser(description="Generate 3D tetrahedral chip thermal FEM data.")
     parser.add_argument("--config", default="configs/data_config_3d.yaml")
     parser.add_argument("--out_dir", default="data/raw_3d")
+    parser.add_argument("--nx", type=int, default=None, help="override x mesh nodes")
+    parser.add_argument("--ny", type=int, default=None, help="override y mesh nodes")
+    parser.add_argument("--nz", type=int, default=None, help="override z mesh nodes")
+    parser.add_argument("--refine_levels", type=int, default=None,
+                        help="adaptive refinement passes around the central TIM/die region")
     args = parser.parse_args()
 
-    metadata = generate_dataset_3d(load_config(args.config), args.out_dir)
+    cfg = load_config(args.config)
+    for axis in ("nx", "ny", "nz"):
+        override = getattr(args, axis)
+        if override is not None:
+            cfg["geometry"][axis] = override
+    if args.refine_levels is not None:
+        cfg["geometry"]["refine_levels"] = args.refine_levels
+    metadata = generate_dataset_3d(cfg, args.out_dir)
     print(
         f"3D dataset complete: {metadata['n_nodes']} nodes, {metadata['n_tets']} tetrahedra, "
         f"splits={metadata['split_counts']}"

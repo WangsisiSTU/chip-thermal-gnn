@@ -1,0 +1,73 @@
+{
+  "device": "cuda",
+  "split_layout_ids": {
+    "train": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17
+    ],
+    "val": [
+      18,
+      19,
+      20
+    ],
+    "test": [
+      21,
+      22,
+      23
+    ]
+  },
+  "models": {
+    "node_mlp": {
+      "volume_weighted_mae_K": 1.7197046279907227,
+      "volume_weighted_rmse_K": 2.3765421311060586,
+      "mean_absolute_peak_error_K": 0.5605864524841309,
+      "mean_chip_mean_error_K": 1.06998215119044,
+      "mean_energy_balance_rel_error": 0.06070244777947664,
+      "inference_ms_per_graph": 15.414741666366657,
+      "best_val_loss": 0.09872976938883464,
+      "epochs_run": 55,
+      "train_time_s": 11.266300700022839,
+      "parameter_count": 10241
+    },
+    "graphsage": {
+      "volume_weighted_mae_K": 1.2888520111640294,
+      "volume_weighted_rmse_K": 1.7341942091782887,
+      "mean_absolute_peak_error_K": 0.46191565195719403,
+      "mean_chip_mean_error_K": 1.0361799862649705,
+      "mean_energy_balance_rel_error": 0.024878022823637973,
+      "inference_ms_per_graph": 11.540116664643088,
+      "best_val_loss": 0.05573954060673714,
+      "epochs_run": 55,
+      "train_time_s": 15.41705579997506,
+      "parameter_count": 20225
+    },
+    "physics_graphsage": {
+      "volume_weighted_mae_K": 1.2185712208350499,
+      "volume_weighted_rmse_K": 1.6754023830095928,
+      "mean_absolute_peak_error_K": 0.2757813135782878,
+      "mean_chip_mean_error_K": 0.9560655686590407,
+      "mean_energy_balance_rel_error": 2.977817180986146e-07,
+      "inference_ms_per_graph": 13.279158330988139,
+      "best_val_loss": 0.055848815788825355,
+      "epochs_run": 60,
+      "train_time_s": 18.52555180003401,
+      "parameter_count": 20225
+    }
+  }
+}

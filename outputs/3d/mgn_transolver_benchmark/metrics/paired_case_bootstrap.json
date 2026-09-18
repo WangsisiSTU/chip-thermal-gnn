@@ -1,0 +1,83 @@
+{
+  "method": "paired_physical_case_bootstrap_on_nodal_mae",
+  "reps": 10000,
+  "seed": 240915,
+  "scope": "test-case sampling only; one training seed",
+  "meshes": {
+    "coarse": {
+      "n_test": 32,
+      "comparisons": {
+        "baseline": {
+          "n_cases": 32,
+          "mean_hybrid_minus_comparator_K": -0.011501427536131814,
+          "paired_case_bootstrap_95pct_interval_K": [
+            -0.02864334828336723,
+            0.0039479262813983925
+          ],
+          "hybrid_lower_error_case_fraction": 0.46875,
+          "resampled_mean_nonnegative_fraction": 0.0764
+        },
+        "meshgraphnet": {
+          "n_cases": 32,
+          "mean_hybrid_minus_comparator_K": -0.022870182612678036,
+          "paired_case_bootstrap_95pct_interval_K": [
+            -0.0483643911757099,
+            -0.0034213644263218178
+          ],
+          "hybrid_lower_error_case_fraction": 0.8125,
+          "resampled_mean_nonnegative_fraction": 0.0067
+        }
+      }
+    },
+    "medium": {
+      "n_test": 32,
+      "comparisons": {
+        "baseline": {
+          "n_cases": 32,
+          "mean_hybrid_minus_comparator_K": -0.012095273254089989,
+          "paired_case_bootstrap_95pct_interval_K": [
+            -0.032090660540416135,
+            0.005572803412360368
+          ],
+          "hybrid_lower_error_case_fraction": 0.46875,
+          "resampled_mean_nonnegative_fraction": 0.0982
+        },
+        "meshgraphnet": {
+          "n_cases": 32,
+          "mean_hybrid_minus_comparator_K": -0.024408807235886343,
+          "paired_case_bootstrap_95pct_interval_K": [
+            -0.05178171945881331,
+            -0.0031564229881041773
+          ],
+          "hybrid_lower_error_case_fraction": 0.71875,
+          "resampled_mean_nonnegative_fraction": 0.0071
+        }
+      }
+    },
+    "fine": {
+      "n_test": 32,
+      "comparisons": {
+        "baseline": {
+          "n_cases": 32,
+          "mean_hybrid_minus_comparator_K": -0.010242151416605338,
+          "paired_case_bootstrap_95pct_interval_K": [
+            -0.028871296791476198,
+            0.006906768876069689
+          ],
+          "hybrid_lower_error_case_fraction": 0.40625,
+          "resampled_mean_nonnegative_fraction": 0.1305
+        },
+        "meshgraphnet": {
+          "n_cases": 32,
+          "mean_hybrid_minus_comparator_K": -0.023797513713361695,
+          "paired_case_bootstrap_95pct_interval_K": [
+            -0.05042891133598459,
+            -0.003557896930942666
+          ],
+          "hybrid_lower_error_case_fraction": 0.78125,
+          "resampled_mean_nonnegative_fraction": 0.0057
+        }
+      }
+    }
+  }
+}

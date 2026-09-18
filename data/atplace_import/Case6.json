@@ -1,0 +1,220 @@
+{
+  "case_id": "Case6",
+  "interposer_size_m": [
+    0.048999999999999995,
+    0.053
+  ],
+  "chiplets": [
+    {
+      "name": "CPU2_0",
+      "width_m": 0.005,
+      "depth_m": 0.005,
+      "power_W": 34.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_1",
+      "width_m": 0.005,
+      "depth_m": 0.005,
+      "power_W": 34.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_2",
+      "width_m": 0.005,
+      "depth_m": 0.005,
+      "power_W": 34.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_3",
+      "width_m": 0.005,
+      "depth_m": 0.005,
+      "power_W": 34.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_4",
+      "width_m": 0.005,
+      "depth_m": 0.005,
+      "power_W": 34.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_5",
+      "width_m": 0.005,
+      "depth_m": 0.005,
+      "power_W": 34.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_6",
+      "width_m": 0.005,
+      "depth_m": 0.005,
+      "power_W": 34.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CPU2_7",
+      "width_m": 0.005,
+      "depth_m": 0.005,
+      "power_W": 34.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "GPU_0",
+      "width_m": 0.009,
+      "depth_m": 0.009,
+      "power_W": 100.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "GPU_1",
+      "width_m": 0.009,
+      "depth_m": 0.009,
+      "power_W": 100.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "GPU_2",
+      "width_m": 0.009,
+      "depth_m": 0.009,
+      "power_W": 100.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "GPU_3",
+      "width_m": 0.009,
+      "depth_m": 0.009,
+      "power_W": 100.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "HBM_0",
+      "width_m": 0.008,
+      "depth_m": 0.012,
+      "power_W": 25.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "HBM_1",
+      "width_m": 0.008,
+      "depth_m": 0.012,
+      "power_W": 25.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "HBM_2",
+      "width_m": 0.008,
+      "depth_m": 0.012,
+      "power_W": 25.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "HBM_3",
+      "width_m": 0.008,
+      "depth_m": 0.012,
+      "power_W": 25.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "DRAM_0",
+      "width_m": 0.009,
+      "depth_m": 0.009,
+      "power_W": 20.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "DRAM_1",
+      "width_m": 0.009,
+      "depth_m": 0.009,
+      "power_W": 20.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "DRAM_2",
+      "width_m": 0.009,
+      "depth_m": 0.009,
+      "power_W": 20.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "DRAM_3",
+      "width_m": 0.009,
+      "depth_m": 0.009,
+      "power_W": 20.0,
+      "source_position_um": [
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "total_power_W": 852.0,
+  "layout_status": "all_zero_initial_positions",
+  "ready_for_fem": false,
+  "source_sha256": {
+    "Case6.blocks": "ffb796b22edc78eafe7c39f8da0d94a1b892650c8a26b5fd8a13ee731a27cf21",
+    "Case6.nets": "4ba98f1b944baedb05f1e961354173c40a2ae3d2894680588e48bcabbcf9de3e",
+    "Case6.pl": "d4fa668d5e80d0bb7d996989d5d2c3342a6be2163452dfbdafa1d9f287147953",
+    "Case6.power": "cdbcb481f2ca4cb49826a3ee2cf5284007bafe6a9a4b68b70b8ea225dea6ab70",
+    "Thermal-aware.json": "726716c2d4284e88f3f9b498dca25d632cea7824d70a0108cbaed9ca19245aee",
+    "WL-driven.json": "44000dd7112d6494906b7945c325796034ab793d5b5c7da935e480bb69cdb1f3"
+  }
+}

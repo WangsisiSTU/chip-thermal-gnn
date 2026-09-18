@@ -104,7 +104,7 @@ def plot_sample(fig_dir, model_name, sample_index, info, data, prediction, geome
 
 def main():
     parser = argparse.ArgumentParser(description="Create x-z, x-y and y-z cloud slices for 3D test fields.")
-    parser.add_argument("--model", default="baseline", choices=["baseline", "meshgraphnet"])
+    parser.add_argument("--model", default="baseline", choices=["baseline", "meshgraphnet", "mgn_transolver"])
     parser.add_argument("--data_dir", default="data/processed_3d_full")
     parser.add_argument("--raw_dir", default="data/raw_3d_full")
     parser.add_argument("--ckpt_dir", default="outputs/3d/checkpoints")

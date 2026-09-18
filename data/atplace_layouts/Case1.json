@@ -1,0 +1,97 @@
+{
+  "case_id": "Case1",
+  "layout_id": "derived_maxrects_v1",
+  "provenance": "project-generated; NOT official optimized placement",
+  "axes": "x,z in plane; y reserved for stack; origin is lower-left",
+  "interposer_size_um": [
+    42000,
+    42000
+  ],
+  "chiplets": [
+    {
+      "name": "CPU1_0",
+      "origin_um": [
+        0,
+        18000
+      ],
+      "size_um": [
+        12000,
+        12000
+      ],
+      "rotation_deg": 0,
+      "power_W": 105.0
+    },
+    {
+      "name": "GPU_0",
+      "origin_um": [
+        0,
+        0
+      ],
+      "size_um": [
+        18000,
+        18000
+      ],
+      "rotation_deg": 0,
+      "power_W": 300.0
+    },
+    {
+      "name": "GPU_1",
+      "origin_um": [
+        18000,
+        0
+      ],
+      "size_um": [
+        18000,
+        18000
+      ],
+      "rotation_deg": 0,
+      "power_W": 300.0
+    },
+    {
+      "name": "HBM_0",
+      "origin_um": [
+        0,
+        30000
+      ],
+      "size_um": [
+        8000,
+        12000
+      ],
+      "rotation_deg": 0,
+      "power_W": 25.0
+    },
+    {
+      "name": "HBM_1",
+      "origin_um": [
+        8000,
+        30000
+      ],
+      "size_um": [
+        8000,
+        12000
+      ],
+      "rotation_deg": 0,
+      "power_W": 25.0
+    },
+    {
+      "name": "HBM_2",
+      "origin_um": [
+        12000,
+        18000
+      ],
+      "size_um": [
+        8000,
+        12000
+      ],
+      "rotation_deg": 0,
+      "power_W": 25.0
+    }
+  ],
+  "geometric_checks_passed": true,
+  "ready_for_fem": false,
+  "clearance_um": 0,
+  "routing_validated": false,
+  "packing_attempt": 0,
+  "total_power_W": 780.0,
+  "input_sha256": "bbc3ab28ce20f9f7062edce010d1f4d05ede6f00e84e54ce34be3c2b7f8073bc"
+}

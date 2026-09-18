@@ -1,0 +1,469 @@
+{
+  "method": "medium_P1_nodal_trilinear_interpolation_to_target_nodes",
+  "meshes": {
+    "coarse": {
+      "n_test": 32,
+      "mean_mae_K": 0.020471333699225623,
+      "mean_relative_l2": 0.06416092746753876,
+      "mean_peak_difference_K": 0.0807252864152872,
+      "per_case": [
+        {
+          "file": "sample_0112.npz",
+          "regime": "id",
+          "mae_K": 0.0069644952510759615,
+          "relative_l2": 0.038507967569231964,
+          "peak_difference_K": 0.02043400663238515
+        },
+        {
+          "file": "sample_0113.npz",
+          "regime": "id",
+          "mae_K": 0.0034670607888313315,
+          "relative_l2": 0.04981365993836442,
+          "peak_difference_K": 0.04994364826105624
+        },
+        {
+          "file": "sample_0114.npz",
+          "regime": "id",
+          "mae_K": 0.007730978495982135,
+          "relative_l2": 0.03367493706303998,
+          "peak_difference_K": 0.05216252569233504
+        },
+        {
+          "file": "sample_0115.npz",
+          "regime": "id",
+          "mae_K": 0.0026498646346473486,
+          "relative_l2": 0.01552291887379068,
+          "peak_difference_K": 0.0013710740554735423
+        },
+        {
+          "file": "sample_0116.npz",
+          "regime": "id",
+          "mae_K": 0.011272747100263462,
+          "relative_l2": 0.03535550890387343,
+          "peak_difference_K": 0.02795511766451142
+        },
+        {
+          "file": "sample_0117.npz",
+          "regime": "id",
+          "mae_K": 0.023281294113843526,
+          "relative_l2": 0.15920293204709712,
+          "peak_difference_K": 0.15472335322721165
+        },
+        {
+          "file": "sample_0118.npz",
+          "regime": "id",
+          "mae_K": 0.009050991961571903,
+          "relative_l2": 0.07251095208147831,
+          "peak_difference_K": 0.06339789611811852
+        },
+        {
+          "file": "sample_0119.npz",
+          "regime": "id",
+          "mae_K": 0.02475119127750418,
+          "relative_l2": 0.07162406411910273,
+          "peak_difference_K": 0.11261101904518966
+        },
+        {
+          "file": "sample_0120.npz",
+          "regime": "id",
+          "mae_K": 0.005846761611096714,
+          "relative_l2": 0.08988386764397444,
+          "peak_difference_K": 0.052184896964917016
+        },
+        {
+          "file": "sample_0121.npz",
+          "regime": "id",
+          "mae_K": 0.004431308415713421,
+          "relative_l2": 0.12011850394824206,
+          "peak_difference_K": 0.0223665821489476
+        },
+        {
+          "file": "sample_0122.npz",
+          "regime": "id",
+          "mae_K": 0.002542917690676822,
+          "relative_l2": 0.04972621713872804,
+          "peak_difference_K": 0.05092925265026338
+        },
+        {
+          "file": "sample_0123.npz",
+          "regime": "id",
+          "mae_K": 0.0093866534448108,
+          "relative_l2": 0.04563870275238375,
+          "peak_difference_K": 0.02681913108148848
+        },
+        {
+          "file": "sample_0124.npz",
+          "regime": "covered_poor_cooling",
+          "mae_K": 0.016774358163575375,
+          "relative_l2": 0.04081215687059522,
+          "peak_difference_K": 0.03506262161179663
+        },
+        {
+          "file": "sample_0125.npz",
+          "regime": "covered_poor_cooling",
+          "mae_K": 0.07350260757887093,
+          "relative_l2": 0.08671570554888432,
+          "peak_difference_K": 0.17271597811993544
+        },
+        {
+          "file": "sample_0126.npz",
+          "regime": "covered_poor_cooling",
+          "mae_K": 0.008684909942772674,
+          "relative_l2": 0.05759040993733193,
+          "peak_difference_K": 0.03624204730562397
+        },
+        {
+          "file": "sample_0127.npz",
+          "regime": "covered_poor_cooling",
+          "mae_K": 0.0016786404683655123,
+          "relative_l2": 0.007201488007276355,
+          "peak_difference_K": 0.0013162597333291615
+        },
+        {
+          "file": "sample_0128.npz",
+          "regime": "covered_poor_cooling",
+          "mae_K": 0.09282742753784777,
+          "relative_l2": 0.12060383661069575,
+          "peak_difference_K": 0.38655922858822933
+        },
+        {
+          "file": "sample_0129.npz",
+          "regime": "covered_poor_cooling",
+          "mae_K": 0.002727711435382477,
+          "relative_l2": 0.02125014065819121,
+          "peak_difference_K": 0.003591158190452859
+        },
+        {
+          "file": "sample_0130.npz",
+          "regime": "covered_poor_cooling",
+          "mae_K": 0.007406312197502191,
+          "relative_l2": 0.044422303183180765,
+          "peak_difference_K": 0.037411614309608154
+        },
+        {
+          "file": "sample_0131.npz",
+          "regime": "covered_poor_cooling",
+          "mae_K": 0.13391384488649014,
+          "relative_l2": 0.24128899996970476,
+          "peak_difference_K": 0.3621248463198299
+        },
+        {
+          "file": "sample_0132.npz",
+          "regime": "ood_high_power",
+          "mae_K": 0.015573214825824274,
+          "relative_l2": 0.038132366023155256,
+          "peak_difference_K": 0.041335200210383505
+        },
+        {
+          "file": "sample_0133.npz",
+          "regime": "ood_high_power",
+          "mae_K": 0.017515866418431583,
+          "relative_l2": 0.04620988859782522,
+          "peak_difference_K": 0.094556867983556
+        },
+        {
+          "file": "sample_0134.npz",
+          "regime": "ood_high_power",
+          "mae_K": 0.011523314321354877,
+          "relative_l2": 0.027553458702881745,
+          "peak_difference_K": 0.10613323716800949
+        },
+        {
+          "file": "sample_0135.npz",
+          "regime": "ood_high_power",
+          "mae_K": 0.051465456991579984,
+          "relative_l2": 0.1329266252017471,
+          "peak_difference_K": 0.2332549503520127
+        },
+        {
+          "file": "sample_0136.npz",
+          "regime": "ood_poor_tim",
+          "mae_K": 0.0003740941397261761,
+          "relative_l2": 0.02927745491102265,
+          "peak_difference_K": 0.01647323935626588
+        },
+        {
+          "file": "sample_0137.npz",
+          "regime": "ood_poor_tim",
+          "mae_K": 0.0032334475621550204,
+          "relative_l2": 0.07131816548501863,
+          "peak_difference_K": 0.0026862203929667317
+        },
+        {
+          "file": "sample_0138.npz",
+          "regime": "ood_poor_tim",
+          "mae_K": 0.007771136803979141,
+          "relative_l2": 0.03573121123767791,
+          "peak_difference_K": 0.03422462256671466
+        },
+        {
+          "file": "sample_0139.npz",
+          "regime": "ood_poor_tim",
+          "mae_K": 0.018781546837862075,
+          "relative_l2": 0.09034434438374385,
+          "peak_difference_K": 0.12411595177466239
+        },
+        {
+          "file": "sample_0140.npz",
+          "regime": "ood_poor_cooling",
+          "mae_K": 0.028109745941239533,
+          "relative_l2": 0.05500473869039209,
+          "peak_difference_K": 0.10159746087963839
+        },
+        {
+          "file": "sample_0141.npz",
+          "regime": "ood_poor_cooling",
+          "mae_K": 0.016292706692023724,
+          "relative_l2": 0.02159680800480839,
+          "peak_difference_K": 0.07767982878417001
+        },
+        {
+          "file": "sample_0142.npz",
+          "regime": "ood_poor_cooling",
+          "mae_K": 0.024989464092814967,
+          "relative_l2": 0.06450145851416024,
+          "peak_difference_K": 0.045587700132841746
+        },
+        {
+          "file": "sample_0143.npz",
+          "regime": "ood_poor_cooling",
+          "mae_K": 0.010560606751403983,
+          "relative_l2": 0.039087886343640035,
+          "peak_difference_K": 0.03564162796726578
+        }
+      ]
+    },
+    "fine": {
+      "n_test": 32,
+      "mean_mae_K": 0.017356866028561027,
+      "mean_relative_l2": 0.05796848601185802,
+      "mean_peak_difference_K": 0.07138176790423267,
+      "per_case": [
+        {
+          "file": "sample_0112.npz",
+          "regime": "id",
+          "mae_K": 0.016657311808144094,
+          "relative_l2": 0.07151205558524779,
+          "peak_difference_K": 0.08810029799504804
+        },
+        {
+          "file": "sample_0113.npz",
+          "regime": "id",
+          "mae_K": 0.0037775824553526165,
+          "relative_l2": 0.046436750238360386,
+          "peak_difference_K": 0.017007911802998876
+        },
+        {
+          "file": "sample_0114.npz",
+          "regime": "id",
+          "mae_K": 0.02406937312664034,
+          "relative_l2": 0.08275073183332099,
+          "peak_difference_K": 0.14681092759047232
+        },
+        {
+          "file": "sample_0115.npz",
+          "regime": "id",
+          "mae_K": 0.005720370344213649,
+          "relative_l2": 0.025171443076155584,
+          "peak_difference_K": 0.022663484938856726
+        },
+        {
+          "file": "sample_0116.npz",
+          "regime": "id",
+          "mae_K": 0.03186819423793127,
+          "relative_l2": 0.1053119259734578,
+          "peak_difference_K": 0.09039165382966985
+        },
+        {
+          "file": "sample_0117.npz",
+          "regime": "id",
+          "mae_K": 0.01935842098383035,
+          "relative_l2": 0.12218658939921723,
+          "peak_difference_K": 0.10316354560467289
+        },
+        {
+          "file": "sample_0118.npz",
+          "regime": "id",
+          "mae_K": 0.003620402950767793,
+          "relative_l2": 0.03675726718366387,
+          "peak_difference_K": 0.053243853686598897
+        },
+        {
+          "file": "sample_0119.npz",
+          "regime": "id",
+          "mae_K": 0.02707291277135083,
+          "relative_l2": 0.07645148111954471,
+          "peak_difference_K": 0.132410571854372
+        },
+        {
+          "file": "sample_0120.npz",
+          "regime": "id",
+          "mae_K": 0.0026439398963330188,
+          "relative_l2": 0.046562100814009015,
+          "peak_difference_K": 0.03182198439307271
+        },
+        {
+          "file": "sample_0121.npz",
+          "regime": "id",
+          "mae_K": 0.0035581185488515344,
+          "relative_l2": 0.09186835626653937,
+          "peak_difference_K": 0.013200385777622614
+        },
+        {
+          "file": "sample_0122.npz",
+          "regime": "id",
+          "mae_K": 0.002878197317732016,
+          "relative_l2": 0.045913560092406325,
+          "peak_difference_K": 0.04065620910960632
+        },
+        {
+          "file": "sample_0123.npz",
+          "regime": "id",
+          "mae_K": 0.006592697200608817,
+          "relative_l2": 0.03078989621685352,
+          "peak_difference_K": 0.06425227606970907
+        },
+        {
+          "file": "sample_0124.npz",
+          "regime": "covered_poor_cooling",
+          "mae_K": 0.021502480321533488,
+          "relative_l2": 0.04960481172255215,
+          "peak_difference_K": 0.09061890445993726
+        },
+        {
+          "file": "sample_0125.npz",
+          "regime": "covered_poor_cooling",
+          "mae_K": 0.0026748135416329965,
+          "relative_l2": 0.004481740199879054,
+          "peak_difference_K": 0.027571014047612863
+        },
+        {
+          "file": "sample_0126.npz",
+          "regime": "covered_poor_cooling",
+          "mae_K": 0.004495354195611652,
+          "relative_l2": 0.03178183728875238,
+          "peak_difference_K": 0.025937603316904756
+        },
+        {
+          "file": "sample_0127.npz",
+          "regime": "covered_poor_cooling",
+          "mae_K": 0.011071848874781878,
+          "relative_l2": 0.041921481608379885,
+          "peak_difference_K": 0.04113377857974854
+        },
+        {
+          "file": "sample_0128.npz",
+          "regime": "covered_poor_cooling",
+          "mae_K": 0.05720219241635741,
+          "relative_l2": 0.07681105851536818,
+          "peak_difference_K": 0.23872565258032097
+        },
+        {
+          "file": "sample_0129.npz",
+          "regime": "covered_poor_cooling",
+          "mae_K": 0.0035024643116300332,
+          "relative_l2": 0.015716904149093457,
+          "peak_difference_K": 0.011405671219151259
+        },
+        {
+          "file": "sample_0130.npz",
+          "regime": "covered_poor_cooling",
+          "mae_K": 0.004273595595126714,
+          "relative_l2": 0.025245366958598546,
+          "peak_difference_K": 0.02263842847161257
+        },
+        {
+          "file": "sample_0131.npz",
+          "regime": "covered_poor_cooling",
+          "mae_K": 0.06754642775142593,
+          "relative_l2": 0.10804878963623456,
+          "peak_difference_K": 0.16937834117332073
+        },
+        {
+          "file": "sample_0132.npz",
+          "regime": "ood_high_power",
+          "mae_K": 0.006013695954855045,
+          "relative_l2": 0.020436031142363243,
+          "peak_difference_K": 0.021824957005506462
+        },
+        {
+          "file": "sample_0133.npz",
+          "regime": "ood_high_power",
+          "mae_K": 0.018056425143375285,
+          "relative_l2": 0.05101597338338575,
+          "peak_difference_K": 0.005709142751598506
+        },
+        {
+          "file": "sample_0134.npz",
+          "regime": "ood_high_power",
+          "mae_K": 0.020131693344817087,
+          "relative_l2": 0.03244809278957149,
+          "peak_difference_K": 0.028002059567150184
+        },
+        {
+          "file": "sample_0135.npz",
+          "regime": "ood_high_power",
+          "mae_K": 0.025327308093200586,
+          "relative_l2": 0.05980630463928545,
+          "peak_difference_K": 0.05091614416625845
+        },
+        {
+          "file": "sample_0136.npz",
+          "regime": "ood_poor_tim",
+          "mae_K": 0.0009636220395705685,
+          "relative_l2": 0.048399628818403706,
+          "peak_difference_K": 0.0010463977114874012
+        },
+        {
+          "file": "sample_0137.npz",
+          "regime": "ood_poor_tim",
+          "mae_K": 0.003342573104163171,
+          "relative_l2": 0.06634116362336093,
+          "peak_difference_K": 0.08386677890432281
+        },
+        {
+          "file": "sample_0138.npz",
+          "regime": "ood_poor_tim",
+          "mae_K": 0.011134876683418067,
+          "relative_l2": 0.041576082118004565,
+          "peak_difference_K": 0.10923466049074193
+        },
+        {
+          "file": "sample_0139.npz",
+          "regime": "ood_poor_tim",
+          "mae_K": 0.007590722599178857,
+          "relative_l2": 0.04065855546749739,
+          "peak_difference_K": 0.05780411304285238
+        },
+        {
+          "file": "sample_0140.npz",
+          "regime": "ood_poor_cooling",
+          "mae_K": 0.06685892299415168,
+          "relative_l2": 0.12047539121001555,
+          "peak_difference_K": 0.27334535041625685
+        },
+        {
+          "file": "sample_0141.npz",
+          "regime": "ood_poor_cooling",
+          "mae_K": 0.014258739776901752,
+          "relative_l2": 0.019186436753691586,
+          "peak_difference_K": 0.0733804639930753
+        },
+        {
+          "file": "sample_0142.npz",
+          "regime": "ood_poor_cooling",
+          "mae_K": 0.02603296995399076,
+          "relative_l2": 0.06728267316431083,
+          "peak_difference_K": 0.04654788445041902
+        },
+        {
+          "file": "sample_0143.npz",
+          "regime": "ood_poor_cooling",
+          "mae_K": 0.03562146457647359,
+          "relative_l2": 0.1520410713919314,
+          "peak_difference_K": 0.10140612393446702
+        }
+      ]
+    }
+  }
+}

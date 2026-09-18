@@ -1,0 +1,23 @@
+seed: 3107
+physics_config: configs/atplace_case1_six_layer.yaml
+mesh_level: medium
+layouts: {train: 18, val: 3, test: 3}
+power_profiles_per_layout: 4
+power_multiplier: {low: 0.70, high: 1.30}
+layout_move_grid_m: 0.0005
+layout_move_attempts: 3000
+
+training:
+  epochs: 60
+  patience: 12
+  batch_size: 4
+  hidden_dim: 64
+  layers: 3
+  dropout: 0.03
+  learning_rate: 0.001
+  weight_decay: 1.0e-5
+  peak_loss_weight: 0.05
+  # Fixed-count local Jacobi steps were rejected: their effect changed with
+  # mesh resolution.  Keep only the exact graph-level energy projection.
+  physics_correction_steps: 0
+  physics_correction_omega: 0.65

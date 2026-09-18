@@ -1,0 +1,145 @@
+# Design specification only. The current generator does not yet implement all
+# fields in this protocol. It is intentionally versioned before implementation
+# so that data generation and evaluation contracts can be reviewed first.
+status: design_spec_not_implemented
+protocol_version: complex_thermal_v1
+seed: 4107
+
+objective:
+  pde: anisotropic_steady_heat_conduction
+  target: nodal_temperature_rise_and_flux_observables
+  generalization_axes:
+    - geometry
+    - topology
+    - mesh
+    - material
+    - interface
+    - boundary_condition
+    - heat_source
+
+scopes:
+  c0_operating_condition:
+    variable: [power, ambient, uniform_convection]
+  c1_layout:
+    variable: [chiplet_count, chiplet_size, chiplet_position, chiplet_rotation, hotspot_count]
+  c2_material_interface:
+    variable: [conductivity_tensor, material_map, temperature_dependence, tim_voids, contact_resistance]
+  c3_boundary:
+    variable: [bc_type, bc_region, spatial_convection, multi_face_cooling, local_heat_sink]
+  c4_structural_ood:
+    holdout: [geometry_family, topology_family, mesh_generator_seed]
+  c5_compound_ood:
+    holdout: [geometry_family, material_family, boundary_family]
+
+geometry_families:
+  package_outline:
+    - rectangle_with_rounded_corners
+    - l_shape
+    - stepped_outline
+    - rectangle_with_cutout
+  chiplet_topology:
+    chiplet_count: {min: 1, max: 8}
+    shapes: [rectangle, rounded_rectangle, l_shape]
+    allow_rotation_deg: [0, 90, 180, 270]
+    min_spacing_m: 0.0002
+  stack:
+    layer_count: {min: 4, max: 10}
+    thickness_jitter_fraction: {low: -0.25, high: 0.25}
+  mesh:
+    independent_seeds_per_case: 2
+    train_resolutions: [coarse, medium]
+    holdout_resolutions: [fine, adaptive]
+    refine_near: [hotspot, material_interface, boundary_transition]
+
+materials:
+  conductivity:
+    representation: symmetric_positive_definite_tensor
+    components: [k_xx, k_yy, k_zz, k_xy, k_xz, k_yz]
+    anisotropy_ratio: {low: 1.0, high: 50.0}
+  temperature_dependence:
+    enabled_fraction: 0.35
+    model: polynomial_or_table
+  heterogeneity:
+    modes: [piecewise_blocks, correlated_random_field, tim_voids, tsv_array, microbump_effective_region]
+  interfaces:
+    contact_resistance_m2k_per_w: {low: 1.0e-6, high: 5.0e-4, sampling: log_uniform}
+    allow_temperature_jump: true
+
+heat_sources:
+  source_count: {min: 1, max: 12}
+  shapes: [rectangle, ellipse, polygon, floorplan_block]
+  power_density_w_per_m3: {low: 1.0e+5, high: 1.0e+8, sampling: log_uniform}
+  patterns: [single, clustered, distributed, edge, corner, asymmetric, compute_memory_mixed]
+
+boundary_conditions:
+  supported_types: [dirichlet, neumann, robin, adiabatic]
+  robin_h_w_per_m2k: {low: 5.0, high: 2.0e+5, sampling: log_uniform}
+  ambient_c: {low: 15.0, high: 85.0}
+  spatial_modes: [uniform, piecewise_patch, smooth_field]
+  multi_face_cooling: true
+  radiation:
+    enabled_fraction: 0.10
+    emissivity: {low: 0.2, high: 0.95}
+
+graph_entities:
+  node:
+    fields: [position, temperature_target, lumped_volume]
+  tetrahedron:
+    fields: [connectivity, volume, basis_gradient, material_tensor, heat_source]
+  material_interface_face:
+    fields: [connectivity, area, normal, left_material, right_material, contact_conductance]
+  boundary_face:
+    fields: [connectivity, area, normal, bc_type, bc_value, robin_h, ambient]
+
+fidelity_tiers:
+  low:
+    target_cases: 10000
+    candidate_solvers: [three_d_ice_4, mfit]
+  medium:
+    target_cases: 2000
+    candidate_solvers: [local_tetrahedral_fem]
+  high:
+    target_cases: 400
+    candidate_solvers: [refined_local_fem, atsim_2, independent_reference_solver]
+  measured:
+    target_cases: 100
+    candidate_sources: [ucr_commercial_thermal_maps, laboratory_ir]
+
+minimum_viable_release:
+  geometry_counts:
+    train: 40
+    val: 10
+    test_structural_ood: 15
+  physical_cases_per_geometry: {min: 16, max: 32}
+  mesh_seeds_per_physical_case: 2
+  test_regimes:
+    - id
+    - mesh_ood
+    - geometry_ood
+    - topology_ood
+    - material_ood
+    - boundary_ood
+    - compound_ood
+
+split_contract:
+  group_keys: [geometry_id, material_family_id, physical_case_id]
+  forbidden_leakage:
+    - same_physical_case_across_meshes_in_different_splits
+    - same_geometry_seed_in_structural_ood_train_and_test
+    - normalization_fitted_on_validation_or_test
+
+required_metrics:
+  field: [volume_weighted_mae, relative_l2, p95_case_mae]
+  hotspot: [peak_temperature_error, peak_location_error, hotspot_iou]
+  physics:
+    - free_dof_weak_residual
+    - global_energy_imbalance
+    - interface_normal_flux_jump
+    - boundary_heat_flux_error
+    - interface_temperature_jump_error
+  robustness:
+    - per_geometry_family_mean
+    - per_geometry_family_worst_case
+    - three_training_seed_mean_and_std
+    - geometry_grouped_bootstrap_interval
+

@@ -1,0 +1,62 @@
+case_id: Case1
+layout: data/atplace_layouts/Case1.json
+ambient_K: 318.15
+
+layers:
+  - {name: substrate, thickness_m: 0.0002, k_W_mK: 0.3003003003003003}
+  - {name: c4, thickness_m: 0.00007, local_material: c4_effective}
+  - {name: interposer, thickness_m: 0.00011, local_material: tsv_silicon_effective}
+  - {name: ubump, thickness_m: 0.00001, local_material: ubump_or_underfill}
+  - {name: chip, thickness_m: 0.00015, local_material: silicon_or_underfill, heat_source: true}
+  - {name: tim, thickness_m: 0.00002, k_W_mK: 4.0}
+
+materials:
+  copper: {k_W_mK: 400.0}
+  underfill: {k_W_mK: 1.6}
+  silicon: {k_W_mK: 100.0}
+  c4: {diameter_m: 0.000250, pitch_m: 0.000600}
+  tsv: {diameter_m: 0.000010, pitch_m: 0.000050}
+  ubump: {diameter_m: 0.000025, pitch_m: 0.000045}
+
+advanced_physics:
+  # Multipliers are ordered [kx, ky, kz]; y is the package stacking direction.
+  anisotropy:
+    material_multipliers:
+      c4_effective: [0.65, 1.60, 0.65]
+      tsv_silicon_effective: [0.70, 1.80, 0.70]
+      ubump_effective: [0.80, 1.40, 0.80]
+      tim: [1.20, 0.55, 1.20]
+  temperature_dependence:
+    reference_temperature_K: 318.15
+    material_alpha_per_K:
+      chip_silicon: -0.0012
+      chip_underfill: -0.0010
+      tim: -0.0020
+    min_factor: 0.60
+    max_factor: 1.20
+    solver: {max_iterations: 80, tolerance_K: 1.0e-7, relaxation: 0.70}
+  contact_resistance:
+    interfaces:
+      - {between_layers: [interposer, ubump], resistance_m2K_W: 5.0e-6}
+      - {between_layers: [chip, tim], resistance_m2K_W: 2.0e-5}
+
+boundary:
+  model: effective_uniform_top_robin
+  r_convec_total_K_W: 0.01
+  other_surfaces: adiabatic
+  note: six-layer-only surrogate; explicit HotSpot spreader and sink are not meshed
+
+vertical_coordinate_scale: 0.05
+
+mesh_levels:
+  coarse: {max_xz_cell_m: 0.006, cells_per_layer: 1}
+  medium: {max_xz_cell_m: 0.004, cells_per_layer: 2}
+  fine: {max_xz_cell_m: 0.003, cells_per_layer: 3}
+  reference: {max_xz_cell_m: 0.002, cells_per_layer: 4}
+  verification: {max_xz_cell_m: 0.0015, cells_per_layer: 5}
+
+convergence:
+  source_power_rel_tol: 1.0e-10
+  energy_balance_rel_tol: 1.0e-8
+  peak_temperature_abs_tol_K: 0.5
+  chip_mean_temperature_abs_tol_K: 0.25

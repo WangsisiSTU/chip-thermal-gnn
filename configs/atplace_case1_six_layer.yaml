@@ -1,0 +1,43 @@
+case_id: Case1
+layout: data/atplace_layouts/Case1.json
+ambient_K: 318.15
+
+# ATPlace_pub Thermal.py layers.lcf, bottom to top.
+layers:
+  - {name: substrate, thickness_m: 0.0002, k_W_mK: 0.3003003003003003}
+  - {name: c4, thickness_m: 0.00007, local_material: c4_effective}
+  - {name: interposer, thickness_m: 0.00011, local_material: tsv_silicon_effective}
+  - {name: ubump, thickness_m: 0.00001, local_material: ubump_or_underfill}
+  - {name: chip, thickness_m: 0.00015, local_material: silicon_or_underfill, heat_source: true}
+  - {name: tim, thickness_m: 0.00002, k_W_mK: 4.0}
+
+materials:
+  copper: {k_W_mK: 400.0}
+  underfill: {k_W_mK: 1.6}
+  silicon: {k_W_mK: 100.0}
+  c4: {diameter_m: 0.000250, pitch_m: 0.000600}
+  tsv: {diameter_m: 0.000010, pitch_m: 0.000050}
+  ubump: {diameter_m: 0.000025, pitch_m: 0.000045}
+
+boundary:
+  model: effective_uniform_top_robin
+  r_convec_total_K_W: 0.01
+  other_surfaces: adiabatic
+  note: six-layer-only surrogate; explicit HotSpot spreader and sink are not meshed
+
+# Physical y = scale * computational y.  The weak form applies the exact
+# Jacobian, improving conditioning without changing the physical model.
+vertical_coordinate_scale: 0.05
+
+mesh_levels:
+  coarse: {max_xz_cell_m: 0.006, cells_per_layer: 1}
+  medium: {max_xz_cell_m: 0.004, cells_per_layer: 2}
+  fine: {max_xz_cell_m: 0.003, cells_per_layer: 3}
+  reference: {max_xz_cell_m: 0.002, cells_per_layer: 4}
+  verification: {max_xz_cell_m: 0.0015, cells_per_layer: 5}
+
+convergence:
+  source_power_rel_tol: 1.0e-10
+  energy_balance_rel_tol: 1.0e-8
+  peak_temperature_abs_tol_K: 0.5
+  chip_mean_temperature_abs_tol_K: 0.25

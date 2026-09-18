@@ -1,0 +1,23 @@
+{
+  "model": "baseline",
+  "loss_type": "per_sample_rel",
+  "peak_loss_type": "global_max",
+  "gradient_loss_weight": 0.05,
+  "energy_residual_weight": 0.02,
+  "interface_flux_weight": 0.02,
+  "n_params": 20481,
+  "best_epoch": 42,
+  "best_val_loss": 0.28146165795624256,
+  "total_epochs_run": 60,
+  "total_train_time_s": 108.91947299998719,
+  "seed": 2024,
+  "train_mesh_dirs": [
+    "data/processed_3d_fem_operator_medium",
+    "data/processed_3d_fem_operator_coarse",
+    "data/processed_3d_fem_operator_fine"
+  ],
+  "n_train_graphs": 288,
+  "runtime_device": "cuda",
+  "process_rss_MiB": 1577.984375,
+  "cuda_peak_memory_MiB": 58.6318359375
+}

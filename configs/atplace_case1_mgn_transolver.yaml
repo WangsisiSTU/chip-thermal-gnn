@@ -1,0 +1,47 @@
+seed: 3107
+seeds: [3107, 3108, 3109]
+physics_config: configs/atplace_case1_six_layer.yaml
+mesh_level: medium
+layouts: {train: 18, val: 3, test: 3}
+power_profiles_per_layout: 4
+power_multiplier: {low: 0.70, high: 1.30}
+layout_move_grid_m: 0.0005
+layout_move_attempts: 3000
+
+# Three equal-size evaluation suites isolate the two generalization axes.
+evaluation:
+  mesh_level: fine
+  mesh_only_source_split: train
+  mesh_only_layouts: 3
+  layout_mesh_source_split: test
+
+training:
+  epochs: 60
+  patience: 12
+  batch_size: 4
+  hidden_dim: 64
+  layers: 3
+  dropout: 0.03
+  learning_rate: 0.001
+  weight_decay: 1.0e-5
+  peak_loss_weight: 0.05
+  energy_projection: true
+  physics_correction_steps: 0
+  physics_correction_omega: 0.65
+
+meshgraphnet:
+  hidden_dim: 64
+  message_passing_steps: 3
+  dropout: 0.03
+  aggregation: sum
+
+mgn_transolver:
+  hidden_dim: 64
+  message_passing_steps: 3
+  attention_blocks: 1
+  attention_heads: 4
+  attention_slices: 8
+  attention_mode: full
+  dropout: 0.03
+  aggregation: sum
+  global_gate: true
